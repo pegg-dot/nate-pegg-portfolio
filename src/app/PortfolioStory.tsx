@@ -1,166 +1,135 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import ScrollTrace from "./components/ScrollTrace";
+import TigreEgg from "./components/TigreEgg";
+import { projects } from "./data/projects";
 
-const projects = [
-  { title: "DELLA", tag: "AI operator for nail salons", meta: "Mar 11, 2026 → now", href: "https://hellodella.com", tone: "ink" },
-  { title: "VIALGRADE", tag: "Evidence-backed peptide market intelligence", meta: "897 page views · 1,264 vendor clicks / 90d", href: "https://vialgrade.com", tone: "blue" },
-  { title: "TRANSFORMER", tag: "10.79M parameters, built from scratch", meta: "PyTorch · attention · activations", href: "https://github.com/pegg-dot/Transformer", tone: "graphite" },
-  { title: "LOT", tag: "Real-estate acquisition research system", meta: "public data · underwriting · decisions", href: "https://github.com/pegg-dot/real-estate-platform", tone: "sand" },
-];
+const shelf = projects.slice(3);
 
 export default function PortfolioStory() {
-  const [progress, setProgress] = useState(0);
-  const [reduced, setReduced] = useState(false);
-  const pathRef = useRef<SVGPathElement>(null);
-  const [length, setLength] = useState(1);
-
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const updateReduced = () => setReduced(media.matches);
-    updateReduced();
-    media.addEventListener("change", updateReduced);
-    return () => media.removeEventListener("change", updateReduced);
-  }, []);
-
-  useEffect(() => {
-    if (pathRef.current) setLength(pathRef.current.getTotalLength());
-  }, []);
-
-  useEffect(() => {
-    if (reduced) {
-      setProgress(1);
-      return;
-    }
-    let raf = 0;
-    const update = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const next = max <= 0 ? 0 : Math.min(1, Math.max(0, window.scrollY / max));
-      setProgress(next);
-      raf = 0;
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, [reduced]);
-
-  const offset = length * (1 - Math.min(1, progress * 1.12));
-  const nameReady = reduced || progress > 0.025;
-
   return (
-    <main>
+    <main className="portfolioMain">
+      <ScrollTrace />
       <div className="paperNoise" aria-hidden="true" />
-      <svg className="storyLine" viewBox="0 0 1000 6200" preserveAspectRatio="none" aria-hidden="true">
-        <path
-          ref={pathRef}
-          d="M 520 20 C 470 130 565 190 505 285 C 455 360 430 440 470 525 C 515 620 620 660 680 730 C 740 800 680 905 570 930 C 445 960 280 915 225 1030 C 180 1125 250 1190 360 1215 C 520 1250 665 1190 730 1320 C 785 1430 690 1510 560 1540 C 400 1575 285 1650 300 1790 C 315 1930 500 1960 590 2040 C 680 2120 635 2235 500 2280 C 360 2325 250 2420 280 2550 C 315 2700 510 2710 650 2810 C 760 2890 740 3040 610 3120 C 500 3190 330 3180 290 3320 C 250 3465 390 3520 520 3560 C 680 3610 735 3720 680 3860 C 625 4010 445 4040 350 4140 C 255 4240 300 4380 430 4450 C 560 4520 705 4525 735 4660 C 770 4810 625 4885 500 4960 C 350 5050 320 5210 410 5310 C 500 5410 690 5415 720 5570 C 750 5720 600 5800 500 5900 C 450 5950 430 6030 455 6170"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{ strokeDasharray: length, strokeDashoffset: offset }}
-        />
-      </svg>
 
-      <section className="hero sectionTall">
-        <div className="heroPrompt">scroll to draw</div>
-        <div className={`nameReveal ${nameReady ? "visible" : ""}`}>
-          <span className="eyebrow">builder · artist · rower</span>
-          <h1>NATE<br />PEGG</h1>
-          <p className="heroNote">The line keeps going.</p>
+      <section className="hero" id="top">
+        <div className="heroChrome"><span>PORTFOLIO / 2026</span><span>SCROLL TO DRAW</span></div>
+        <div className="heroName" aria-label="Nate Pegg">
+          <div className="heroNameMask"><h1>NATE</h1></div>
+          <div className="heroNameMask second"><h1>PEGG</h1></div>
+        </div>
+        <nav className="heroNav" aria-label="Primary">
+          <a href="#work">work</a><a href="#draw">drawings</a><a href="#row">rowing</a><a href="https://github.com/pegg-dot" target="_blank" rel="noreferrer">github ↗</a>
+        </nav>
+      </section>
+
+      <section className="dellaSection" id="work">
+        <div className="sectionRail"><span>01</span><span>DELLA</span><span>MAR 11 → NOW</span></div>
+        <div className="dellaIntro">
+          <div><span className="microLabel">CURRENT FOCUS</span><h2>ONE THING<br/>HARDENED.</h2></div>
+          <div className="dellaIntroCopy"><p>AI operator for nail salons.</p><p className="mutedCopy">Calls first. Communications before everything else.</p><Link className="underLink" href="/work/della">open the build →</Link></div>
+        </div>
+
+        <div className="callArtifact">
+          <div className="callTop"><div><span className="liveDot" />REAL TEST CALL</div><div>41 turns · 7:37</div></div>
+          <div className="callBody">
+            <aside className="checkedPanel">
+              <span className="microLabel">DELLA CHECKED</span>
+              <strong>Nail Repair</strong>
+              <p>Thu, Jul 30 · 4:30 PM</p>
+              <ol>
+                <li><b>10:22</b><span>checked availability · Aug 1</span></li>
+                <li><b>10:23</b><span>checked availability · Jul 30</span></li>
+                <li><b>10:26</b><span>created Square booking</span></li>
+                <li><b>10:27</b><span>created booking again</span></li>
+              </ol>
+            </aside>
+            <div className="transcriptPanel">
+              <div className="turn caller"><b>CALLER · 2:46</b><p>Why is the latest four thirty PM? Are you a hundred percent sure?</p></div>
+              <div className="turn della"><b>DELLA</b><p>You&apos;re right to push back — let me double-check that for you.</p><em>↳ tool call: availability</em></div>
+              <div className="turn caller"><b>CALLER · 3:25</b><p>You booked me for six PM Monday. Now you&apos;re telling me you close at five on Thursday. Did you just mess up there?</p></div>
+              <div className="turn annotation"><span>42s dead air here</span><span>source conflict</span></div>
+              <div className="turn caller"><b>CALLER · 6:07</b><p>Mia isn&apos;t an actual technician. I was just testing you.</p></div>
+              <div className="turn annotation"><span>verify provider before promise</span><span>post-action state check</span></div>
+            </div>
+          </div>
+          <div className="callLesson"><span>CALL</span><i>→</i><span>CONTEXT</span><i>→</i><span>POLICY / RAG</span><i>→</i><span>LIVE TOOL</span><i>→</i><span>ACTION</span><i>→</i><span>VERIFY</span></div>
         </div>
       </section>
 
-      <section className="projectSection projectDella">
-        <div className="sectionIndex">01 / BUILD</div>
-        <div className="projectHead">
-          <h2>DELLA</h2>
-          <p>AI operator for nail salons.</p>
+      <section className="vialSection">
+        <div className="sectionRail dark"><span>02</span><span>VIALGRADE</span><span>LIVE</span></div>
+        <div className="vialStage">
+          <div className="vialTitle"><span className="microLabel">EVIDENCE LAYER</span><h2>VIAL<br/>GRADE</h2><Link className="underLink" href="/work/vialgrade">inspect the system →</Link></div>
+          <div className="vialMetrics">
+            <div><span>90 DAYS</span><strong>897</strong><small>page views</small></div>
+            <div><span>90 DAYS</span><strong>1,264</strong><small>vendor clicks</small></div>
+            <div><span>BASELINE</span><strong>60</strong><small>compounds</small></div>
+            <div><span>BASELINE</span><strong>34</strong><small>vendors</small></div>
+          </div>
         </div>
-        <div className="traceCard">
-          <span>CALL</span><i>→</i><span>CONTEXT</span><i>→</i><span>TOOL</span><i>→</i><span>ACTION</span><i>→</i><span>RECEIPT</span>
-        </div>
-        <div className="evidenceStrip">
-          <strong>REAL TEST CALL</strong>
-          <span>checked live availability twice</span>
-          <span>booked Nail Repair · Thu 4:30 PM</span>
-          <span>Square appointment created</span>
-        </div>
-        <a className="projectLink" href="https://hellodella.com" target="_blank" rel="noreferrer">OPEN DELLA ↗</a>
-      </section>
-
-      <section className="projectSection projectVial">
-        <div className="sectionIndex">02 / VERIFY</div>
-        <div className="projectHead">
-          <h2>VIALGRADE</h2>
-          <p>Evidence before storefront polish.</p>
-        </div>
-        <div className="metricGrid">
-          <div><strong>897</strong><span>page views / 90d</span></div>
-          <div><strong>1,264</strong><span>vendor clicks / 90d</span></div>
-          <div><strong>60</strong><span>baseline compounds</span></div>
-          <div><strong>34</strong><span>baseline vendors</span></div>
-        </div>
-        <a className="projectLink" href="https://vialgrade.com" target="_blank" rel="noreferrer">OPEN VIALGRADE ↗</a>
-      </section>
-
-      <section className="projectSection projectTransformer">
-        <div className="sectionIndex">03 / UNDERSTAND</div>
-        <div className="projectHead">
-          <h2>TRANSFORMER</h2>
-          <p>I did not want the model to stay a black box.</p>
-        </div>
-        <div className="tokenRail"><span>token</span><span>embedding</span><span>Q K V</span><span>attention</span><span>logits</span></div>
-        <a className="projectLink" href="https://github.com/pegg-dot/Transformer" target="_blank" rel="noreferrer">VIEW REPO ↗</a>
-      </section>
-
-      <section className="buildShelf">
-        <div className="sectionIndex">04 / KEEP BUILDING</div>
-        <div className="shelfGrid">
-          {projects.slice(3).map((project) => (
-            <a key={project.title} className="shelfCard" href={project.href} target="_blank" rel="noreferrer">
-              <span>{project.meta}</span><h3>{project.title}</h3><p>{project.tag}</p>
-            </a>
-          ))}
-          {[
-            ["WEBBUDDY", "Salon website generator"],
-            ["NPGKTRADES", "Deterministic copy-trading system"],
-            ["SAY NO TO PLASTIC", "Interactive science + book experience"],
-            ["UVA SPATIAL OS", "Campus routing + spatial truth"],
-            ["HOOS MOVING", "coming in"],
-          ].map(([title, tag]) => <div className="shelfCard muted" key={title}><span>IN THE WORKBENCH</span><h3>{title}</h3><p>{tag}</p></div>)}
+        <div className="provenanceMap" aria-label="VialGrade provenance flow">
+          <div className="provNode">vendor listing</div><span>→</span><div className="provNode">lab evidence</div><span>→</span><div className="provNode">source history</div><span>→</span><div className="provNode strong">published claim</div>
+          <div className="provNote">201 checked-in Janoshik result records · automated collection stays separate from reviewed state</div>
         </div>
       </section>
 
-      <section className="artSection">
-        <div className="sectionIndex">05 / MADE BY HAND</div>
-        <h2>THE LINE<br />LEAVES THE SCREEN.</h2>
-        <p className="placeholderNote">Original graphite, charcoal, colored pencil, commissions. Scans coming next.</p>
-        <div className="paperFrames"><div /><div /><div /></div>
+      <section className="transformerSection">
+        <div className="sectionRail light"><span>03</span><span>TRANSFORMER</span><span>FROM SCRATCH</span></div>
+        <div className="transformerHero">
+          <div className="transformerCopy"><span className="microLabel">BELOW THE API</span><h2>10.79M</h2><p>parameters I could actually trace.</p><div className="modelStats"><span>6 blocks</span><span>6 heads</span><span>384 dim</span><span>256 ctx</span></div><Link className="underLink lightLink" href="/work/transformer">go inside →</Link></div>
+          <div className="transformerVisual"><Image src="/transformer/qkv.webp" alt="Transformer visualizer showing query, key and value projections" fill sizes="(max-width: 900px) 100vw, 50vw" /></div>
+        </div>
+        <div className="tokenFlow"><span>token</span><i>→</i><span>embedding</span><i>→</i><span>Q/K/V</span><i>→</i><span>attention</span><i>→</i><span>residual</span><i>→</i><span>logits</span></div>
       </section>
 
-      <section className="rowingSection">
-        <div className="sectionIndex">06 / MOVE</div>
-        <div>
-          <h2>TEAM USA</h2>
-          <p>U19 Men&apos;s Double · Beach Sprint National Team · 2024</p>
-          <div className="rowingFacts"><span>South Lido Key</span><span>2:50.4</span><span>1st at Trials</span><span>Genoa</span></div>
+      <section className="shelfSection">
+        <div className="sectionRail"><span>04</span><span>OTHER THINGS</span><span>STILL MOVING</span></div>
+        <div className="shelfIntro"><h2>THE WORKBENCH</h2><p>Not everything needs to be finished to be real.</p></div>
+        <div className="shelfTape">
+          {shelf.map((project, i) => {
+            const external = project.href?.startsWith("http");
+            const content = <><span className="cardStatus">{project.status}</span><span className="cardNum">0{i + 4}</span><h3>{project.title}</h3><p>{project.kicker}</p><small>{project.meta}</small></>;
+            return project.href ? external ? <a key={project.slug} className={`benchCard card${i}`} href={project.href} target="_blank" rel="noreferrer">{content}</a> : <Link key={project.slug} className={`benchCard card${i}`} href={project.href}>{content}</Link> : <div key={project.slug} className={`benchCard card${i} pending`}>{content}</div>;
+          })}
         </div>
       </section>
 
-      <section className="footerSection">
-        <p>Built by Nate Pegg.</p>
-        <div><a href="https://github.com/pegg-dot" target="_blank" rel="noreferrer">GitHub ↗</a><a href="mailto:nate@natepegg.com">Email ↗</a></div>
+      <section className="artSection" id="draw">
+        <div className="sectionRail"><span>05</span><span>MADE BY HAND</span><span>GRAPHITE / COLOR</span></div>
+        <div className="artLead"><h2>THE LINE<br/>LEAVES<br/>THE SCREEN.</h2><p>Commission work, portraits, buildings, objects, whatever made me want to sit down and draw it.</p></div>
+        <div className="artWall">
+          <figure className="artPiece p1"><Image src="/art/bob-marley.jpg" alt="Graphite portrait drawing" fill sizes="40vw" /><figcaption>graphite portrait</figcaption></figure>
+          <figure className="artPiece p2"><Image src="/art/coke-can.jpg" alt="Drawing of a crushed Coca-Cola can" fill sizes="30vw" /><figcaption>colored pencil</figcaption></figure>
+          <figure className="artPiece p3"><Image src="/art/dog-scarf.jpg" alt="Graphite dog portrait" fill sizes="35vw" /><figcaption>commission portrait</figcaption></figure>
+          <figure className="artPiece p4"><Image src="/art/house.jpg" alt="Architectural graphite drawing of a house" fill sizes="48vw" /><figcaption>architecture study</figcaption></figure>
+          <figure className="artPiece p5"><Image src="/art/moose.jpg" alt="Graphite moose drawing" fill sizes="32vw" /><figcaption>graphite</figcaption></figure>
+          <figure className="artPiece p6"><Image src="/art/miami.jpg" alt="Color drawing collage of Miami" fill sizes="35vw" /><figcaption>Miami</figcaption></figure>
+        </div>
       </section>
+
+      <section className="rowingSection" id="row">
+        <div className="rowingImage"><Image src="/rowing/race-close.jpg" alt="Nate Pegg racing for Team USA in the U19 men's double" fill priority={false} sizes="100vw" /></div>
+        <div className="rowingOverlay">
+          <div className="sectionRail onPhoto"><span>06</span><span>TEAM USA</span><span>2024</span></div>
+          <div className="rowingCopy"><h2>PEGG<br/>USA</h2><p>U19 Men&apos;s Double · Beach Sprint National Team</p><div className="rowingFacts"><span>South Lido Key</span><b>2:50.4</b><span>1st at Trials</span><span>Genoa</span><b>2:44.15</b></div></div>
+        </div>
+        <div className="rowingInset"><Image src="/rowing/race-wide.jpg" alt="Team USA U19 double racing off the beach" fill sizes="35vw" /></div>
+      </section>
+
+      <section className="aboutSection">
+        <div className="aboutGrid">
+          <div><span className="microLabel">ABOUT / DEBRIS</span><h2>STILL<br/>CURIOUS.</h2></div>
+          <div className="aboutNotes"><p>University of Virginia.</p><p>Miami.</p><p>Builder, rower, artist.</p><TigreEgg /></div>
+        </div>
+      </section>
+
+      <footer className="siteFooter">
+        <div><span>NATE PEGG</span><span>2026</span></div>
+        <div><a href="https://github.com/pegg-dot" target="_blank" rel="noreferrer">GitHub ↗</a><a href="mailto:nate@natepegg.com">Email ↗</a><a href="#top">Top ↑</a></div>
+      </footer>
     </main>
   );
 }

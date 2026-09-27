@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nate Pegg — portfolio
 
-## Getting Started
+A scroll-driven portfolio built for the Horowitz Andreessen Academy application.
 
-First, run the development server:
+## North star
+
+The site should make a reviewer feel that Nate cannot stop building, while letting the work itself provide the proof. It is not a resume site and it is not a template gallery.
+
+The recurring visual language is one hand-drawn line: it begins on paper, becomes a reasoning trace, evidence provenance, a transformer path, graphite, and eventually the wake behind a rowing shell.
+
+## Current structure
+
+- delayed name reveal / scroll-to-draw opening
+- Della as the anchor project, using a real test-call artifact
+- VialGrade evidence + live usage metrics
+- Transformer-from-scratch visualizer
+- workbench for other projects
+- original art scans
+- Team USA beach-sprint section
+- deeper case-study routes for Della, VialGrade and Transformer
+
+## Local
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Content rule
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Long-form application copy should stay in Nate's voice. The site can use factual labels, artifacts, metrics and short technical annotations, but final personal prose is intentionally not generated here.

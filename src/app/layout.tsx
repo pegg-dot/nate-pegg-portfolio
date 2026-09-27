@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Nate Pegg — Work",
-  description: "Things I build, draw, and keep pulling apart to understand.",
+  description: "Things Nate Pegg has built, drawn, and pulled apart to understand.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
