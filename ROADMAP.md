@@ -32,21 +32,38 @@
 
 **Revisit checkpoint:** once WebBuddy, UVA Spatial OS and HOOS Moving have their own story pages, check whether any homepage spotlight still contains information that belongs one level deeper.
 
+## Pivot — 2026-09-26, pass 3
+
+**Old sequence → New sequence**
+
+`one continuous decorative pencil line through the page` → `the pencil only appears when it has something specific to say: circle, underline, bracket, star, or point at real content`
+
+**Why:** the continuous line looked programmatic and became decoration for its own sake. The pencil should feel like Nate annotating his own portfolio, not a screensaver.
+
+**Deferred:** no more ambient doodles unless they are tied to a real sentence, image, or idea.
+
+**Revisit checkpoint:** every pencil mark should be understandable without explaining the animation to the reviewer.
+
+## Content rule — final voice pass
+
+The current copy is structure and factual draft material, not final application prose. Before submission, every first-person paragraph gets rewritten from Nate's own spoken answer, then lightly cut for clarity. No invented lessons, founder slogans, or polished autobiography.
+
 ## Roadmap ledger
 
 ### Current phase — story + motion
 - [x] pencil stays pinned in the viewport while it writes the name
 - [x] smoother multi-stroke handwriting with visible in-air pencil travel
-- [x] long pencil path includes loops, a star, an arrow and a spiral instead of only snaking downward
+- [x] decorative long trace replaced by semantic pencil marks tied to actual content
 - [x] homepage spotlights now say what each project is before the deeper story
+- [x] existing project pages answer what / why / how / when before the deeper narrative
+- [x] fuller About section includes a real photo, current builds, and personal context
 - [x] Della reframed around origin, pivots and persistent context
 - [x] VialGrade reframed around trust / provenance instead of page views
 - [x] Transformer reframed around learning / black-box motivation
 - [x] secondary projects reframed around why they started
 - [x] LOT, NPGKTrades and Say No To Plastic story pages
 - [x] art and rowing kept as personal chapters
-- [x] pencil continues down the long page after writing the name
-- [ ] Nate pass on all first-person wording
+- [ ] Nate pass on all first-person wording using his spoken answers as the source
 
 ### Next phase — deepen the remaining stories
 - [ ] HOOS Moving repo / story

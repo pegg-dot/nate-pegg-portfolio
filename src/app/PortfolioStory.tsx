@@ -23,6 +23,7 @@ export default function PortfolioStory() {
       <section className="hero" id="top">
         <div className="heroChrome"><span>NATE PEGG / 2026</span><span>SCROLL</span></div>
         <div className="heroSticky"><HandwrittenName /></div>
+        <div className="heroIntro"><p>I build software, draw, and row.</p><span>RIGHT NOW: DELLA · VIALGRADE · HOOS MOVING · UVA SPATIAL OS</span></div>
         <nav className="heroNav" aria-label="Primary">
           <a href="#work">work</a><a href="#draw">drawings</a><a href="#row">rowing</a><a href="#about">about</a><a href="https://github.com/pegg-dot" target="_blank" rel="noreferrer">github ↗</a>
         </nav>
@@ -38,7 +39,7 @@ export default function PortfolioStory() {
         <div className="sectionRail"><span>01</span><span>DELLA</span><span>MAR 11 → NOW</span></div>
         <div className="projectDefinition">
           <span className="microLabel">WHAT IT IS</span>
-          <p><strong>Della is an AI employee for nail salons.</strong> It answers calls, remembers customers across conversations, checks live availability, creates real appointments in Square, and is being hardened around communications first.</p>
+          <p><strong data-pencil-target="della">Della is an AI employee for nail salons.</strong> It answers calls, remembers customers across conversations, checks live availability, creates real appointments in Square, and is being hardened around communications first.</p>
           <div className="projectActions"><Link href="/work/della">READ THE STORY →</Link><a href="https://hellodella.com" target="_blank" rel="noreferrer">OPEN DELLA ↗</a></div>
         </div>
         <div className="spotlightGrid">
@@ -51,7 +52,7 @@ export default function PortfolioStory() {
         <div className="sectionRail dark"><span>02</span><span>VIALGRADE</span><span>LIVE</span></div>
         <div className="projectDefinition">
           <span className="microLabel">WHAT IT IS</span>
-          <p><strong>VialGrade is an evidence-backed research platform for the peptide market.</strong> It brings compounds, vendors, lab results, source history, conflicts and uncertainty into one place so a claim can be inspected instead of just trusted.</p>
+          <p><strong data-pencil-target="vial">VialGrade is an evidence-backed research platform for the peptide market.</strong> It brings compounds, vendors, lab results, source history, conflicts and uncertainty into one place so a claim can be inspected instead of just trusted.</p>
           <div className="projectActions"><Link href="/work/vialgrade">READ THE STORY →</Link><a href="https://vialgrade.com" target="_blank" rel="noreferrer">OPEN VIALGRADE ↗</a><a href="https://github.com/pegg-dot/vial" target="_blank" rel="noreferrer">CODE ↗</a></div>
         </div>
         <div className="spotlightGrid reverse">
@@ -64,7 +65,7 @@ export default function PortfolioStory() {
         <div className="sectionRail light"><span>03</span><span>TRANSFORMER</span><span>FROM SCRATCH</span></div>
         <div className="projectDefinition projectDefinitionDark">
           <span className="microLabel">WHAT IT IS</span>
-          <p><strong>A GPT-style transformer built and trained from scratch in PyTorch.</strong> I instrumented its forward pass, captured the real intermediate tensors, and built a browser visualizer around what the model was actually doing.</p>
+          <p><strong data-pencil-target="transformer">A GPT-style transformer built and trained from scratch in PyTorch.</strong> I instrumented its forward pass, captured the real intermediate tensors, and built a browser visualizer around what the model was actually doing.</p>
           <div className="projectActions"><Link href="/work/transformer">READ THE STORY →</Link><a href="https://transformer-viz-eight.vercel.app" target="_blank" rel="noreferrer">OPEN VISUALIZER ↗</a><a href="https://github.com/pegg-dot/Transformer" target="_blank" rel="noreferrer">CODE ↗</a></div>
         </div>
         <div className="spotlightGrid">
@@ -91,7 +92,7 @@ export default function PortfolioStory() {
         <div className="artLead"><h2>THE LINE<br/>LEAVES<br/>THE SCREEN.</h2><p>I drew long before I built software. I still like making something where every mark is mine and there is no undo button.</p></div>
         <div className="artWall">
           <figure className="artPiece p1"><Image src="/art/bob-marley.jpg" alt="Graphite portrait drawing" fill sizes="40vw" /><figcaption>graphite portrait</figcaption></figure>
-          <figure className="artPiece p2"><Image src="/art/coke-can.jpg" alt="Drawing of a crushed Coca-Cola can" fill sizes="30vw" /><figcaption>colored pencil</figcaption></figure>
+          <figure className="artPiece p2" data-pencil-target="art"><Image src="/art/coke-can.jpg" alt="Drawing of a crushed Coca-Cola can" fill sizes="30vw" /><figcaption>colored pencil</figcaption></figure>
           <figure className="artPiece p3"><Image src="/art/dog-scarf.jpg" alt="Graphite dog portrait" fill sizes="35vw" /><figcaption>commission portrait</figcaption></figure>
           <figure className="artPiece p4"><Image src="/art/house.jpg" alt="Architectural graphite drawing of a house" fill sizes="48vw" /><figcaption>architecture study</figcaption></figure>
           <figure className="artPiece p5"><Image src="/art/moose.jpg" alt="Graphite moose drawing" fill sizes="32vw" /><figcaption>graphite</figcaption></figure>
@@ -103,18 +104,36 @@ export default function PortfolioStory() {
         <div className="rowingImage"><Image src="/rowing/race-close.jpg" alt="Nate Pegg racing for Team USA in the U19 men's double" fill sizes="100vw" /></div>
         <div className="rowingOverlay">
           <div className="sectionRail onPhoto"><span>11</span><span>ROWING</span><span>2024</span></div>
-          <div className="rowingStory"><span className="microLabel">SPRING → SUMMER → GENOA</span><h2>THE SUMMER I<br/>ENDED UP IN<br/>A USA UNIFORM.</h2><p>Spring crew turned into beach-sprint trials at South Lido Key. We qualified. School ended, practice kept going, and the next few months were mostly mornings on the water until Worlds in Genoa.</p><div className="rowingFacts"><span>South Lido Key</span><b>1st at Trials</b><span>U19 Men&apos;s Double</span><span>Genoa</span></div></div>
+          <div className="rowingStory"><span className="microLabel">SPRING → SUMMER → GENOA</span><h2>THE SUMMER I<br/>ENDED UP IN<br/><span data-pencil-target="rowing">A USA UNIFORM.</span></h2><p>Spring crew turned into beach-sprint trials at South Lido Key. We qualified. School ended, practice kept going, and the next few months were mostly mornings on the water until Worlds in Genoa.</p><div className="rowingFacts"><span>South Lido Key</span><b>1st at Trials</b><span>U19 Men&apos;s Double</span><span>Genoa</span></div></div>
         </div>
         <div className="rowingWideFrame"><Image src="/rowing/race-wide.jpg" alt="Team USA U19 double racing off the beach" fill sizes="100vw" /><span>U19 MEN&apos;S DOUBLE · TEAM USA</span></div>
       </section>
 
       <section className="aboutSection" id="about">
-        <div className="aboutLead"><span className="microLabel">A FEW THINGS THAT DO NOT FIT ANYWHERE ELSE</span><h2>SMALL THINGS<br/>ARE PART OF IT TOO.</h2></div>
+        <div className="aboutLead"><span className="microLabel">ABOUT ME, WITHOUT TURNING THIS INTO A RÉSUMÉ</span><h2>THE PROJECTS ARE<br/>ONLY PART OF IT.</h2></div>
+
+        <div className="aboutPortraitGrid">
+          <div className="aboutPortrait"><Image src="/rowing/race-close.jpg" alt="Nate Pegg rowing for Team USA" fill sizes="(max-width: 900px) 100vw, 46vw" /></div>
+          <div className="aboutIntro">
+            <span className="microLabel">I&apos;M NATE.</span>
+            <p>I grew up in Miami and I&apos;m now a first-year at UVA. I build software, draw, and row. Most of the projects on this site started because I got stuck on something and wanted to understand it by making the thing myself.</p>
+            <p>I care a lot about the mechanism underneath whatever I&apos;m using. That is basically why the Transformer exists, and it is also why Della turned into a much bigger lesson in tools, state, memory, checks, and what an agent can actually be trusted to do.</p>
+            <div className="aboutNow">
+              <span>RIGHT NOW</span>
+              <b>Della</b>
+              <b>VialGrade</b>
+              <b>HOOS Moving</b>
+              <b>UVA Spatial OS</b>
+            </div>
+            <small>Genoa, 2024 · Team USA U19 coastal rowing.</small>
+          </div>
+        </div>
+
         <div className="aboutCards">
-          <article><span>01 / HOME</span><h3>Miami → UVA</h3><p>I grew up in Miami and now I&apos;m a first-year at the University of Virginia.</p></article>
+          <article><span>01 / HOME</span><h3>Miami → UVA</h3><p>I went to Ransom Everglades in Miami and now I&apos;m at UVA. A lot of what I build still starts with something I saw around me first.</p></article>
           <article><span>02 / THE SHIRT</span><h3>Apparently one shirt was enough.</h3><p>When I was four or five I had two or three copies of the same red-and-blue striped shirt with a little green alien on it. I wore it nearly every day.</p></article>
-          <article><span>03 / TIGRE</span><h3>It was a giraffe.</h3><p>I used to sleep with a tiny giraffe blanket over my ear. I called it Tigre, even though tigre means tiger and the thing was very obviously a giraffe.</p></article>
-          <article><span>04 / STILL TRUE</span><h3>I like making things by hand.</h3><p>That is probably why drawing still matters to me even when most of what I build now lives on a screen.</p></article>
+          <article><span>03 / TIGRE</span><h3 data-pencil-target="about">It was a giraffe.</h3><p>I used to sleep with a tiny giraffe blanket over my ear. I called it Tigre, even though tigre means tiger and the thing was very obviously a giraffe.</p></article>
+          <article><span>04 / STILL TRUE</span><h3>I like making things by hand.</h3><p>I drew long before I wrote code. I still like the fact that a drawing has no undo button and every mark is actually there because I put it there.</p></article>
         </div>
       </section>
 

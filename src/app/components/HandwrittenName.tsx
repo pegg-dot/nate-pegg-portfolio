@@ -2,38 +2,62 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const GAP = 42;
-
-// One path per natural pen stroke instead of one path per straight segment.
-// The pencil also travels through the air between strokes, so it never teleports.
 const strokes = [
-  "M92 220 C90 176 90 124 94 80 C125 122 157 171 194 220 C198 176 200 126 204 82",
-  "M254 220 C278 166 305 112 334 80 C365 125 393 172 422 220",
-  "M282 161 C320 154 360 154 395 160",
-  "M492 82 C490 126 490 177 492 220",
-  "M447 84 C488 80 532 80 575 84",
-  "M652 82 C620 84 605 90 605 106 C606 126 638 133 684 133 C647 134 610 139 608 157 C606 178 644 188 696 188 C664 189 625 196 608 218 C646 219 684 220 723 218",
-  "M95 460 C94 410 94 354 98 298 C157 292 211 306 213 343 C216 384 158 398 99 389",
-  "M290 298 C258 300 244 307 244 323 C245 343 279 350 324 350 C286 352 250 357 248 375 C247 397 284 407 336 407 C302 410 263 418 247 457 C285 459 324 460 364 458",
-  "M515 340 C494 305 430 291 397 323 C366 354 377 422 425 448 C467 472 523 449 535 408 C539 394 537 381 531 369 C512 368 489 369 467 371",
-  "M728 340 C707 305 643 291 610 323 C579 354 590 422 638 448 C680 472 736 449 748 408 C752 394 750 381 744 369 C724 368 702 369 680 371",
-  "M744 407 C775 431 803 452 837 470"
+  // N
+  "M92 72 C90 116 92 166 94 216",
+  "M94 74 C126 116 158 168 198 216",
+  "M198 74 C200 116 200 167 202 216",
+  // A
+  "M250 216 C274 166 302 112 334 72",
+  "M334 72 C366 112 394 166 424 216",
+  "M280 162 C316 156 356 156 394 160",
+  // T
+  "M462 76 C510 72 555 73 604 76",
+  "M534 76 C532 122 533 169 535 216",
+  // E
+  "M650 76 C648 120 649 170 651 216",
+  "M651 76 C690 73 724 74 758 77",
+  "M651 145 C682 142 712 143 738 146",
+  "M651 216 C689 213 726 214 764 217",
+  // P
+  "M92 292 C90 342 91 394 94 454",
+  "M94 294 C132 287 178 291 188 323 C198 356 157 372 95 365",
+  // E
+  "M246 294 C244 338 245 397 247 454",
+  "M247 294 C283 291 317 292 350 295",
+  "M247 369 C278 366 309 367 335 370",
+  "M247 454 C283 451 320 452 357 455",
+  // G
+  "M493 322 C470 287 408 284 384 332 C359 381 384 447 443 458 C492 467 532 432 526 386",
+  "M526 386 C501 386 479 388 459 392",
+  // G
+  "M682 322 C659 287 597 284 573 332 C548 381 573 447 632 458 C681 467 721 432 715 386",
+  "M715 386 C690 386 668 388 648 392",
 ];
 
+type Point = { x: number; y: number };
 type Metrics = {
   lengths: number[];
   starts: number[];
+  travels: number[];
   total: number;
-  strokeStarts: { x: number; y: number }[];
-  strokeEnds: { x: number; y: number }[];
+  strokeStarts: Point[];
+  strokeEnds: Point[];
 };
 
 export default function HandwrittenName() {
   const canvasRef = useRef<HTMLDivElement>(null);
   const refs = useRef<Array<SVGPathElement | null>>([]);
-  const [metrics, setMetrics] = useState<Metrics>({ lengths: [], starts: [], total: 1, strokeStarts: [], strokeEnds: [] });
+  const [metrics, setMetrics] = useState<Metrics>({
+    lengths: [],
+    starts: [],
+    travels: [],
+    total: 1,
+    strokeStarts: [],
+    strokeEnds: [],
+  });
   const [progress, setProgress] = useState(0);
-  const [tip, setTip] = useState({ x: 92, y: 220, angle: -90 });
+  const [tip, setTip] = useState({ x: 92, y: 72, angle: 90 });
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
@@ -48,18 +72,28 @@ export default function HandwrittenName() {
     const lengths = refs.current.map((p) => p?.getTotalLength() ?? 0);
     const strokeStarts = refs.current.map((p) => p?.getPointAtLength(0) ?? { x: 0, y: 0 });
     const strokeEnds = refs.current.map((p, i) => p?.getPointAtLength(lengths[i] ?? 0) ?? { x: 0, y: 0 });
+    const travels = lengths.map((_, i) => {
+      const from = strokeEnds[i];
+      const to = strokeStarts[i + 1];
+      if (!from || !to) return 0;
+      const distance = Math.hypot(to.x - from.x, to.y - from.y);
+      return Math.min(78, Math.max(22, distance * .46));
+    });
+
     let running = 0;
-    const starts = lengths.map((len) => {
+    const starts = lengths.map((len, i) => {
       const start = running;
-      running += len + GAP;
+      running += len + (travels[i] ?? 0);
       return start;
     });
+
     setMetrics({
       lengths,
       starts,
-      total: Math.max(1, running - GAP),
+      travels,
+      total: Math.max(1, running - (travels[travels.length - 1] ?? 0)),
       strokeStarts,
-      strokeEnds
+      strokeEnds,
     });
   }, []);
 
@@ -70,6 +104,7 @@ export default function HandwrittenName() {
     const sync = () => {
       const hero = canvasRef.current?.closest<HTMLElement>(".hero");
       if (!hero) return;
+
       const range = Math.max(1, hero.offsetHeight - window.innerHeight);
       const p = Math.min(1, Math.max(0, (window.scrollY - hero.offsetTop) / range));
       setProgress(p);
@@ -79,7 +114,8 @@ export default function HandwrittenName() {
       for (let i = 0; i < strokes.length; i += 1) {
         const start = metrics.starts[i] ?? 0;
         const len = metrics.lengths[i] ?? 0;
-        if (target <= start + len + GAP) {
+        const travel = metrics.travels[i] ?? 0;
+        if (target <= start + len + travel) {
           index = i;
           break;
         }
@@ -88,6 +124,7 @@ export default function HandwrittenName() {
       const path = refs.current[index];
       const start = metrics.starts[index] ?? 0;
       const len = metrics.lengths[index] ?? 0;
+      const travel = metrics.travels[index] ?? 0;
       const local = target - start;
 
       if (path && local <= len) {
@@ -98,8 +135,8 @@ export default function HandwrittenName() {
       } else {
         const from = metrics.strokeEnds[index];
         const to = metrics.strokeStarts[index + 1];
-        if (from && to) {
-          const t = Math.min(1, Math.max(0, (local - len) / GAP));
+        if (from && to && travel > 0) {
+          const t = Math.min(1, Math.max(0, (local - len) / travel));
           const eased = t * t * (3 - 2 * t);
           const x = from.x + (to.x - from.x) * eased;
           const y = from.y + (to.y - from.y) * eased;
@@ -125,11 +162,11 @@ export default function HandwrittenName() {
 
   return (
     <div ref={canvasRef} className="nameCanvas" aria-label="Nate Pegg">
-      <svg viewBox="0 0 900 540" role="img" aria-hidden="true">
+      <svg viewBox="0 0 860 525" role="img" aria-hidden="true">
         <defs>
           <filter id="graphiteRough" x="-10%" y="-10%" width="120%" height="120%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.016 0.11" numOctaves="1" seed="8" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.15" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.014 0.09" numOctaves="1" seed="8" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.05" />
           </filter>
         </defs>
 
@@ -160,7 +197,7 @@ export default function HandwrittenName() {
           </g>
         ) : null}
       </svg>
-      <span className="nameHint">{progress < .98 ? "keep scrolling — the pencil stays with you" : "made by hand, then code"}</span>
+      <span className="nameHint">{progress < .98 ? "keep scrolling — I am writing it" : "made by hand, then code"}</span>
     </div>
   );
 }
