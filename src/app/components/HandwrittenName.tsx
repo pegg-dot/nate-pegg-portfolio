@@ -3,36 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 
 const strokes = [
-  // N
-  "M92 72 C90 116 92 166 94 216",
-  "M94 74 C126 116 158 168 198 216",
-  "M198 74 C200 116 200 167 202 216",
-  // A
-  "M250 216 C274 166 302 112 334 72",
-  "M334 72 C366 112 394 166 424 216",
-  "M280 162 C316 156 356 156 394 160",
-  // T
-  "M462 76 C510 72 555 73 604 76",
-  "M534 76 C532 122 533 169 535 216",
-  // E
-  "M650 76 C648 120 649 170 651 216",
-  "M651 76 C690 73 724 74 758 77",
-  "M651 145 C682 142 712 143 738 146",
-  "M651 216 C689 213 726 214 764 217",
-  // P
-  "M92 292 C90 342 91 394 94 454",
-  "M94 294 C132 287 178 291 188 323 C198 356 157 372 95 365",
-  // E
-  "M246 294 C244 338 245 397 247 454",
-  "M247 294 C283 291 317 292 350 295",
-  "M247 369 C278 366 309 367 335 370",
-  "M247 454 C283 451 320 452 357 455",
-  // G
-  "M493 322 C470 287 408 284 384 332 C359 381 384 447 443 458 C492 467 532 432 526 386",
-  "M526 386 C501 386 479 388 459 392",
-  // G
-  "M682 322 C659 287 597 284 573 332 C548 381 573 447 632 458 C681 467 721 432 715 386",
-  "M715 386 C690 386 668 388 648 392",
+  // "Nate" as one continuous handwriting stroke.
+  "M104 218 C96 179 97 112 111 78 C118 61 128 65 130 88 C134 126 123 176 110 214 C136 180 169 126 198 86 C208 72 215 77 214 99 C212 135 205 178 208 204 C210 221 226 217 239 198 C250 180 257 164 274 163 C290 161 297 174 291 190 C285 207 268 217 254 209 C241 202 243 183 258 173 C274 162 290 173 291 192 C291 208 295 218 306 217 C321 216 330 197 336 179 C343 157 347 129 350 101 C352 83 359 82 361 98 C364 126 354 164 347 187 C341 207 345 218 359 217 C372 216 380 202 388 187 C396 173 409 168 419 174 C429 180 424 191 411 197 C399 202 386 200 382 197 C384 212 395 219 411 217 C425 215 437 207 449 195 C458 186 466 183 474 184",
+  // Cross the t after finishing the word, like a real writer coming back.
+  "M323 145 C338 142 354 141 371 143",
+  // "Pegg" as one continuous handwriting stroke with two looped descenders.
+  "M116 456 C114 414 115 348 120 304 C122 282 130 274 135 293 C141 316 138 351 131 389 C140 344 158 305 187 297 C211 290 229 301 230 320 C232 341 207 355 177 354 C154 353 139 343 133 331 C137 364 140 406 143 431 C146 447 154 449 163 434 C171 418 179 397 195 394 C210 392 218 403 211 414 C204 425 188 429 174 423 C178 438 191 445 207 440 C220 436 227 424 234 412 C241 401 253 399 263 405 C274 412 273 427 263 438 C252 449 237 446 233 434 C230 422 239 410 252 407 C265 404 275 414 275 429 C275 447 269 473 261 489 C254 503 242 509 233 503 C224 497 229 488 240 489 C254 491 265 503 282 498 C298 493 305 477 309 457 C313 437 311 416 320 407 C329 398 342 399 351 406 C362 415 360 429 350 439 C339 450 325 446 321 434 C318 422 327 410 340 407 C354 404 364 414 364 430 C364 451 357 477 349 492 C342 505 332 510 323 505 C315 500 319 490 330 490 C345 491 358 503 376 498 C397 492 413 475 429 454 C444 435 458 421 477 413 C492 407 507 407 523 410",
 ];
 
 type Point = { x: number; y: number };
@@ -48,6 +24,9 @@ type Metrics = {
 export default function HandwrittenName() {
   const canvasRef = useRef<HTMLDivElement>(null);
   const refs = useRef<Array<SVGPathElement | null>>([]);
+  const targetProgressRef = useRef(0);
+  const currentProgressRef = useRef(0);
+  const animationRef = useRef(0);
   const [metrics, setMetrics] = useState<Metrics>({
     lengths: [],
     starts: [],
@@ -57,7 +36,7 @@ export default function HandwrittenName() {
     strokeEnds: [],
   });
   const [progress, setProgress] = useState(0);
-  const [tip, setTip] = useState({ x: 92, y: 72, angle: 90 });
+  const [tip, setTip] = useState({ x: 104, y: 218, angle: -75 });
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
@@ -77,7 +56,7 @@ export default function HandwrittenName() {
       const to = strokeStarts[i + 1];
       if (!from || !to) return 0;
       const distance = Math.hypot(to.x - from.x, to.y - from.y);
-      return Math.min(78, Math.max(22, distance * .46));
+      return Math.min(42, Math.max(14, distance * .18));
     });
 
     let running = 0;
@@ -99,18 +78,11 @@ export default function HandwrittenName() {
 
   useEffect(() => {
     if (reduced || metrics.total <= 1) return;
-    let raf = 0;
 
-    const sync = () => {
-      const hero = canvasRef.current?.closest<HTMLElement>(".hero");
-      if (!hero) return;
-
-      const range = Math.max(1, hero.offsetHeight - window.innerHeight);
-      const p = Math.min(1, Math.max(0, (window.scrollY - hero.offsetTop) / range));
-      setProgress(p);
-
+    const updateTip = (p: number) => {
       const target = metrics.total * p;
       let index = strokes.length - 1;
+
       for (let i = 0; i < strokes.length; i += 1) {
         const start = metrics.starts[i] ?? 0;
         const len = metrics.lengths[i] ?? 0;
@@ -129,32 +101,61 @@ export default function HandwrittenName() {
 
       if (path && local <= len) {
         const here = path.getPointAtLength(Math.max(0, local));
-        const ahead = path.getPointAtLength(Math.min(len, Math.max(0, local) + 4));
+        const ahead = path.getPointAtLength(Math.min(len, Math.max(0, local) + 7));
         const angle = Math.atan2(ahead.y - here.y, ahead.x - here.x) * 180 / Math.PI;
         setTip({ x: here.x, y: here.y, angle });
-      } else {
-        const from = metrics.strokeEnds[index];
-        const to = metrics.strokeStarts[index + 1];
-        if (from && to && travel > 0) {
-          const t = Math.min(1, Math.max(0, (local - len) / travel));
-          const eased = t * t * (3 - 2 * t);
-          const x = from.x + (to.x - from.x) * eased;
-          const y = from.y + (to.y - from.y) * eased;
-          const angle = Math.atan2(to.y - from.y, to.x - from.x) * 180 / Math.PI;
-          setTip({ x, y, angle });
-        }
+        return;
       }
-      raf = 0;
+
+      const from = metrics.strokeEnds[index];
+      const to = metrics.strokeStarts[index + 1];
+      if (from && to && travel > 0) {
+        const t = Math.min(1, Math.max(0, (local - len) / travel));
+        const eased = t * t * (3 - 2 * t);
+        const arc = Math.sin(Math.PI * eased) * 18;
+        const x = from.x + (to.x - from.x) * eased;
+        const y = from.y + (to.y - from.y) * eased - arc;
+        const angle = Math.atan2(to.y - from.y, to.x - from.x) * 180 / Math.PI;
+        setTip({ x, y, angle });
+      }
     };
 
-    const queue = () => { if (!raf) raf = requestAnimationFrame(sync); };
-    sync();
-    window.addEventListener("scroll", queue, { passive: true });
-    window.addEventListener("resize", queue);
+    const animate = () => {
+      const current = currentProgressRef.current;
+      const target = targetProgressRef.current;
+      const distance = target - current;
+
+      if (Math.abs(distance) < .00045) {
+        currentProgressRef.current = target;
+        setProgress(target);
+        updateTip(target);
+        animationRef.current = 0;
+        return;
+      }
+
+      const next = current + distance * .16;
+      currentProgressRef.current = next;
+      setProgress(next);
+      updateTip(next);
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    const updateTarget = () => {
+      const hero = canvasRef.current?.closest<HTMLElement>(".hero");
+      if (!hero) return;
+      const range = Math.max(1, hero.offsetHeight - window.innerHeight);
+      targetProgressRef.current = Math.min(1, Math.max(0, (window.scrollY - hero.offsetTop) / range));
+      if (!animationRef.current) animationRef.current = requestAnimationFrame(animate);
+    };
+
+    updateTarget();
+    window.addEventListener("scroll", updateTarget, { passive: true });
+    window.addEventListener("resize", updateTarget);
     return () => {
-      window.removeEventListener("scroll", queue);
-      window.removeEventListener("resize", queue);
-      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", updateTarget);
+      window.removeEventListener("resize", updateTarget);
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+      animationRef.current = 0;
     };
   }, [metrics, reduced]);
 
@@ -162,15 +163,15 @@ export default function HandwrittenName() {
 
   return (
     <div ref={canvasRef} className="nameCanvas" aria-label="Nate Pegg">
-      <svg viewBox="0 0 860 525" role="img" aria-hidden="true">
+      <svg viewBox="0 0 640 540" role="img" aria-hidden="true">
         <defs>
           <filter id="graphiteRough" x="-10%" y="-10%" width="120%" height="120%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.014 0.09" numOctaves="1" seed="8" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.05" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.012 0.075" numOctaves="1" seed="8" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale=".85" />
           </filter>
         </defs>
 
-        <g className="nameInk" filter="url(#graphiteRough)">
+        <g className="nameInk nameInkScript" filter="url(#graphiteRough)">
           {strokes.map((d, i) => {
             const len = metrics.lengths[i] || 1;
             const start = metrics.starts[i] || 0;
@@ -187,7 +188,7 @@ export default function HandwrittenName() {
         </g>
 
         {!reduced && progress < .999 ? (
-          <g className="heroPencil" transform={`translate(${tip.x} ${tip.y}) rotate(${tip.angle})`}>
+          <g className="heroPencil heroPencilWriting" transform={`translate(${tip.x} ${tip.y}) rotate(${tip.angle})`}>
             <path className="pencilWood" d="M0 0 L-15 -8 L-15 8 Z" />
             <path className="pencilGraphite" d="M0 0 L-5.5 -3 L-5.5 3 Z" />
             <rect className="pencilBody" x="-92" y="-8" width="77" height="16" rx="2" />

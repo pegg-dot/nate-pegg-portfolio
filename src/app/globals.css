@@ -1165,3 +1165,13 @@ section { position: relative; z-index: 4; }
     min-height: 50vh;
   }
 }
+
+/* v6: the opening name is written as connected handwriting, not assembled block letters. */
+.nameInkScript path {
+  stroke-width: 8.6 !important;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.heroPencilWriting {
+  will-change: transform;
+}

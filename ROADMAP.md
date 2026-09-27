@@ -52,7 +52,8 @@ The current copy is structure and factual draft material, not final application 
 
 ### Current phase — story + motion
 - [x] pencil stays pinned in the viewport while it writes the name
-- [x] smoother multi-stroke handwriting with visible in-air pencil travel
+- [x] connected, cursive-style name writing with only natural pen lifts (crossing the t + moving to the last name)
+- [x] scroll input is eased so the pencil catches up smoothly instead of stepping with the scroll wheel
 - [x] decorative long trace replaced by semantic pencil marks tied to actual content
 - [x] homepage spotlights now say what each project is before the deeper story
 - [x] existing project pages answer what / why / how / when before the deeper narrative
