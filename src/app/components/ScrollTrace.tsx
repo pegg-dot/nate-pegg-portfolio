@@ -2,14 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const TRACE = "M 512 20 C 480 125 566 202 506 298 C 454 380 419 463 470 558 C 520 652 654 675 692 774 C 731 875 637 956 525 984 C 388 1019 247 978 207 1107 C 175 1210 270 1262 389 1277 C 548 1298 701 1243 742 1384 C 777 1508 655 1575 524 1598 C 374 1625 265 1715 306 1850 C 347 1984 548 1998 620 2093 C 692 2188 615 2290 472 2318 C 337 2344 249 2461 298 2592 C 353 2737 544 2740 680 2840 C 781 2914 732 3069 593 3137 C 470 3197 317 3217 289 3350 C 258 3495 405 3553 539 3589 C 700 3632 747 3764 680 3902 C 613 4043 431 4077 345 4187 C 258 4298 315 4423 458 4484 C 587 4539 714 4579 735 4700 C 758 4835 619 4917 482 4992 C 342 5068 312 5237 413 5340 C 508 5437 686 5441 718 5588 C 750 5737 597 5824 500 5921 C 447 5974 429 6063 456 6180";
+const TRACE = "M 535 40 C 470 175 620 250 555 385 C 495 505 360 540 330 680 C 300 825 455 905 620 945 C 765 982 785 1125 650 1205 C 520 1280 330 1245 285 1390 C 245 1515 365 1590 505 1630 C 690 1680 760 1810 675 1950 C 590 2090 375 2105 320 2260 C 270 2405 420 2490 590 2520 C 745 2548 790 2700 670 2805 C 555 2905 355 2890 300 3055 C 255 3190 395 3280 550 3320 C 715 3365 770 3490 680 3625 C 585 3765 390 3810 340 3970 C 300 4110 435 4205 590 4240 C 735 4275 770 4415 660 4520 C 550 4625 365 4620 315 4785 C 275 4925 410 5015 565 5060 C 720 5105 755 5260 640 5365 C 525 5470 380 5505 360 5660";
 
 export default function ScrollTrace() {
-  const pathRef = useRef<SVGPathElement>(null);
+  const ref = useRef<SVGPathElement>(null);
   const [length, setLength] = useState(1);
   const [progress, setProgress] = useState(0);
-  const [heroReveal, setHeroReveal] = useState(0);
-  const [point, setPoint] = useState({ x: 512, y: 20 });
+  const [tip, setTip] = useState({ x: 535, y: 40, angle: 90 });
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
@@ -21,60 +20,54 @@ export default function ScrollTrace() {
   }, []);
 
   useEffect(() => {
-    const path = pathRef.current;
-    if (!path) return;
-    const total = path.getTotalLength();
-    setLength(total);
-    setPoint(path.getPointAtLength(0));
+    if (ref.current) setLength(ref.current.getTotalLength());
   }, []);
 
   useEffect(() => {
-    if (reduced) return;
+    if (reduced || length <= 1) return;
     let raf = 0;
     const sync = () => {
-      const max = document.documentElement.scrollHeight - innerHeight;
-      const next = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
-      setProgress(next);
-      setHeroReveal(Math.min(1, Math.max(0, scrollY / (innerHeight * .62))));
-      const path = pathRef.current;
-      if (path && length > 1) {
-        setPoint(path.getPointAtLength(Math.min(length, length * next * 1.08)));
+      const start = window.innerHeight * 1.12;
+      const max = document.documentElement.scrollHeight - window.innerHeight - start;
+      const nextProgress = max > 0 ? Math.min(1, Math.max(0, (window.scrollY - start) / max)) : 0;
+      setProgress(nextProgress);
+      const path = ref.current;
+      if (path) {
+        const local = length * nextProgress;
+        const here = path.getPointAtLength(local);
+        const ahead = path.getPointAtLength(Math.min(length, local + 5));
+        const angle = Math.atan2(ahead.y - here.y, ahead.x - here.x) * 180 / Math.PI;
+        setTip({ x: here.x, y: here.y, angle });
       }
       raf = 0;
     };
     const queue = () => { if (!raf) raf = requestAnimationFrame(sync); };
     sync();
-    addEventListener("scroll", queue, { passive: true });
-    addEventListener("resize", queue);
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue);
     return () => {
-      removeEventListener("scroll", queue);
-      removeEventListener("resize", queue);
+      window.removeEventListener("scroll", queue);
+      window.removeEventListener("resize", queue);
       if (raf) cancelAnimationFrame(raf);
     };
   }, [length, reduced]);
 
-  const draw = reduced ? 1 : Math.min(1, progress * 1.08);
+  const draw = reduced ? 1 : progress;
 
   return (
-    <>
-      <div className="scrollProgress" aria-hidden="true"><span style={{ transform: `scaleX(${Math.max(.015, progress)})` }} /></div>
-      <svg className="storyLine" viewBox="0 0 1000 6200" preserveAspectRatio="none" aria-hidden="true">
-        <path className="traceGhost" d={TRACE} fill="none" />
-        <path
-          ref={pathRef}
-          className="traceInk"
-          d={TRACE}
-          fill="none"
-          style={{ strokeDasharray: length, strokeDashoffset: length * (1 - draw) }}
-        />
-        {!reduced && draw < .995 ? (
-          <g transform={`translate(${point.x} ${point.y}) rotate(18)`} className="pencilNib">
-            <path d="M -8 -3 L 10 0 L -8 3 Z" />
-            <circle cx="-9" cy="0" r="2.2" />
-          </g>
-        ) : null}
-      </svg>
-      <style>{`:root{--hero-reveal:${heroReveal}}`}</style>
-    </>
+    <svg className="storyLine" viewBox="0 0 1000 5700" preserveAspectRatio="none" aria-hidden="true">
+      <path className="traceGhost" d={TRACE} fill="none" />
+      <path ref={ref} className="traceInk" d={TRACE} fill="none" style={{ strokeDasharray: length, strokeDashoffset: length * (1 - draw) }} />
+      {!reduced && progress > .001 && progress < .997 ? (
+        <g className="storyPencil" transform={`translate(${tip.x} ${tip.y}) rotate(${tip.angle})`}>
+          <path className="pencilWood" d="M0 0 L-12 -7 L-12 7 Z" />
+          <path className="pencilGraphite" d="M0 0 L-5 -2.7 L-5 2.7 Z" />
+          <rect className="pencilBody" x="-68" y="-7" width="56" height="14" rx="2" />
+          <path className="pencilEdge" d="M-68 -1.5 L-12 -1.5" />
+          <rect className="pencilFerrule" x="-80" y="-7" width="12" height="14" />
+          <rect className="pencilEraser" x="-94" y="-7" width="14" height="14" rx="4" />
+        </g>
+      ) : null}
+    </svg>
   );
 }

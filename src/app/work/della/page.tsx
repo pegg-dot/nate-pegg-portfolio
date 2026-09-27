@@ -1,66 +1,50 @@
+import Image from "next/image";
 import CaseShell from "../../components/CaseShell";
-
-const steps = [
-  ["10:22", "checked live availability", "Aug 1"],
-  ["10:23", "checked live availability", "Jul 30"],
-  ["10:26", "created Square booking", "Nail Repair · 4:30 PM"],
-  ["10:27", "created a second booking", "same service / time"],
-];
-
-const failures = [
-  ["Acted before asked", "The model started trying to book while the caller was still asking whether the service could be repaired."],
-  ["Source conflict", "Business hours said 9–5 while a real 6 PM appointment already existed."],
-  ["Provider verification", "The caller invented “Mia” and the model accepted the name before checking the roster."],
-  ["Voice latency", "A long reasoning/tool turn left roughly 40 seconds of dead air."],
-  ["Write verification", "The appointment was created, then the flow continued and created the same booking again."],
-];
 
 export default function DellaCase() {
   return (
-    <CaseShell index="01 / DELLA" title="DELLA" subtitle="Started March 11, 2026. An AI operator for nail salons, narrowed down until communications could be made trustworthy." external={{ label: "LIVE SITE", href: "https://hellodella.com" }}>
+    <CaseShell index="01 / DELLA" title="DELLA" subtitle="I started on March 11 because I wanted to understand what it would take for an AI agent to actually work inside a small business, not just answer questions." external={{ label: "LIVE SITE", href: "https://hellodella.com" }}>
       <section className="caseBand caseBandInk">
         <div className="caseGrid two">
-          <div><span className="caseLabel">THE EVOLUTION</span><h2>OPENCLAW → OWN HARNESS → COMMUNICATIONS</h2></div>
-          <div className="caseStack"><p>Started by exploring OpenClaw-style agents.</p><p>Moved toward a custom runner, skills, tools, permissions, receipts, evals and persistent context.</p><p>Pivoted from medspas to nail salons.</p><p>Then cut scope again: harden communications before trying to automate the whole business.</p></div>
+          <div><span className="caseLabel">WHERE IT STARTED</span><h2>FROM “AGENTS ARE COMING” TO ONE SALON PHONE.</h2></div>
+          <div className="caseStack"><p>I first tried to understand OpenClaw-style agent systems and how tools, memory and actions fit together.</p><p>The first vertical was medspas. I changed course when I realized I was choosing a compliance problem before I even understood the agent problem.</p><p>Nail salons made more sense to me. I grew up in Miami around them, missed calls matter, and the owner cannot always be at the desk.</p></div>
         </div>
       </section>
 
       <section className="caseBand">
-        <span className="caseLabel">REAL CALL / JUL 2026</span>
-        <div className="caseCallGrid">
-          <div className="caseCallSummary"><h2>41 turns.<br/>One real booking.</h2><p>Nail Repair (Hands or Feet)<br/>Thu, Jul 30 · 4:30 PM</p><div className="caseStepList">{steps.map(([time, action, meta]) => <div key={time + action}><b>{time}</b><span>{action}</span><em>{meta}</em></div>)}</div></div>
-          <div className="caseTranscript">
-            <blockquote><b>CALLER · 2:46</b><p>Why is the latest four thirty PM? Are you a hundred percent sure?</p></blockquote>
-            <blockquote className="agent"><b>DELLA</b><p>You&apos;re right to push back — let me double-check that for you.</p></blockquote>
-            <blockquote><b>CALLER · 3:25</b><p>You booked me for six PM Monday. Now you&apos;re telling me you close at five on Thursday. Did you just mess up there?</p></blockquote>
-            <blockquote><b>CALLER · 6:07</b><p>Mia isn&apos;t an actual technician. I was just testing you.</p></blockquote>
-          </div>
+        <span className="caseLabel">THE SECOND PIVOT</span>
+        <div className="caseGrid two compactTop">
+          <div><h2>I WAS BUILDING WAY TOO MUCH AT ONCE.</h2></div>
+          <div className="caseStack"><p>At first I wanted Della to reach across the entire business.</p><p>That made everything harder to tell apart: bad model behavior, bad tools, bad state, bad product design.</p><p>So I narrowed the product to communications and started hardening one path at a time.</p></div>
         </div>
       </section>
 
-      <section className="caseBand caseBandRed">
-        <span className="caseLabel">WHAT THE CALL EXPOSED</span>
-        <div className="failureGrid">{failures.map(([title, body], i) => <article key={title}><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article>)}</div>
-      </section>
-
-      <section className="caseBand">
+      <section className="caseBand caseBandBlue">
         <div className="caseGrid two">
-          <div><span className="caseLabel">RAG IS NOT A TOOL</span><h2>KNOWLEDGE ≠ LIVE STATE</h2></div>
-          <div className="ragVsTools"><div><b>RETRIEVE</b><span>repair policy</span><span>business rules</span><span>static guidance</span></div><div><b>TOOL</b><span>Thursday availability</span><span>technician roster</span><span>create / cancel booking</span></div><div><b>VERIFY</b><span>did the write happen?</span><span>what state are we in now?</span></div></div>
+          <div><span className="caseLabel">THE MOMENT I CARED ABOUT</span><h2>THE NEXT CALL STARTED WHERE THE LAST ONE ENDED.</h2></div>
+          <div className="caseMemoryStack"><div><span>CALL 1</span><p>I chipped my nail.</p></div><i>a couple days later</i><div className="agentMemory"><span>DELLA</span><p>How&apos;s your chipped nail?</p></div><small>The sentence is simple. The part I cared about was persistent context across conversations.</small></div>
         </div>
+      </section>
+
+      <section className="caseBand">
+        <span className="caseLabel">WHAT BUILDING IT TAUGHT ME</span>
+        <div className="lessonGrid">
+          <article><span>01</span><h3>RAG is not live state.</h3><p>A policy can come from documents. Wednesday at 5 PM availability has to come from the actual system.</p></article>
+          <article><span>02</span><h3>A tool result is not enough.</h3><p>If Della books something, the important question becomes whether the write really happened and what state the business is in now.</p></article>
+          <article><span>03</span><h3>More tools can make the agent worse.</h3><p>Every extra thing the model has to consider adds latency and more ways to choose the wrong path.</p></article>
+          <article><span>04</span><h3>Permissions are product design.</h3><p>The owner should understand what Della can do, what still needs approval and why, without reading a matrix of internal settings.</p></article>
+        </div>
+      </section>
+
+      <section className="caseBand dellaVisualBand">
+        <span className="caseLabel">WHAT IT TURNED INTO</span>
+        <div className="caseImageWide dellaRoomImage"><Image src="/della/room-identity.png" alt="Della workspace showing permissions, state and activity" fill sizes="100vw" /></div>
       </section>
 
       <section className="caseBand caseBandDark">
-        <span className="caseLabel">WIRED TODAY</span>
-        <div className="integrationGrid">
-          <div><b>Square</b><span>live availability + booking creation</span><em>LIVE</em></div>
-          <div><b>Retell</b><span>voice runtime</span><em>LIVE</em></div>
-          <div><b>Telnyx</b><span>telephony / messaging infrastructure</span><em>LIVE</em></div>
-          <div><b>Anthropic</b><span>model runtime</span><em>LIVE</em></div>
-          <div><b>Email</b><span>inbound lead path + approved send via Resend</span><em>BUILT</em></div>
-          <div><b>Gmail</b><span>context backfill; inbound Pub/Sub path not fully dispatched yet</span><em>PARTIAL</em></div>
-          <div><b>Instagram</b><span>webhook + reply adapter implemented</span><em>CONNECTING</em></div>
-          <div><b>Google Business</b><span>review/location adapter implemented</span><em>CONNECTING</em></div>
+        <div className="caseGrid two">
+          <div><span className="caseLabel">WHERE IT IS NOW</span><h2>COMMUNICATIONS FIRST.</h2></div>
+          <div className="caseStack"><p>Voice calls can check live availability and create real appointments in Square.</p><p>Customer context can survive across conversations instead of resetting to a fresh prompt.</p><p>Email, telephony and channel integrations are being pulled into the same model: retrieve what is knowledge, call a tool for what is live, verify what changed.</p><p>It is still being polished. That is the point of the current phase.</p></div>
         </div>
       </section>
     </CaseShell>
