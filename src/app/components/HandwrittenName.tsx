@@ -2,25 +2,38 @@
 
 import { useEffect, useRef, useState } from "react";
 
+const GAP = 42;
+
+// One path per natural pen stroke instead of one path per straight segment.
+// The pencil also travels through the air between strokes, so it never teleports.
 const strokes = [
-  "M70 205 L70 65", "M70 65 L220 205", "M220 205 L220 65",
-  "M270 205 L350 65", "M350 65 L430 205", "M305 150 L400 150",
-  "M470 70 L650 70", "M560 70 L560 205",
-  "M700 65 L700 205", "M700 65 L860 65", "M700 136 L820 136", "M700 205 L860 205",
-  "M80 460 L80 295", "M80 300 C175 278 238 305 231 350 C224 392 155 404 80 382",
-  "M300 295 L300 460", "M300 295 L465 295", "M300 375 L425 375", "M300 460 L465 460",
-  "M720 330 C690 283 545 270 515 345 C485 420 545 468 625 463 C705 459 746 415 729 365", "M628 390 L732 390 L732 458",
-  "M1000 330 C970 283 825 270 795 345 C765 420 825 468 905 463 C985 459 1026 415 1009 365", "M908 390 L1012 390 L1012 458",
-  "M1015 458 C1055 500 1090 505 1135 520"
+  "M92 220 C90 176 90 124 94 80 C125 122 157 171 194 220 C198 176 200 126 204 82",
+  "M254 220 C278 166 305 112 334 80 C365 125 393 172 422 220",
+  "M282 161 C320 154 360 154 395 160",
+  "M492 82 C490 126 490 177 492 220",
+  "M447 84 C488 80 532 80 575 84",
+  "M652 82 C620 84 605 90 605 106 C606 126 638 133 684 133 C647 134 610 139 608 157 C606 178 644 188 696 188 C664 189 625 196 608 218 C646 219 684 220 723 218",
+  "M95 460 C94 410 94 354 98 298 C157 292 211 306 213 343 C216 384 158 398 99 389",
+  "M290 298 C258 300 244 307 244 323 C245 343 279 350 324 350 C286 352 250 357 248 375 C247 397 284 407 336 407 C302 410 263 418 247 457 C285 459 324 460 364 458",
+  "M515 340 C494 305 430 291 397 323 C366 354 377 422 425 448 C467 472 523 449 535 408 C539 394 537 381 531 369 C512 368 489 369 467 371",
+  "M728 340 C707 305 643 291 610 323 C579 354 590 422 638 448 C680 472 736 449 748 408 C752 394 750 381 744 369 C724 368 702 369 680 371",
+  "M744 407 C775 431 803 452 837 470"
 ];
 
-type Metrics = { lengths: number[]; starts: number[]; total: number };
+type Metrics = {
+  lengths: number[];
+  starts: number[];
+  total: number;
+  strokeStarts: { x: number; y: number }[];
+  strokeEnds: { x: number; y: number }[];
+};
 
 export default function HandwrittenName() {
+  const canvasRef = useRef<HTMLDivElement>(null);
   const refs = useRef<Array<SVGPathElement | null>>([]);
-  const [metrics, setMetrics] = useState<Metrics>({ lengths: [], starts: [], total: 1 });
+  const [metrics, setMetrics] = useState<Metrics>({ lengths: [], starts: [], total: 1, strokeStarts: [], strokeEnds: [] });
   const [progress, setProgress] = useState(0);
-  const [tip, setTip] = useState({ x: 70, y: 205, angle: -90 });
+  const [tip, setTip] = useState({ x: 92, y: 220, angle: -90 });
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
@@ -33,41 +46,70 @@ export default function HandwrittenName() {
 
   useEffect(() => {
     const lengths = refs.current.map((p) => p?.getTotalLength() ?? 0);
+    const strokeStarts = refs.current.map((p) => p?.getPointAtLength(0) ?? { x: 0, y: 0 });
+    const strokeEnds = refs.current.map((p, i) => p?.getPointAtLength(lengths[i] ?? 0) ?? { x: 0, y: 0 });
     let running = 0;
     const starts = lengths.map((len) => {
       const start = running;
-      running += len + 18;
+      running += len + GAP;
       return start;
     });
-    const total = Math.max(1, running - 18);
-    setMetrics({ lengths, starts, total });
+    setMetrics({
+      lengths,
+      starts,
+      total: Math.max(1, running - GAP),
+      strokeStarts,
+      strokeEnds
+    });
   }, []);
 
   useEffect(() => {
     if (reduced || metrics.total <= 1) return;
     let raf = 0;
+
     const sync = () => {
-      const p = Math.min(1, Math.max(0, (window.scrollY - 22) / (window.innerHeight * .88)));
+      const hero = canvasRef.current?.closest<HTMLElement>(".hero");
+      if (!hero) return;
+      const range = Math.max(1, hero.offsetHeight - window.innerHeight);
+      const p = Math.min(1, Math.max(0, (window.scrollY - hero.offsetTop) / range));
       setProgress(p);
+
       const target = metrics.total * p;
-      let active = strokes.length - 1;
+      let index = strokes.length - 1;
       for (let i = 0; i < strokes.length; i += 1) {
         const start = metrics.starts[i] ?? 0;
         const len = metrics.lengths[i] ?? 0;
-        if (target <= start + len + 18) { active = i; break; }
+        if (target <= start + len + GAP) {
+          index = i;
+          break;
+        }
       }
-      const path = refs.current[active];
-      const start = metrics.starts[active] ?? 0;
-      const len = metrics.lengths[active] ?? 0;
-      if (path && len) {
-        const local = Math.min(len, Math.max(0, target - start));
-        const here = path.getPointAtLength(local);
-        const next = path.getPointAtLength(Math.min(len, local + 3));
-        const angle = Math.atan2(next.y - here.y, next.x - here.x) * 180 / Math.PI;
+
+      const path = refs.current[index];
+      const start = metrics.starts[index] ?? 0;
+      const len = metrics.lengths[index] ?? 0;
+      const local = target - start;
+
+      if (path && local <= len) {
+        const here = path.getPointAtLength(Math.max(0, local));
+        const ahead = path.getPointAtLength(Math.min(len, Math.max(0, local) + 4));
+        const angle = Math.atan2(ahead.y - here.y, ahead.x - here.x) * 180 / Math.PI;
         setTip({ x: here.x, y: here.y, angle });
+      } else {
+        const from = metrics.strokeEnds[index];
+        const to = metrics.strokeStarts[index + 1];
+        if (from && to) {
+          const t = Math.min(1, Math.max(0, (local - len) / GAP));
+          const eased = t * t * (3 - 2 * t);
+          const x = from.x + (to.x - from.x) * eased;
+          const y = from.y + (to.y - from.y) * eased;
+          const angle = Math.atan2(to.y - from.y, to.x - from.x) * 180 / Math.PI;
+          setTip({ x, y, angle });
+        }
       }
       raf = 0;
     };
+
     const queue = () => { if (!raf) raf = requestAnimationFrame(sync); };
     sync();
     window.addEventListener("scroll", queue, { passive: true });
@@ -82,37 +124,43 @@ export default function HandwrittenName() {
   const target = reduced ? metrics.total : metrics.total * progress;
 
   return (
-    <div className="nameCanvas" aria-label="Nate Pegg">
-      <svg viewBox="0 0 1200 560" role="img" aria-hidden="true">
+    <div ref={canvasRef} className="nameCanvas" aria-label="Nate Pegg">
+      <svg viewBox="0 0 900 540" role="img" aria-hidden="true">
         <defs>
           <filter id="graphiteRough" x="-10%" y="-10%" width="120%" height="120%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.018 0.16" numOctaves="1" seed="4" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.6" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.016 0.11" numOctaves="1" seed="8" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.15" />
           </filter>
         </defs>
-        <g className="nameGhost" filter="url(#graphiteRough)">
-          {strokes.map((d, i) => <path key={`g-${i}`} d={d} />)}
-        </g>
+
         <g className="nameInk" filter="url(#graphiteRough)">
           {strokes.map((d, i) => {
             const len = metrics.lengths[i] || 1;
             const start = metrics.starts[i] || 0;
             const visible = reduced ? 1 : Math.min(1, Math.max(0, (target - start) / len));
-            return <path key={i} ref={(el) => { refs.current[i] = el; }} d={d} style={{ strokeDasharray: len, strokeDashoffset: len * (1 - visible) }} />;
+            return (
+              <path
+                key={i}
+                ref={(el) => { refs.current[i] = el; }}
+                d={d}
+                style={{ strokeDasharray: len, strokeDashoffset: len * (1 - visible) }}
+              />
+            );
           })}
         </g>
+
         {!reduced && progress < .999 ? (
           <g className="heroPencil" transform={`translate(${tip.x} ${tip.y}) rotate(${tip.angle})`}>
-            <path className="pencilWood" d="M0 0 L-16 -9 L-16 9 Z" />
-            <path className="pencilGraphite" d="M0 0 L-6 -3.4 L-6 3.4 Z" />
-            <rect className="pencilBody" x="-92" y="-9" width="76" height="18" rx="2" />
-            <path className="pencilEdge" d="M-92 -2 L-16 -2" />
-            <rect className="pencilFerrule" x="-108" y="-9" width="16" height="18" />
-            <rect className="pencilEraser" x="-128" y="-9" width="20" height="18" rx="5" />
+            <path className="pencilWood" d="M0 0 L-15 -8 L-15 8 Z" />
+            <path className="pencilGraphite" d="M0 0 L-5.5 -3 L-5.5 3 Z" />
+            <rect className="pencilBody" x="-92" y="-8" width="77" height="16" rx="2" />
+            <path className="pencilEdge" d="M-92 -2 L-15 -2" />
+            <rect className="pencilFerrule" x="-108" y="-8" width="16" height="16" />
+            <rect className="pencilEraser" x="-128" y="-8" width="20" height="16" rx="5" />
           </g>
         ) : null}
       </svg>
-      <span className="nameHint">scroll and I&apos;ll draw it</span>
+      <span className="nameHint">{progress < .98 ? "keep scrolling — the pencil stays with you" : "made by hand, then code"}</span>
     </div>
   );
 }

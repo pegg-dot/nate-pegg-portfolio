@@ -6,12 +6,9 @@ A scroll-driven portfolio for the Horowitz Andreessen Academy application.
 
 The site should feel like meeting Nate through the things he keeps building, not like reading a resume or an argument that he built them.
 
-The projects need three layers in this order:
-1. **why it started** — the question, itch, person or situation that made the project exist
-2. **what changed while building it** — pivots, mistakes, ideas that became clearer
-3. **what exists now** — product artifacts, code, real usage and technical details as supporting evidence
+The homepage works as an index: first say plainly what each project is, then show why it exists and a real visual of the thing. The deeper project pages carry the pivots, mistakes, learning and technical detail.
 
-The recurring visual language is one hand-drawn line. The opening is literally drawn by a pencil, then the line continues through software, graphite and rowing.
+The recurring visual language is one hand-drawn line. The opening pencil stays pinned in the viewport while it writes the name, then continues through the page with loops, marks, a star, an arrow and other doodles rather than just snaking downward.
 
 ## Current structure
 

@@ -2,7 +2,7 @@ import CaseShell from "../../components/CaseShell";
 
 export default function VialGradeCase() {
   return (
-    <CaseShell index="02 / VIALGRADE" title="VIALGRADE" subtitle="I built VialGrade because the peptide market felt full of polished storefronts and hard-to-check claims. I wanted the evidence to be easier to inspect than the marketing." external={{ label: "VIALGRADE.COM", href: "https://vialgrade.com" }}>
+    <CaseShell index="02 / VIALGRADE" title="VIALGRADE" subtitle="An evidence-backed research platform for the peptide market. It brings vendor listings, compounds, lab results, source history, conflicts and uncertainty into one place." external={{ label: "VIALGRADE.COM", href: "https://vialgrade.com" }} actions={[{ label: "OPEN VIALGRADE", href: "https://vialgrade.com", external: true }, { label: "VIEW CODE", href: "https://github.com/pegg-dot/vial", external: true }]}>
       <section className="caseBand">
         <div className="caseGrid two">
           <div><span className="caseLabel">THE PROBLEM I SAW</span><h2>EVERYTHING LOOKED LEGIT. THAT DID NOT MEAN IT WAS.</h2></div>

@@ -3,7 +3,7 @@ import CaseShell from "../../components/CaseShell";
 
 export default function DellaCase() {
   return (
-    <CaseShell index="01 / DELLA" title="DELLA" subtitle="I started on March 11 because I wanted to understand what it would take for an AI agent to actually work inside a small business, not just answer questions." external={{ label: "LIVE SITE", href: "https://hellodella.com" }}>
+    <CaseShell index="01 / DELLA" title="DELLA" subtitle="An AI employee for nail salons. It answers calls, remembers customers across conversations, checks live availability, creates real Square appointments, and is being hardened around communications first." external={{ label: "LIVE SITE", href: "https://hellodella.com" }} actions={[{ label: "OPEN DELLA", href: "https://hellodella.com", external: true }]}>
       <section className="caseBand caseBandInk">
         <div className="caseGrid two">
           <div><span className="caseLabel">WHERE IT STARTED</span><h2>FROM “AGENTS ARE COMING” TO ONE SALON PHONE.</h2></div>

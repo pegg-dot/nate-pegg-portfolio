@@ -3,7 +3,7 @@ import CaseShell from "../../components/CaseShell";
 
 export default function LotCase() {
   return (
-    <CaseShell index="04 / LOT" title="LOT" subtitle="My uncle told me he could help me learn real estate. I did not want a spreadsheet I would stop using, so I started building the research workspace I wanted beside me." external={{ label: "GITHUB", href: "https://github.com/pegg-dot/real-estate-platform" }}>
+    <CaseShell index="04 / LOT" title="LOT" subtitle="An explainable real-estate acquisition workspace that turns parcel, zoning, ownership and market evidence into ranked opportunities, underwriting context and a decision pipeline." external={{ label: "GITHUB", href: "https://github.com/pegg-dot/real-estate-platform" }} actions={[{ label: "VIEW CODE", href: "https://github.com/pegg-dot/real-estate-platform", external: true }]}>
       <section className="caseBand">
         <div className="caseGrid two">
           <div><span className="caseLabel">WHERE IT STARTED</span><h2>THE RESEARCH WAS EVERYWHERE.</h2></div>

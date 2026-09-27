@@ -481,3 +481,460 @@ section { position: relative; z-index: 4; }
 .npgkGallery > div { position: relative; aspect-ratio: 16/10; border: 1px solid var(--ink); background: #0f1014; overflow: hidden; }
 .npgkGallery img { object-fit: contain; }
 @media (max-width: 680px) { .npgkGallery { grid-template-columns: 1fr; } }
+
+/* v4: pinned handwriting, clearer project identity, stronger links */
+.hero {
+  min-height: 230vh;
+  padding: 0 clamp(24px,5vw,80px);
+  overflow: clip;
+}
+.heroSticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nameCanvas {
+  width: min(1080px, 86vw);
+  margin: 0 auto;
+}
+.nameCanvas svg {
+  width: 100%;
+  max-height: 76vh;
+  overflow: visible;
+}
+.nameInk path {
+  stroke-width: 15;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.nameHint {
+  right: 2%;
+  bottom: -2%;
+  font-size: 9px;
+}
+.heroChrome {
+  position: fixed;
+  z-index: 8;
+  pointer-events: none;
+}
+.heroNav {
+  z-index: 8;
+}
+
+.projectDefinition {
+  max-width: 1180px;
+  margin: 9vh 0 2vh;
+  padding: 26px 0 30px;
+  border-top: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  column-gap: 5vw;
+  row-gap: 24px;
+  align-items: start;
+}
+.projectDefinition > p {
+  margin: 0;
+  max-width: 900px;
+  font: 28px/1.28 Georgia, serif;
+  letter-spacing: -.015em;
+}
+.projectDefinition > p strong {
+  font-family: Arial, sans-serif;
+  font-size: .95em;
+  letter-spacing: -.035em;
+}
+.projectActions {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.projectActions a,
+.caseHeroActions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid currentColor;
+  font: 800 10px/1 Arial, sans-serif;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  transition: transform .15s ease, background .15s ease, color .15s ease;
+}
+.projectActions a:hover,
+.caseHeroActions a:hover {
+  transform: translateY(-2px);
+  background: var(--ink);
+  color: var(--paper);
+}
+.projectDefinitionDark {
+  color: #f3efe3;
+}
+.projectDefinitionDark .projectActions a:hover {
+  background: #f3efe3;
+  color: #141413;
+}
+
+.originRow {
+  grid-template-columns: 70px minmax(0,1fr) 86px;
+}
+.originWhat {
+  max-width: 880px !important;
+  margin: 0 0 10px !important;
+  font: 21px/1.25 Arial, sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: -.025em;
+}
+.originWhy {
+  max-width: 760px !important;
+  margin: 0 0 14px !important;
+  color: #59554d;
+  font: 17px/1.3 Georgia, serif !important;
+}
+.originWhy span {
+  font: 800 9px/1 Arial, sans-serif;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.originArrow {
+  font: 800 9px/1.1 Arial, sans-serif;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding-top: 10px;
+}
+
+.caseHeroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+.caseHeroActions a:first-child {
+  background: var(--ink);
+  color: var(--paper);
+}
+.caseHeroActions a:first-child:hover {
+  background: transparent;
+  color: var(--ink);
+}
+
+/* Let the rowing photography actually take the screen. */
+.rowingSection {
+  min-height: 200vh;
+  overflow: clip;
+  background: #071014;
+}
+.rowingImage {
+  position: sticky;
+  top: 0;
+  inset: auto;
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+}
+.rowingImage img {
+  object-fit: cover;
+  object-position: center center;
+}
+.rowingImage::after {
+  background: linear-gradient(90deg, rgba(7,16,20,.82) 0%, rgba(7,16,20,.38) 45%, rgba(7,16,20,.05) 76%);
+}
+.rowingOverlay {
+  position: absolute;
+  z-index: 4;
+  inset: 0 0 auto 0;
+  min-height: 100vh;
+  height: 100vh;
+}
+.rowingWideFrame {
+  position: relative;
+  z-index: 6;
+  height: 100vh;
+  width: 100%;
+  background: #071014;
+  border-top: 1px solid rgba(255,255,255,.35);
+}
+.rowingWideFrame img {
+  object-fit: cover;
+  object-position: center 48%;
+}
+.rowingWideFrame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.58));
+}
+.rowingWideFrame > span {
+  position: absolute;
+  z-index: 2;
+  left: clamp(24px,5vw,78px);
+  bottom: 34px;
+  color: white;
+  font: 800 10px/1 Arial, sans-serif;
+  letter-spacing: .15em;
+}
+.rowingInset {
+  display: none;
+}
+
+.aboutSection {
+  min-height: 120vh;
+  padding: clamp(50px,7vw,110px);
+}
+.aboutLead {
+  max-width: 1200px;
+  margin-bottom: 9vh;
+}
+.aboutLead h2 {
+  margin: 16px 0 0;
+  font-size: clamp(70px,11vw,165px);
+  line-height: .82;
+  letter-spacing: -.075em;
+}
+.aboutCards {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 12px;
+}
+.aboutCards article {
+  min-height: 360px;
+  padding: 24px;
+  border: 1px solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  background: rgba(250,247,237,.72);
+}
+.aboutCards article > span {
+  font: 800 9px/1 Arial, sans-serif;
+  letter-spacing: .13em;
+}
+.aboutCards h3 {
+  margin: auto 0 14px;
+  max-width: 560px;
+  font-size: clamp(34px,4.6vw,70px);
+  line-height: .9;
+  letter-spacing: -.05em;
+}
+.aboutCards p {
+  max-width: 600px;
+  margin: 0;
+  font: 18px/1.35 Georgia, serif;
+  color: #514d45;
+}
+
+@media (max-width: 980px) {
+  .projectDefinition {
+    grid-template-columns: 1fr;
+  }
+  .projectActions {
+    grid-column: 1;
+  }
+  .aboutCards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .hero {
+    min-height: 210vh;
+    padding-inline: 18px;
+  }
+  .heroSticky {
+    top: 0;
+    height: 100vh;
+  }
+  .nameCanvas {
+    width: 96vw;
+    margin: 0;
+  }
+  .nameCanvas svg {
+    max-height: 68vh;
+  }
+  .projectDefinition > p {
+    font-size: 21px;
+  }
+  .projectActions a,
+  .caseHeroActions a {
+    min-height: 40px;
+    padding: 0 11px;
+    font-size: 9px;
+  }
+  .originRow {
+    grid-template-columns: 38px minmax(0,1fr);
+  }
+  .originArrow {
+    grid-column: 2;
+    justify-self: start;
+    padding-top: 0;
+  }
+  .rowingSection {
+    min-height: 190vh;
+  }
+  .rowingStory > p {
+    font-size: 18px;
+  }
+  .aboutCards article {
+    min-height: 300px;
+  }
+}
+
+/* Direct-child stacking rule above is intentionally overridden for pinned/absolute choreography. */
+.portfolioMain > .hero {
+  overflow: visible;
+}
+.portfolioMain > .hero > .heroSticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+.portfolioMain > .hero > .heroChrome {
+  position: absolute;
+  top: 28px;
+}
+.portfolioMain > .hero > .heroNav {
+  position: absolute;
+  bottom: 28px;
+}
+.portfolioMain > .rowingSection > .rowingImage {
+  position: sticky;
+  top: 0;
+}
+.portfolioMain > .rowingSection > .rowingOverlay {
+  position: absolute;
+  inset: 0 0 auto 0;
+}
+
+/* v4.1: homepage is a clear index; depth lives inside each project */
+.projectSpotlight {
+  min-height: auto;
+  padding-bottom: clamp(70px,9vw,140px);
+}
+.projectSpotlight .projectDefinition {
+  margin-bottom: clamp(50px,7vw,100px);
+}
+.projectActions a:first-child {
+  background: var(--ink);
+  color: var(--paper);
+}
+.projectActions a:first-child:hover {
+  background: transparent;
+  color: inherit;
+}
+.projectDefinitionDark .projectActions a:first-child {
+  background: var(--paper);
+  color: var(--ink);
+}
+.projectDefinitionDark .projectActions a:first-child:hover {
+  background: transparent;
+  color: var(--paper);
+}
+
+.spotlightGrid {
+  display: grid;
+  grid-template-columns: minmax(0,1.15fr) minmax(320px,.85fr);
+  gap: clamp(35px,6vw,90px);
+  align-items: center;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+.spotlightGrid.reverse {
+  grid-template-columns: minmax(320px,.85fr) minmax(0,1.15fr);
+}
+.spotlightGrid.reverse .spotlightImage {
+  order: 2;
+}
+.spotlightGrid.reverse .spotlightText {
+  order: 1;
+}
+.spotlightImage {
+  position: relative;
+  min-height: 540px;
+  border: 1px solid currentColor;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 10px 10px 0 rgba(21,21,16,.92);
+}
+.spotlightImage img {
+  object-fit: cover;
+  object-position: center top;
+}
+.vialPreview img {
+  object-fit: cover;
+  object-position: center top;
+}
+.transformerPreview {
+  background: #070707;
+  border-color: rgba(255,255,255,.32);
+  box-shadow: 10px 10px 0 rgba(255,255,255,.13);
+}
+.transformerPreview img {
+  object-fit: contain;
+}
+.spotlightText {
+  max-width: 560px;
+}
+.spotlightText h2 {
+  margin: 16px 0 22px;
+  font-size: clamp(44px,5.7vw,86px);
+  line-height: .91;
+  letter-spacing: -.058em;
+}
+.spotlightText > p {
+  margin: 0;
+  font: 19px/1.38 Georgia, serif;
+  color: #4f4c45;
+}
+.spotlightTextLight > p {
+  color: #c7c2b7;
+}
+.spotlightChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 30px;
+}
+.spotlightChips span {
+  border: 1px solid currentColor;
+  padding: 8px 10px;
+  font: 800 9px/1 Arial, sans-serif;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+.transformerStorySection .spotlightChips span {
+  border-color: rgba(243,239,227,.48);
+}
+
+@media (max-width: 980px) {
+  .spotlightGrid,
+  .spotlightGrid.reverse {
+    grid-template-columns: 1fr;
+  }
+  .spotlightGrid.reverse .spotlightImage,
+  .spotlightGrid.reverse .spotlightText {
+    order: initial;
+  }
+  .spotlightImage {
+    min-height: 430px;
+  }
+  .spotlightText {
+    max-width: 760px;
+  }
+}
+@media (max-width: 680px) {
+  .spotlightImage {
+    min-height: 300px;
+    box-shadow: 6px 6px 0 rgba(21,21,16,.9);
+  }
+  .transformerPreview {
+    box-shadow: 6px 6px 0 rgba(255,255,255,.12);
+  }
+  .spotlightText h2 {
+    font-size: clamp(42px,13vw,72px);
+  }
+}

@@ -20,10 +20,25 @@
 
 **Revisit checkpoint:** once every project has an origin story and one meaningful artifact, add deeper technical evidence only where it improves the story.
 
+## Pivot — 2026-09-26, pass 2
+
+**Old sequence → New sequence**
+
+`homepage explains the project and then keeps going into pivots / moments / implementation` → `homepage says what it is + why it exists + shows the thing; project page carries the full story`
+
+**Why:** the main page needs to work as a fast portfolio index. A reviewer should understand Della, VialGrade or the Transformer before deciding whether to go deeper. The detailed moments matter more after that click.
+
+**Deferred:** no deletion of the deeper stories; they move into the project pages instead of crowding the index.
+
+**Revisit checkpoint:** once WebBuddy, UVA Spatial OS and HOOS Moving have their own story pages, check whether any homepage spotlight still contains information that belongs one level deeper.
+
 ## Roadmap ledger
 
 ### Current phase — story + motion
-- [x] pencil-written name instead of a mask reveal
+- [x] pencil stays pinned in the viewport while it writes the name
+- [x] smoother multi-stroke handwriting with visible in-air pencil travel
+- [x] long pencil path includes loops, a star, an arrow and a spiral instead of only snaking downward
+- [x] homepage spotlights now say what each project is before the deeper story
 - [x] Della reframed around origin, pivots and persistent context
 - [x] VialGrade reframed around trust / provenance instead of page views
 - [x] Transformer reframed around learning / black-box motivation

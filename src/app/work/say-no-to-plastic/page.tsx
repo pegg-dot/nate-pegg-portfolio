@@ -3,7 +3,7 @@ import CaseShell from "../../components/CaseShell";
 
 export default function PlasticCase() {
   return (
-    <CaseShell index="07 / SAY NO TO PLASTIC" title="SAY NO TO PLASTIC" subtitle="This started as a design and engineering problem: take a subject buried in dense papers, headlines and generic advice and make it understandable without making the science more certain than it is." external={{ label: "LIVE SITE", href: "https://saynotoplastic.com" }}>
+    <CaseShell index="07 / SAY NO TO PLASTIC" title="SAY NO TO PLASTIC" subtitle="An interactive educational site about microplastics, human exposure and the evidence showing plastic-derived material in the body, built around a visual body journey and source-linked research." external={{ label: "LIVE SITE", href: "https://saynotoplastic.com" }} actions={[{ label: "OPEN SITE", href: "https://saynotoplastic.com", external: true }, { label: "VIEW CODE", href: "https://github.com/pegg-dot/SayNoToPlastic", external: true }]}>
       <section className="caseBand">
         <div className="caseGrid two">
           <div><span className="caseLabel">THE JOB</span><h2>MAKE THE SCIENCE FEEL EXPLORABLE.</h2></div>

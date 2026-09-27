@@ -3,7 +3,7 @@ import CaseShell from "../../components/CaseShell";
 
 export default function TransformerCase() {
   return (
-    <CaseShell index="03 / TRANSFORMER" title="TRANSFORMER" subtitle="I built the model because I was learning AI and did not want to keep treating the transformer as a black box I could only describe from the outside." external={{ label: "LIVE VISUALIZER", href: "https://transformer-viz-eight.vercel.app" }}>
+    <CaseShell index="03 / TRANSFORMER" title="TRANSFORMER" subtitle="A GPT-style transformer I built and trained from scratch in PyTorch, then instrumented so the real tensors from its forward pass could drive an interactive visualizer." external={{ label: "LIVE VISUALIZER", href: "https://transformer-viz-eight.vercel.app" }} actions={[{ label: "OPEN VISUALIZER", href: "https://transformer-viz-eight.vercel.app", external: true }, { label: "VIEW CODE", href: "https://github.com/pegg-dot/Transformer", external: true }]}>
       <section className="caseBand">
         <div className="caseGrid two">
           <div><span className="caseLabel">WHY</span><h2>I WANTED TO TRACE A TOKEN ALL THE WAY THROUGH.</h2></div>

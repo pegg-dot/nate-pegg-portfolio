@@ -3,7 +3,7 @@ import CaseShell from "../../components/CaseShell";
 
 export default function NpgkCase() {
   return (
-    <CaseShell index="06 / NPGKTRADES" title="NPGKTRADES" subtitle="I knew a high-volume Polymarket trader and wanted to follow the trades without sitting there recreating them by hand. The first problem was obvious: his bankroll and mine were not the same." external={{ label: "GITHUB", href: "https://github.com/pegg-dot/NPGKTrades" }}>
+    <CaseShell index="06 / NPGKTRADES" title="NPGKTRADES" subtitle="A Polymarket copy-trading system that watches a public source wallet, aggregates fills, scales positions to my bankroll, runs deterministic risk checks, and mirrors the trade." external={{ label: "GITHUB", href: "https://github.com/pegg-dot/NPGKTrades" }} actions={[{ label: "VIEW CODE", href: "https://github.com/pegg-dot/NPGKTrades", external: true }]}>
       <section className="caseBand">
         <div className="caseGrid two">
           <div><span className="caseLabel">THE IDEA</span><h2>COPY THE ALLOCATION, NOT THE DOLLAR AMOUNT.</h2></div>

@@ -4,15 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import HandwrittenName from "./components/HandwrittenName";
 import ScrollTrace from "./components/ScrollTrace";
-import TigreEgg from "./components/TigreEgg";
 
 const workbench = [
-  { title: "LOT", origin: "My uncle said he could help me learn real estate, so I built a workspace I could actually use.", meta: "parcel data · underwriting · owner research", href: "/work/lot" },
-  { title: "WebBuddy", origin: "I wanted salon websites to go from setup to something usable without a week of back-and-forth.", meta: "onboarding · templates · integrations" },
-  { title: "NPGKTrades", origin: "I knew the trader. I wanted to mirror the trade relative to bankroll instead of blindly copying the dollar amount.", meta: "detect · size · risk-check · execute", href: "/work/npgktrades" },
-  { title: "Say No To Plastic", origin: "The job was turning dense papers and scattered headlines into something a normal person could actually explore.", meta: "research communication · 3D anatomy · guides", href: "/work/say-no-to-plastic" },
-  { title: "UVA Spatial OS", origin: "A map can look right and still route you wrong. I wanted the campus system to care about the actual path, door and schedule.", meta: "GIS · entrances · routing truth", href: "https://github.com/pegg-dot/uva-spatial-os" },
-  { title: "HOOS Moving", origin: "This one is still changing enough that I do not want to pretend I know the final story yet.", meta: "UVA · in progress" },
+  { title: "LOT", what: "Real-estate acquisition workspace for finding, underwriting and tracking opportunities.", origin: "My uncle said he could help me learn real estate, so I built the workspace I wanted beside me.", meta: "parcel data · underwriting · owner research", href: "/work/lot", action: "story" },
+  { title: "WebBuddy", what: "Website generator and onboarding system for salons.", origin: "I wanted a salon to go from no site to something useful without a week of back-and-forth.", meta: "onboarding · templates · integrations", href: "https://webuddy.base44.app", action: "live" },
+  { title: "NPGKTrades", what: "Polymarket copy-trading system with bankroll-relative sizing and deterministic risk gates.", origin: "I knew the trader. I wanted to mirror the allocation instead of blindly copying the dollar amount.", meta: "detect · aggregate · size · risk · execute", href: "/work/npgktrades", action: "story" },
+  { title: "Say No To Plastic", what: "Interactive microplastics education site built around evidence, anatomy and practical guides.", origin: "The job was turning dense papers and scattered headlines into something a normal person could actually explore.", meta: "research communication · 3D anatomy · guides", href: "/work/say-no-to-plastic", action: "story" },
+  { title: "UVA Spatial OS", what: "Campus routing system where GIS, entrances and pedestrian truth matter more than a plausible-looking line.", origin: "A map can look right and still route you wrong.", meta: "GIS · entrances · routing truth", href: "https://github.com/pegg-dot/uva-spatial-os", action: "code" },
+  { title: "HOOS Moving", what: "A UVA project still changing quickly enough that I do not want to freeze the story yet.", origin: "This one has already pivoted enough that the current build matters more than the first idea.", meta: "UVA · in progress", action: "soon" },
 ];
 
 export default function PortfolioStory() {
@@ -35,67 +34,51 @@ export default function PortfolioStory() {
         <p>The projects are different. The pattern is not.</p>
       </section>
 
-      <section className="dellaStorySection">
+      <section className="dellaStorySection projectSpotlight">
         <div className="sectionRail"><span>01</span><span>DELLA</span><span>MAR 11 → NOW</span></div>
-        <div className="storyHeroGrid">
-          <div><span className="microLabel">THE QUESTION</span><h2>What if the person answering the phone actually remembered?</h2></div>
-          <div className="storySide"><p>I started after seeing agent systems actually working for people and thinking the gap between a chatbot and an employee was going to collapse fast.</p><p>Miami made nail salons an obvious place to look. They are everywhere, calls get missed, and the owner should not have to be at the desk for the business to keep moving.</p><Link className="underLink" href="/work/della">the whole story →</Link></div>
+        <div className="projectDefinition">
+          <span className="microLabel">WHAT IT IS</span>
+          <p><strong>Della is an AI employee for nail salons.</strong> It answers calls, remembers customers across conversations, checks live availability, creates real appointments in Square, and is being hardened around communications first.</p>
+          <div className="projectActions"><Link href="/work/della">READ THE STORY →</Link><a href="https://hellodella.com" target="_blank" rel="noreferrer">OPEN DELLA ↗</a></div>
         </div>
-
-        <div className="pivotNotebook">
-          <article><span>MAR 11</span><h3>OpenClaw first.</h3><p>I started by trying to understand how agent systems were put together at all.</p></article>
-          <article><span>PIVOT 01</span><h3>Medspas → nail salons.</h3><p>The compliance surface was wrong for what I wanted to learn first.</p></article>
-          <article><span>PIVOT 02</span><h3>Everything → communications.</h3><p>I was building way too much at once. Calls, context and follow-up became the thing to harden first.</p></article>
+        <div className="spotlightGrid">
+          <div className="spotlightImage"><Image src="/della/room-identity.png" alt="Della workspace showing the AI employee's permissions, activity and state" fill sizes="(max-width: 900px) 100vw, 58vw" /></div>
+          <div className="spotlightText"><span className="microLabel">WHY I STARTED</span><h2>Calls felt like a good place to find out whether an agent could actually behave like an employee.</h2><p>I started on March 11 after seeing agent systems work for real people. Miami made nail salons an obvious place to look: they are everywhere, missed calls matter, and the owner cannot always be at the desk.</p><div className="spotlightChips"><span>voice</span><span>persistent context</span><span>Square bookings</span><span>knowledge + tools</span></div></div>
         </div>
-
-        <div className="memoryMoment">
-          <div className="memoryLabel"><span className="microLabel">THE MOMENT IT FELT REAL</span><p>Not a benchmark. Just a call that surprised me.</p></div>
-          <div className="memoryPhone">
-            <div className="memoryTurn me"><b>CALL 1</b><p>I chipped my nail.</p></div>
-            <div className="memoryGap">a couple days later</div>
-            <div className="memoryTurn della"><b>DELLA</b><p>How&apos;s your chipped nail?</p></div>
-          </div>
-          <p className="memoryAfter">The point was not the sentence. It was that the next conversation could start where the last one ended.</p>
-        </div>
-
-        <div className="currentLine"><span>now</span><b>calls</b><i>+</i><b>Square bookings</b><i>+</i><b>email</b><i>+</i><b>persistent customer context</b><i>+</i><b>tools instead of guesses</b></div>
       </section>
 
-      <section className="vialStorySection">
+      <section className="vialStorySection projectSpotlight">
         <div className="sectionRail dark"><span>02</span><span>VIALGRADE</span><span>LIVE</span></div>
-        <div className="storyHeroGrid vialStoryGrid">
-          <div><span className="microLabel">THE QUESTION</span><h2>How do you know what&apos;s legit when every site says it is?</h2></div>
-          <div className="storySide"><p>Peptide shopping felt backwards to me. The thing that mattered most was the hardest thing to inspect: where a claim came from, whether the lab evidence matched it, and what was still unknown.</p><p>So I built the evidence layer I wished existed.</p><Link className="underLink" href="/work/vialgrade">inside VialGrade →</Link></div>
+        <div className="projectDefinition">
+          <span className="microLabel">WHAT IT IS</span>
+          <p><strong>VialGrade is an evidence-backed research platform for the peptide market.</strong> It brings compounds, vendors, lab results, source history, conflicts and uncertainty into one place so a claim can be inspected instead of just trusted.</p>
+          <div className="projectActions"><Link href="/work/vialgrade">READ THE STORY →</Link><a href="https://vialgrade.com" target="_blank" rel="noreferrer">OPEN VIALGRADE ↗</a><a href="https://github.com/pegg-dot/vial" target="_blank" rel="noreferrer">CODE ↗</a></div>
         </div>
-
-        <div className="evidenceDesk">
-          <div className="sourceScrap s1"><span>vendor page</span><b>99.4% purity</b><small>updated?</small></div>
-          <div className="sourceScrap s2"><span>COA</span><b>lot #A17</b><small>who tested it?</small></div>
-          <div className="sourceScrap s3"><span>lab result</span><b>source-linked</b><small>date + compound</small></div>
-          <div className="sourceArrow">→</div>
-          <div className="sourceAnswer"><span>VIALGRADE</span><b>show the evidence</b><small>and show uncertainty too</small></div>
+        <div className="spotlightGrid reverse">
+          <div className="spotlightImage vialPreview"><Image src="/vialgrade/home.jpg" alt="VialGrade homepage and search interface" fill sizes="(max-width: 900px) 100vw, 58vw" /></div>
+          <div className="spotlightText"><span className="microLabel">WHY I STARTED</span><h2>Every site could say it was legitimate. I wanted somewhere the evidence mattered more than the claim.</h2><p>The interesting part became provenance: where a result came from, what it actually supported, and what was still unknown.</p><div className="spotlightChips"><span>vendors</span><span>compounds</span><span>lab evidence</span><span>source history</span></div></div>
         </div>
-
-        <div className="smallWin"><span className="microLabel">SMALL THING I LIKED</span><p>Three accounts I do not recognize signed up. That was much cooler to me than watching an analytics number go up.</p></div>
-        <div className="quietFacts"><span>60 baseline compounds</span><span>34 vendors</span><span>201 checked-in lab-result records</span><a href="https://vialgrade.com" target="_blank" rel="noreferrer">vialgrade.com ↗</a></div>
       </section>
 
-      <section className="transformerStorySection">
+      <section className="transformerStorySection projectSpotlight">
         <div className="sectionRail light"><span>03</span><span>TRANSFORMER</span><span>FROM SCRATCH</span></div>
-        <div className="transformerStoryHero">
-          <div className="transformerStoryCopy"><span className="microLabel">THE QUESTION</span><h2>I didn&apos;t want AI to stay a black box.</h2><p>I was learning the pieces anyway: tokens, embeddings, attention, loss, backprop. Building the model forced those ideas to stop being vocabulary and become one system.</p><Link className="underLink lightLink" href="/work/transformer">go inside →</Link></div>
-          <div className="transformerVisual"><Image src="/transformer/qkv.webp" alt="Transformer visualizer showing query, key and value projections" fill sizes="(max-width: 900px) 100vw, 50vw" /></div>
+        <div className="projectDefinition projectDefinitionDark">
+          <span className="microLabel">WHAT IT IS</span>
+          <p><strong>A GPT-style transformer built and trained from scratch in PyTorch.</strong> I instrumented its forward pass, captured the real intermediate tensors, and built a browser visualizer around what the model was actually doing.</p>
+          <div className="projectActions"><Link href="/work/transformer">READ THE STORY →</Link><a href="https://transformer-viz-eight.vercel.app" target="_blank" rel="noreferrer">OPEN VISUALIZER ↗</a><a href="https://github.com/pegg-dot/Transformer" target="_blank" rel="noreferrer">CODE ↗</a></div>
         </div>
-        <div className="learningSequence"><div><span>1</span><b>learn it</b><p>forward pass, attention, training</p></div><div><span>2</span><b>build it</b><p>directly in PyTorch</p></div><div><span>3</span><b>open it up</b><p>capture real intermediate tensors</p></div><div><span>4</span><b>explain it</b><p>turn the internals into a visualizer</p></div></div>
-        <div className="quietFacts darkFacts"><span>10.79M parameters</span><span>6 blocks</span><span>6 heads</span><span>5,000 training iterations</span><a href="https://transformer-viz-eight.vercel.app" target="_blank" rel="noreferrer">live visualizer ↗</a></div>
+        <div className="spotlightGrid">
+          <div className="spotlightImage transformerPreview"><Image src="/transformer/qkv.webp" alt="Transformer visualizer showing query, key and value projections" fill sizes="(max-width: 900px) 100vw, 58vw" /></div>
+          <div className="spotlightText spotlightTextLight"><span className="microLabel">WHY I STARTED</span><h2>I did not want AI to stay a black box I could only describe from the outside.</h2><p>Building the model forced tokens, attention, residuals, logits, loss and backprop to become one mechanism instead of a list of concepts.</p><div className="spotlightChips"><span>10.79M params</span><span>6 blocks</span><span>6 heads</span><span>real activations</span></div></div>
+        </div>
       </section>
 
       <section className="workbenchStorySection">
-        <div className="sectionRail"><span>04</span><span>OTHER THINGS</span><span>WHERE THEY STARTED</span></div>
-        <div className="workbenchStoryIntro"><span className="microLabel">THE REST OF THE DESK</span><h2>Most of these started with a very specific itch.</h2></div>
+        <div className="sectionRail"><span>04</span><span>OTHER THINGS</span><span>THE REST OF THE DESK</span></div>
+        <div className="workbenchStoryIntro"><span className="microLabel">MORE BUILDS</span><h2>Most started with a very specific itch.</h2></div>
         <div className="originList">
           {workbench.map((project, i) => {
-            const body = <><span className="originNum">0{i + 4}</span><div><h3>{project.title}</h3><p>{project.origin}</p><small>{project.meta}</small></div><span className="originArrow">{project.href ? "↗" : "…"}</span></>;
+            const body = <><span className="originNum">0{i + 4}</span><div><h3>{project.title}</h3><p className="originWhat">{project.what}</p><p className="originWhy"><span>why:</span> {project.origin}</p><small>{project.meta}</small></div><span className="originArrow">{project.action === "story" ? "story →" : project.action === "code" ? "code ↗" : project.action === "live" ? "live ↗" : "soon"}</span></>;
             if (!project.href) return <div key={project.title} className="originRow pending">{body}</div>;
             if (project.href.startsWith("/")) return <Link key={project.title} className="originRow" href={project.href}>{body}</Link>;
             return <a key={project.title} className="originRow" href={project.href} target="_blank" rel="noreferrer">{body}</a>;
@@ -122,13 +105,16 @@ export default function PortfolioStory() {
           <div className="sectionRail onPhoto"><span>11</span><span>ROWING</span><span>2024</span></div>
           <div className="rowingStory"><span className="microLabel">SPRING → SUMMER → GENOA</span><h2>THE SUMMER I<br/>ENDED UP IN<br/>A USA UNIFORM.</h2><p>Spring crew turned into beach-sprint trials at South Lido Key. We qualified. School ended, practice kept going, and the next few months were mostly mornings on the water until Worlds in Genoa.</p><div className="rowingFacts"><span>South Lido Key</span><b>1st at Trials</b><span>U19 Men&apos;s Double</span><span>Genoa</span></div></div>
         </div>
-        <div className="rowingInset"><Image src="/rowing/race-wide.jpg" alt="Team USA U19 double racing off the beach" fill sizes="35vw" /></div>
+        <div className="rowingWideFrame"><Image src="/rowing/race-wide.jpg" alt="Team USA U19 double racing off the beach" fill sizes="100vw" /><span>U19 MEN&apos;S DOUBLE · TEAM USA</span></div>
       </section>
 
       <section className="aboutSection" id="about">
-        <div className="aboutGrid">
-          <div><span className="microLabel">OTHER EVIDENCE OF A PERSON</span><h2>NOT JUST<br/>THE PROJECTS.</h2></div>
-          <div className="aboutNotes"><p>Miami → UVA.</p><p>Builder, rower, artist.</p><p className="oddNote">At four or five I owned multiple copies of the same red-and-blue striped shirt with a green alien on it and wore it almost every day.</p><TigreEgg /></div>
+        <div className="aboutLead"><span className="microLabel">A FEW THINGS THAT DO NOT FIT ANYWHERE ELSE</span><h2>SMALL THINGS<br/>ARE PART OF IT TOO.</h2></div>
+        <div className="aboutCards">
+          <article><span>01 / HOME</span><h3>Miami → UVA</h3><p>I grew up in Miami and now I&apos;m a first-year at the University of Virginia.</p></article>
+          <article><span>02 / THE SHIRT</span><h3>Apparently one shirt was enough.</h3><p>When I was four or five I had two or three copies of the same red-and-blue striped shirt with a little green alien on it. I wore it nearly every day.</p></article>
+          <article><span>03 / TIGRE</span><h3>It was a giraffe.</h3><p>I used to sleep with a tiny giraffe blanket over my ear. I called it Tigre, even though tigre means tiger and the thing was very obviously a giraffe.</p></article>
+          <article><span>04 / STILL TRUE</span><h3>I like making things by hand.</h3><p>That is probably why drawing still matters to me even when most of what I build now lives on a screen.</p></article>
         </div>
       </section>
 
