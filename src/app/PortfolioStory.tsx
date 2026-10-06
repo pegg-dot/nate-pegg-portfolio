@@ -11,7 +11,7 @@ const workbench = [
   { title: "NPGKTrades", what: "Polymarket copy-trading system with bankroll-relative sizing and deterministic risk gates.", origin: "I knew the trader. I wanted to mirror the allocation instead of blindly copying the dollar amount.", meta: "detect · aggregate · size · risk · execute", href: "/work/npgktrades", action: "story" },
   { title: "Say No To Plastic", what: "Interactive microplastics education site built around evidence, anatomy and practical guides.", origin: "The job was turning dense papers and scattered headlines into something a normal person could actually explore.", meta: "research communication · 3D anatomy · guides", href: "/work/say-no-to-plastic", action: "story" },
   { title: "UVA Spatial OS", what: "Campus routing system where GIS, entrances and pedestrian truth matter more than a plausible-looking line.", origin: "A map can look right and still route you wrong.", meta: "GIS · entrances · routing truth", href: "https://github.com/pegg-dot/uva-spatial-os", action: "code" },
-  { title: "HOOS Moving", what: "A UVA project still changing quickly enough that I do not want to freeze the story yet.", origin: "This one has already pivoted enough that the current build matters more than the first idea.", meta: "UVA · in progress", action: "soon" },
+  { title: "MoveMate", what: "Move-in and move-out help for UVA students, with a student marketplace underneath it.", origin: "We started with a marketplace, mapped roughly 20 assumptions, and realized moving itself was the sharper problem to solve first.", meta: "UVA · moving help · marketplace backbone", href: "/work/movemate", action: "story" },
 ];
 
 export default function PortfolioStory() {
@@ -23,7 +23,7 @@ export default function PortfolioStory() {
       <section className="hero" id="top">
         <div className="heroChrome"><span>NATE PEGG / 2026</span><span>SCROLL</span></div>
         <div className="heroSticky"><HandwrittenName /></div>
-        <div className="heroIntro"><p>I build software, draw, and row.</p><span>RIGHT NOW: DELLA · VIALGRADE · HOOS MOVING · UVA SPATIAL OS</span></div>
+        <div className="heroIntro"><p>I build software, draw, and row.</p><span>RIGHT NOW: DELLA · VIALGRADE · MOVEMATE · UVA SPATIAL OS</span></div>
         <nav className="heroNav" aria-label="Primary">
           <a href="#work">work</a><a href="#draw">drawings</a><a href="#row">rowing</a><a href="#about">about</a><a href="https://github.com/pegg-dot" target="_blank" rel="noreferrer">github ↗</a>
         </nav>
@@ -122,7 +122,7 @@ export default function PortfolioStory() {
               <span>RIGHT NOW</span>
               <b>Della</b>
               <b>VialGrade</b>
-              <b>HOOS Moving</b>
+              <b>MoveMate</b>
               <b>UVA Spatial OS</b>
             </div>
             <small>Genoa, 2024 · Team USA U19 coastal rowing.</small>
