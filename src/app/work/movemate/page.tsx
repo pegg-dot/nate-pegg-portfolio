@@ -118,6 +118,49 @@ export default function MoveMateCase() {
         </div>
       </section>
 
+      <section className="caseBand">
+        <div className={styles.posterHeader}>
+          <div>
+            <span className="caseLabel">CAMPUS LAUNCH</span>
+            <h2>WE DID NOT WAIT FOR THE FULL SERVICE TO EXIST BEFORE TESTING WHETHER ANYONE CARED.</h2>
+          </div>
+          <div className={styles.posterCopy}>
+            <p>The posters are part of the launch experiment. Different versions test different reasons a student might care about MoveMate, but they all push toward the same MVP.</p>
+            <p><strong>The image below is an AI-generated composite.</strong> The poster designs themselves have been printed and posted around campus.</p>
+            <p>We also track performance internally for each poster separately, so we can compare which framing actually gets people into the funnel. I have not published those numbers here yet.</p>
+          </div>
+        </div>
+
+        <figure className={styles.posterCampaign}>
+          <img
+            src="/movemate/poster-campaign-ai.webp"
+            alt="AI-generated composite showing four MoveMate campus poster designs that were printed and posted around UVA"
+          />
+          <figcaption>
+            <strong>AI-GENERATED COMPOSITE.</strong>
+            <span> Real posters were printed and posted around campus · internal performance is tracked per poster.</span>
+          </figcaption>
+        </figure>
+
+        <div className={styles.posterSignals}>
+          <article>
+            <span>01 / DISTRIBUTION</span>
+            <h3>Printed + posted</h3>
+            <p>These are not mock campaign ideas sitting in Figma. We printed versions of the posters and put them around campus.</p>
+          </article>
+          <article>
+            <span>02 / ONE DESTINATION</span>
+            <h3>Same launch MVP</h3>
+            <p>The campaign sends students into the same early MoveMate funnel at move-mate.netlify.app.</p>
+          </article>
+          <article>
+            <span>03 / LEARNING</span>
+            <h3>Metrics per poster</h3>
+            <p>We keep the performance of each poster separate internally so the launch teaches us which message is actually working.</p>
+          </article>
+        </div>
+      </section>
+
       <section className="caseBand caseBandDark">
         <span className="caseLabel">THE LOOP WE ARE BUILDING TOWARD</span>
         <div className={styles.loop}>

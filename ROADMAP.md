@@ -80,6 +80,7 @@ The current copy is structure and factual draft material, not final application 
 
 ### Next phase — deepen the remaining stories
 - [x] MoveMate story replaces HOOS Moving and captures the marketplace → moving-help pivot
+- [x] MoveMate campus poster campaign added with explicit AI-composite disclosure and per-poster metrics note
 - [ ] WebBuddy artifact + story
 - [ ] UVA Spatial OS artifact + story
 

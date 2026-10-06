@@ -211,3 +211,116 @@
     min-height: 230px;
   }
 }
+
+.posterHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(320px, .92fr);
+  gap: clamp(34px, 7vw, 100px);
+  align-items: end;
+  margin-bottom: 44px;
+}
+
+.posterHeader h2 {
+  margin: 14px 0 0;
+  max-width: 900px;
+  font-size: clamp(48px, 6.7vw, 96px);
+  line-height: .86;
+  letter-spacing: -.06em;
+}
+
+.posterCopy {
+  max-width: 620px;
+}
+
+.posterCopy p {
+  margin: 0 0 16px;
+  font: 18px/1.4 Georgia, serif;
+  color: #4d4942;
+}
+
+.posterCopy strong {
+  color: #171714;
+}
+
+.posterCampaign {
+  margin: 0;
+  border: 1px solid #171714;
+  background: #eee8db;
+  box-shadow: 10px 10px 0 #171714;
+}
+
+.posterCampaign img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.posterCampaign figcaption {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 13px 16px 14px;
+  border-top: 1px solid #171714;
+  font: 10px/1.35 Arial, sans-serif;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.posterSignals {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 48px;
+  border-top: 1px solid #171714;
+  border-left: 1px solid #171714;
+}
+
+.posterSignals article {
+  min-height: 245px;
+  padding: 20px;
+  border-right: 1px solid #171714;
+  border-bottom: 1px solid #171714;
+  display: flex;
+  flex-direction: column;
+}
+
+.posterSignals article > span {
+  font: 800 9px/1 Arial, sans-serif;
+  letter-spacing: .13em;
+}
+
+.posterSignals h3 {
+  margin: auto 0 12px;
+  font-size: clamp(31px, 3.4vw, 52px);
+  line-height: .93;
+  letter-spacing: -.045em;
+}
+
+.posterSignals p {
+  margin: 0;
+  font: 15px/1.38 Georgia, serif;
+  color: #4e4a43;
+}
+
+@media (max-width: 980px) {
+  .posterHeader {
+    grid-template-columns: 1fr;
+  }
+
+  .posterSignals {
+    grid-template-columns: 1fr;
+  }
+
+  .posterSignals article {
+    min-height: 210px;
+  }
+}
+
+@media (max-width: 680px) {
+  .posterCampaign {
+    box-shadow: 6px 6px 0 #171714;
+  }
+
+  .posterCampaign figcaption {
+    font-size: 8px;
+  }
+}
