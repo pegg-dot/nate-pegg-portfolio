@@ -30,7 +30,7 @@
 
 **Deferred:** no deletion of the deeper stories; they move into the project pages instead of crowding the index.
 
-**Revisit checkpoint:** once WebBuddy, UVA Spatial OS and HOOS Moving have their own story pages, check whether any homepage spotlight still contains information that belongs one level deeper.
+**Revisit checkpoint:** once WebBuddy and UVA Spatial OS have their own story pages, check whether any homepage spotlight still contains information that belongs one level deeper.
 
 ## Pivot — 2026-09-26, pass 3
 
@@ -43,6 +43,18 @@
 **Deferred:** no more ambient doodles unless they are tied to a real sentence, image, or idea.
 
 **Revisit checkpoint:** every pencil mark should be understandable without explaining the animation to the reviewer.
+
+## Pivot — 2026-10-06, MoveMate
+
+**Old sequence → New sequence**
+
+`HOOS Moving as a broad UVA marketplace project` → `MoveMate as move-in / move-out help, with the marketplace as the backbone`
+
+**Why:** the team mapped roughly 20 assumptions by importance and confidence and focused on the important ones with the least evidence. Moving is a sharper, higher-value job than asking a marketplace to create its own liquidity first.
+
+**Deferred:** recruiting a large student-mover network and building the full marketplace before demand is proven.
+
+**Revisit checkpoint:** after the launch MVP and poster campaign produce the first real users, update the case study with what students actually requested and what the team changed.
 
 ## Content rule — final voice pass
 
@@ -67,7 +79,7 @@ The current copy is structure and factual draft material, not final application 
 - [ ] Nate pass on all first-person wording using his spoken answers as the source
 
 ### Next phase — deepen the remaining stories
-- [ ] HOOS Moving repo / story
+- [x] MoveMate story replaces HOOS Moving and captures the marketplace → moving-help pivot
 - [ ] WebBuddy artifact + story
 - [ ] UVA Spatial OS artifact + story
 
