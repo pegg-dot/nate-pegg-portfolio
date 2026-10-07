@@ -9,7 +9,8 @@ export default function CaseShell({
   subtitle,
   children,
   external,
-  actions = []
+  actions = [],
+  className
 }: {
   index: string;
   title: string;
@@ -17,9 +18,10 @@ export default function CaseShell({
   children: ReactNode;
   external?: { label: string; href: string };
   actions?: Action[];
+  className?: string;
 }) {
   return (
-    <main className="caseMain">
+    <main className={["caseMain", className].filter(Boolean).join(" ")}>
       <header className="caseNav">
         <Link href="/">← NATE PEGG</Link>
         <span>{index}</span>

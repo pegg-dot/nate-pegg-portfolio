@@ -5,48 +5,38 @@ import ProjectBrief from "../../components/ProjectBrief";
 export default function DellaCase() {
   return (
     <CaseShell
+      className="dellaCase"
       index="01 / DELLA"
       title="DELLA"
-      subtitle="Della is an AI employee for nail salons. I started it after the OpenClaw moment, when I became convinced agentic AI and frontier models were going to get better than humans at a lot of work that happens on a computer. The question for me was what they still would not commoditize on their own."
+      subtitle="Della is an AI employee for nail salons. I started it because I think frontier models will get extremely good at work on a computer, but they still need the live state, workflows, and data of the actual business."
       external={{ label: "LIVE SITE", href: "https://hellodella.com" }}
       actions={[{ label: "OPEN DELLA", href: "https://hellodella.com", external: true }]}
     >
       <ProjectBrief items={[
-        { label: "WHAT", text: "An agent system for nail salons. Right now the narrow product is communications: calls, customer context, live availability, real Square bookings, and the beginning of email and other channels." },
-        { label: "WHY", text: "I thought the part frontier models would not commoditize on their own was vertical AI: the live operational state, workflows, and proprietary data inside a specific business." },
-        { label: "HOW", text: "I built my own agent harness around tools, memory, retrieval, evaluations, permissions, and the salon's existing software. A frontier model can reason about a nail salon, but it does not know that salon's live state unless the system around it gives it access." },
-        { label: "WHEN", text: "I started on March 11, 2026 as OpenOperator. It began with medspas, moved to nail salons, and then narrowed again when I realized I was trying to build the entire business at once." },
+        { label: "WHAT", text: "An AI employee for nail salons, starting with calls, messaging, customer memory, scheduling, and real bookings." },
+        { label: "WHY", text: "Frontier models still do not know the live operational state of a specific salon." },
+        { label: "HOW", text: "A harness around tools, memory, evaluations, permissions, and the salon's existing software." },
+        { label: "WHEN", text: "Started March 11, 2026 as OpenOperator. Medspas first, then nail salons, then communications first." },
       ]} />
 
       <section className="caseBand caseBandInk">
         <div className="caseGrid two">
-          <div><span className="caseLabel">WHY VERTICAL AI</span><h2>FRONTIER MODELS STILL DO NOT KNOW THE BUSINESS.</h2></div>
+          <div><span className="caseLabel">WHY THIS</span><h2>FRONTIER MODELS DON&apos;T KNOW THE SALON.</h2></div>
           <div className="caseStack">
-            <p>When the OpenClaw moment happened, I got really interested in agentic AI. I became convinced frontier models were going to get better than humans at a lot of work that happens on a computer, if not immediately then eventually.</p>
-            <p>What I did not think they would commoditize on their own was the live operational state inside a business. Every salon has its own customers, appointments, messages, workflows, software, and history. The model can help, but it still needs a harness around all of that.</p>
-            <p>The bigger idea behind Della is an AI employee that can eventually work across the business because it has access to that state, can recognize patterns across workflows, and can actually take actions instead of just chatting.</p>
+            <p>I got really interested in agentic AI during the OpenClaw moment. I think frontier models will eventually be better than humans at a lot of work that happens on a computer.</p>
+            <p>What they still do not have on their own is the salon itself: its customers, appointments, messages, software, history, and live state. That is where the harness around the model matters.</p>
+            <p>Medspas were first, but the compliance risk was too high. Nail salons were a cleaner start, and communications became the wedge because a missed call is basically found revenue if Della can answer and book it.</p>
           </div>
         </div>
       </section>
 
       <section className="caseBand">
         <div className="caseGrid two">
-          <div><span className="caseLabel">WHY NAIL SALONS</span><h2>MEDSPAS WERE THE FIRST IDEA. NAIL SALONS WERE THE CLEANER START.</h2></div>
+          <div><span className="caseLabel">WHAT I BUILT</span><h2>IT CAN ACTUALLY DO THE WORK.</h2></div>
           <div className="caseStack">
-            <p>I started with medspas because the appointments are high-ticket and a missed call can mean a lot of lost revenue. Pretty quickly I realized there was way more compliance and liability than I wanted to take on while I was still figuring out the agent problem itself.</p>
-            <p>Nail salons had a similar foundation without as much of that risk. There are a lot of them, AI has not penetrated much of the day-to-day business yet, and the communication problem is obvious: if nobody answers the phone, that customer can just disappear.</p>
-            <p>At first I was trying to build everything around them: CRM, payments, scheduling, and more. After talking it through with a friend, I realized I needed one wedge. I picked communications because it is directly tied to revenue and it touches a lot of the rest of the business anyway.</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="caseBand">
-        <div className="caseGrid two">
-          <div><span className="caseLabel">WHAT I BUILT</span><h2>IT ANSWERS LIKE A RECEPTIONIST AND CAN ACTUALLY DO THE WORK.</h2></div>
-          <div className="caseStack">
-            <p>A salon can have Della answer all the time, only after hours, or when nobody at the salon can pick up. On a call it can answer questions about services and policies, book or cancel appointments, hand the call off to a person, and remember who the customer is and what they talked about last time.</p>
-            <p>The important part is that it is connected to the real salon systems. If someone asks whether a time is open, Della has to check the actual schedule. If it books something, the appointment has to really exist in Square.</p>
-            <p>The same communications idea extends beyond voice into texts, Instagram DMs, WhatsApp, Facebook, reviews, follow-up, and the other places a salon talks to customers.</p>
+            <p>A salon can have Della answer all the time, only after hours, or only when nobody picks up. It can answer service and policy questions, book or cancel, hand off the call, and remember the customer from last time.</p>
+            <p>If someone asks whether 4:30 is open, Della checks the real schedule. If it says it booked something, the appointment has to actually exist in Square.</p>
+            <p>The same system is expanding into texts, Instagram DMs, WhatsApp, Facebook, reviews, and follow-up.</p>
           </div>
         </div>
       </section>
@@ -80,11 +70,10 @@ export default function DellaCase() {
 
       <section className="caseBand caseBandDark">
         <div className="caseGrid two">
-          <div><span className="caseLabel">WHERE IT IS NOW</span><h2>I&apos;M TRYING TO GET IT INTO REAL SALONS.</h2></div>
+          <div><span className="caseLabel">WHERE IT IS NOW</span><h2>I&apos;M GETTING IT INTO REAL SALONS.</h2></div>
           <div className="caseStack">
-            <p>Real calls have gone through the system, real Square appointments have been created, and customer context carries across conversations instead of resetting every time somebody calls.</p>
-            <p>At this point I am not just sitting there adding features. I am working on getting clients and putting Della in front of actual salon owners.</p>
-            <p>I am still improving the reliability, latency, memory, guardrails, and all the stuff around the model as I do that, but getting real salons using it is the main thing I care about right now.</p>
+            <p>Real calls have gone through the system, real Square appointments have been created, and customer context carries across conversations.</p>
+            <p>I am working on getting clients now. At the same time I am tightening reliability, latency, memory, and guardrails around actual salon use.</p>
           </div>
         </div>
       </section>
