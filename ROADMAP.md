@@ -89,6 +89,8 @@ The current copy is structure and factual draft material, not final application 
 - [x] LOT, NPGKTrades and Say No To Plastic story pages
 - [x] art and rowing kept as personal chapters
 - [ ] Nate pass on all first-person wording using his spoken answers as the source
+  - [x] Homepage opening, featured-project motivations, WeBuddy/UVA Spatial OS origins, and About intro rewritten from Nate voice dump
+  - [ ] Deep project pages still need Nate voice pass
 
 ### Next phase — deepen the remaining stories
 - [x] MoveMate story replaces HOOS Moving and captures the marketplace → moving-help pivot
