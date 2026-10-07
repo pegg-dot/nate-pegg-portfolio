@@ -1308,3 +1308,9 @@ section { position: relative; z-index: 4; }
     font-size: clamp(54px,16.5vw,72px);
   }
 }
+
+@media (max-width: 680px) {
+  .transformerCase .caseHero h1 {
+    font-size: clamp(44px,12.5vw,56px);
+  }
+}

@@ -5,9 +5,10 @@ import ProjectBrief from "../../components/ProjectBrief";
 export default function TransformerCase() {
   return (
     <CaseShell
+      className="caseCompact transformerCase"
       index="03 / TRANSFORMER"
       title="TRANSFORMER"
-      subtitle="I built and trained a small GPT-style transformer from scratch because I did not want attention, loss, backprop, and sampling to stay as words I could repeat without really seeing how they fit together."
+      subtitle="I built a small GPT-style transformer and an interactive visualizer because I could explain the basic steps, but I wanted to actually see how they fit together."
       external={{ label: "LIVE VISUALIZER", href: "https://transformer-viz-eight.vercel.app" }}
       actions={[
         { label: "OPEN VISUALIZER", href: "https://transformer-viz-eight.vercel.app", external: true },
@@ -15,51 +16,69 @@ export default function TransformerCase() {
       ]}
     >
       <ProjectBrief items={[
-        { label: "WHAT", text: "A 10.79M-parameter character-level transformer trained on Tiny Shakespeare, plus a browser visualizer that walks through the tensors from tokenization to attention, residuals, logits, training, and decoding." },
-        { label: "WHY", text: "I was learning AI and kept running into the same problem: I could explain the pieces but I still felt like I was treating the model as a black box. Building one forced me to find the parts I did not actually understand." },
-        { label: "HOW", text: "I wrote the model directly in PyTorch without Hugging Face transformers or torch.nn.Transformer, trained it, added hooks to capture real intermediate activations, and used those values to drive the visualizer." },
-        { label: "WHEN", text: "Built earlier in 2026 while I was working through the fundamentals of training and transformer internals. The visualizer came after the model, not before it." },
+        { label: "WHAT", text: "A 10.79M-parameter character-level GPT-style transformer trained on Tiny Shakespeare, plus a browser visualizer that walks through the model step by step." },
+        { label: "WHY", text: "I could kind of explain tokenization, attention, MLPs, residual connections, and training, but visualizing and building them made them much easier to understand intuitively." },
+        { label: "HOW", text: "I learned from Andrej Karpathy, 3Blue1Brown, and my own studying, then implemented the model in PyTorch, trained it, captured real activations, and built the visualizer around them." },
+        { label: "WHEN", text: "Built in 2026 while I was teaching myself the foundations of transformers and model training." },
       ]} />
 
       <section className="caseBand">
         <div className="caseGrid two">
-          <div><span className="caseLabel">WHY I BUILT IT</span><h2>I WANTED TO TRACE ONE TOKEN ALL THE WAY THROUGH.</h2></div>
+          <div><span className="caseLabel">WHERE IT CAME FROM</span><h2>I COULD EXPLAIN IT. I WANTED TO SEE IT.</h2></div>
           <div className="caseStack">
-            <p>I had learned embeddings, Q/K/V, causal masking, residuals, cross-entropy, gradients, and optimizers separately.</p>
-            <p>Writing the model made those things collide. A shape mismatch or a bad mask is a much better test of whether you understand attention than saying what attention does.</p>
-            <p>Once the model worked, I wanted to be able to open it up and show somebody else what I had finally started to understand.</p>
+            <p>During my daily studying I got to the point where I could kind of explain the transformer pipeline: tokenization, attention, the MLP, residual connections, and then the output.</p>
+            <p>But being able to repeat the steps was different from really understanding them. Residual connections were one of the things I could not quite picture, and the training side was the same with backpropagation, gradient descent, and Adam.</p>
+            <p>I watched a few of Andrej Karpathy&apos;s longer videos and 3Blue1Brown, which gave me a much better foundation. Then I wanted to actually build it, because learning while doing has always made things click more for me than just reading about them.</p>
           </div>
         </div>
       </section>
 
       <section className="caseBand caseBandDark">
-        <div className="modelMetricWall"><div><strong>10.79M</strong><span>parameters</span></div><div><strong>6</strong><span>blocks</span></div><div><strong>6</strong><span>attention heads</span></div><div><strong>384</strong><span>residual dim</span></div><div><strong>256</strong><span>context</span></div><div><strong>5,000</strong><span>training iterations</span></div></div>
+        <div className="modelMetricWall">
+          <div><strong>10.79M</strong><span>parameters</span></div>
+          <div><strong>6</strong><span>blocks</span></div>
+          <div><strong>6</strong><span>attention heads</span></div>
+          <div><strong>384</strong><span>residual dim</span></div>
+          <div><strong>256</strong><span>context</span></div>
+          <div><strong>5,000</strong><span>training iterations</span></div>
+        </div>
+      </section>
+
+      <section className="caseBand">
+        <div className="caseGrid two">
+          <div><span className="caseLabel">THE MODEL</span><h2>I STARTED WITH A MINI GPT.</h2></div>
+          <div className="caseStack">
+            <p>The model is basically a small version of the GPT architecture Karpathy teaches: character tokens go through embeddings, attention, the feed-forward part of the block, residual connections, and then eventually to logits for the next token.</p>
+            <p>I trained it on Tiny Shakespeare. The point was never to make a good language model. It was small enough that I could follow the whole path from an input token to the next-token prediction without hiding the core architecture behind a library.</p>
+            <p>That simplification helped a lot. Once I could see where the residual stream was being updated and how training changed the weights, concepts that had felt separate started fitting together.</p>
+          </div>
+        </div>
       </section>
 
       <section className="caseBand">
         <div className="caseImageWide"><Image src="/transformer/qkv.webp" alt="Interactive transformer visualizer showing Q K V projections" fill sizes="100vw" /></div>
         <div className="caseGrid two compactTop">
-          <div><span className="caseLabel">THE PART I DID NOT EXPECT</span><h2>EXPLAINING IT WAS ITS OWN ENGINEERING PROBLEM.</h2></div>
+          <div><span className="caseLabel">THE VISUALIZER</span><h2>MAKING IT VISUAL WAS ANOTHER PROJECT.</h2></div>
           <div className="caseStack">
-            <p>The first visual ideas were easy to fake. You can draw boxes for Q, K, and V and make something that looks educational without it being connected to the model at all.</p>
-            <p>I ended up instrumenting the actual forward pass so the scenes could use real tensors instead of numbers invented for the animation.</p>
-            <p>The animations were probably the most annoying part. They had to stay understandable without turning the mechanics into something prettier but wrong.</p>
+            <p>I had the basic ideas down, but then I had to figure out how to break the model into steps, make those steps flow into each other, and turn parts of it into 3D without making the explanation wrong.</p>
+            <p>I wanted the visualizer to stay connected to the model I had actually trained, so the core scenes use real intermediate activations from the forward pass instead of numbers I made up for the animation.</p>
+            <p>The weird part is that none of this literally looks like the animations. I still had to invent a visual language for the computation, so I spent a lot of time trying to make it understandable without turning the mechanism into something prettier but false.</p>
           </div>
         </div>
       </section>
 
       <section className="caseBand transformerTrainingBand">
         <div className="caseImageWide smaller"><Image src="/transformer/training.webp" alt="Training visualizer showing gradient descent" fill sizes="80vw" /></div>
-        <div className="buildFacts"><span>PyTorch</span><span>ONNX</span><span>Next.js</span><span>Three.js</span><span>D3</span><span>ONNX Runtime Web</span><span>activation checks</span><span>browser inference</span></div>
+        <div className="buildFacts"><span>PyTorch</span><span>ONNX</span><span>Next.js</span><span>Three.js</span><span>D3</span><span>ONNX Runtime Web</span><span>real activations</span><span>browser inference</span></div>
       </section>
 
-      <section className="caseBand">
+      <section className="caseBand caseBandBlue">
         <div className="caseGrid two">
-          <div><span className="caseLabel">WHAT I TOOK FROM IT</span><h2>THE BLACK BOX GOT SMALLER.</h2></div>
+          <div><span className="caseLabel">WHAT CHANGED</span><h2>I CAN TRACE IT NOW. I STILL CAN&apos;T EXPLAIN EVERYTHING IT DOES.</h2></div>
           <div className="caseStack">
-            <p>I still do not think building one small transformer means I understand every modern model. It did change how I learn AI, though.</p>
-            <p>Now when I hear about a system I want to know what state it has, what gets computed, where the loss comes from, what is deterministic, and what is just a story we tell on top of the mechanism.</p>
-            <p>That way of thinking has carried directly into Della and the other agent systems I have built since.</p>
+            <p>The biggest thing that clicked was the path from an input token all the way to an output distribution. I understand the architecture much more intuitively now because I have actually watched the values move through it.</p>
+            <p>At the same time, building it made me appreciate how hard interpretation still is. You can trace the computations exactly and still have a much harder time explaining why the model represents something the way it does or why one continuation wins over another.</p>
+            <p>And once you sample from that output distribution, the same prompt can produce different continuations. The mechanism is much less mysterious to me now, but the behavior is still not something you can reduce to one simple explanation.</p>
           </div>
         </div>
       </section>
