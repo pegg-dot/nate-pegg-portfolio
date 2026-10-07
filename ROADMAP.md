@@ -30,7 +30,7 @@
 
 **Deferred:** no deletion of the deeper stories; they move into the project pages instead of crowding the index.
 
-**Revisit checkpoint:** once WebBuddy and UVA Spatial OS have their own story pages, check whether any homepage spotlight still contains information that belongs one level deeper.
+**Revisit checkpoint:** once WeBuddy and UVA Spatial OS have their own story pages, check whether any homepage spotlight still contains information that belongs one level deeper.
 
 ## Pivot — 2026-09-26, pass 3
 
@@ -55,6 +55,18 @@
 **Deferred:** recruiting a large student-mover network and building the full marketplace before demand is proven.
 
 **Revisit checkpoint:** after the launch MVP and poster campaign produce the first real users, update the case study with what students actually requested and what the team changed.
+
+## Pivot — 2026-10-06, WeBuddy
+
+**Old sequence → New sequence**
+
+`WebBuddy as a generic salon website generator` → `WeBuddy as a structured salon-data system that maps one shared business model across reusable templates`
+
+**Why:** the real work is the formalization layer: public business data + owner answers → a 96-field ClientSite record → shared mapping → differentiated templates. The project was also built as a way to get a foot in the door with salon owners, and outbound is starting now.
+
+**Deferred:** do not surface the live WeBuddy product link in the Academy portfolio until the exposed Google Places key is restricted or proxied.
+
+**Revisit checkpoint:** once the Google key exposure is fixed, add the live product link; once outbound produces real owner conversations, update the final section with what actually happened.
 
 ## Content rule — final voice pass
 
@@ -81,7 +93,7 @@ The current copy is structure and factual draft material, not final application 
 ### Next phase — deepen the remaining stories
 - [x] MoveMate story replaces HOOS Moving and captures the marketplace → moving-help pivot
 - [x] MoveMate campus poster campaign added with explicit AI-composite disclosure and per-poster metrics note
-- [ ] WebBuddy artifact + story
+- [x] WeBuddy artifact + story, including structured data model, template mapping, owner dashboard, SEO scope and Base44 split
 - [ ] UVA Spatial OS artifact + story
 
 ### Then — launch hardening

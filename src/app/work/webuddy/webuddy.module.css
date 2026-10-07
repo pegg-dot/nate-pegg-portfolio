@@ -1,0 +1,473 @@
+.compareHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr);
+  gap: clamp(36px, 7vw, 100px);
+  align-items: end;
+  margin-bottom: 48px;
+}
+
+.compareHeader h2 {
+  margin: 14px 0 0;
+  max-width: 980px;
+  font-size: clamp(58px, 8vw, 122px);
+  line-height: .84;
+  letter-spacing: -.065em;
+}
+
+.compareHeader > p {
+  margin: 0;
+  max-width: 620px;
+  font: 21px/1.4 Georgia, serif;
+  color: #4f4b43;
+}
+
+.templateCompare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.templateCompare figure {
+  margin: 0;
+  border: 1px solid #171714;
+  background: #f7f2e8;
+  box-shadow: 9px 9px 0 #171714;
+  overflow: hidden;
+}
+
+.templateCompare img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.templateCompare figcaption {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px 15px;
+  border-top: 1px solid #171714;
+}
+
+.templateCompare figcaption span,
+.templateCompare figcaption small {
+  font: 800 8px/1.2 Arial, sans-serif;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.templateCompare figcaption b {
+  font: 24px/1 Georgia, serif;
+}
+
+.darkFigure {
+  background: #0a0a0a !important;
+  color: #f4f0e6;
+}
+
+.darkFigure figcaption {
+  border-color: #f4f0e6 !important;
+}
+
+.pipeline {
+  display: grid;
+  grid-template-columns: 1.25fr auto .9fr auto .85fr auto .75fr;
+  gap: 14px;
+  align-items: stretch;
+  margin-top: 38px;
+}
+
+.inputs {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  border-top: 1px solid #171714;
+  border-left: 1px solid #171714;
+}
+
+.inputs article,
+.modelCard,
+.mapperCard,
+.renderers article {
+  border-right: 1px solid #171714;
+  border-bottom: 1px solid #171714;
+  background: rgba(255,255,255,.22);
+}
+
+.inputs article {
+  padding: 18px;
+  min-height: 165px;
+}
+
+.inputs span,
+.modelCard > span,
+.mapperCard > span,
+.renderers span {
+  font: 800 8px/1 Arial, sans-serif;
+  letter-spacing: .12em;
+}
+
+.inputs h3 {
+  margin: 38px 0 8px;
+  font-size: 27px;
+  line-height: .96;
+  letter-spacing: -.035em;
+}
+
+.inputs p,
+.modelCard p,
+.mapperCard p {
+  margin: 0;
+  font: 14px/1.36 Georgia, serif;
+  color: #46423b;
+}
+
+.arrow {
+  align-self: center;
+  font-size: 22px;
+  opacity: .6;
+}
+
+.modelCard,
+.mapperCard {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modelCard {
+  background: #171714;
+  color: #f5f0e4;
+  box-shadow: 7px 7px 0 rgba(23,23,20,.2);
+}
+
+.modelCard strong,
+.mapperCard strong {
+  margin: auto 0 8px;
+  font-size: clamp(31px, 3.8vw, 56px);
+  line-height: .9;
+  letter-spacing: -.05em;
+}
+
+.modelCard b {
+  font: 800 11px/1 Arial, sans-serif;
+  letter-spacing: .1em;
+  margin-bottom: 12px;
+}
+
+.modelCard p {
+  color: #d7d1c6;
+}
+
+.mapperCard strong {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: clamp(22px, 2.5vw, 36px);
+}
+
+.renderers {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  border-top: 1px solid #171714;
+  border-left: 1px solid #171714;
+}
+
+.renderers article {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.renderers b {
+  margin-top: 55px;
+  font-size: 27px;
+  line-height: .95;
+  letter-spacing: -.04em;
+}
+
+.generationStrip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin-top: 48px;
+  border-top: 1px solid #171714;
+  border-left: 1px solid #171714;
+}
+
+.generationStrip div {
+  min-height: 165px;
+  padding: 18px;
+  border-right: 1px solid #171714;
+  border-bottom: 1px solid #171714;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.generationStrip span {
+  font: 800 9px/1 Arial, sans-serif;
+}
+
+.generationStrip b {
+  max-width: 170px;
+  font: 800 13px/1.2 Arial, sans-serif;
+  letter-spacing: .07em;
+}
+
+.controlHeader {
+  max-width: 1080px;
+  margin-bottom: 42px;
+}
+
+.controlHeader h2 {
+  margin: 14px 0 20px;
+  font-size: clamp(58px, 8vw, 118px);
+  line-height: .84;
+  letter-spacing: -.065em;
+}
+
+.controlHeader > p {
+  max-width: 700px;
+  margin: 0;
+  font: 20px/1.38 Georgia, serif;
+  color: #c4beb3;
+}
+
+.wideArtifact {
+  margin: 0;
+  border: 1px solid rgba(243,239,227,.45);
+  background: #080808;
+}
+
+.wideArtifact img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.wideArtifact figcaption {
+  padding: 13px 15px;
+  border-top: 1px solid rgba(243,239,227,.35);
+  color: #bcb6ac;
+  font: 800 8px/1.3 Arial, sans-serif;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.editorGrid {
+  display: grid;
+  grid-template-columns: minmax(300px, .72fr) minmax(0, 1.28fr);
+  gap: clamp(30px, 5vw, 74px);
+  align-items: center;
+  margin-top: 60px;
+}
+
+.editorCopy h3 {
+  margin: 14px 0 18px;
+  font-size: clamp(44px, 5.5vw, 80px);
+  line-height: .88;
+  letter-spacing: -.055em;
+}
+
+.editorCopy p {
+  margin: 0 0 16px;
+  max-width: 520px;
+  font: 18px/1.38 Georgia, serif;
+  color: #c4beb3;
+}
+
+.editorGrid figure {
+  margin: 0;
+  border: 1px solid rgba(243,239,227,.42);
+  overflow: hidden;
+}
+
+.editorGrid img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.caveat {
+  margin-top: 26px !important;
+  padding-top: 18px;
+  border-top: 1px solid #171714;
+  color: #5d574d !important;
+  font-style: italic !important;
+}
+
+.lessonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid rgba(243,239,227,.45);
+  border-left: 1px solid rgba(243,239,227,.45);
+  margin-top: 34px;
+}
+
+.lessonGrid article {
+  min-height: 325px;
+  padding: 22px;
+  border-right: 1px solid rgba(243,239,227,.45);
+  border-bottom: 1px solid rgba(243,239,227,.45);
+  display: flex;
+  flex-direction: column;
+}
+
+.lessonGrid article > span {
+  font: 800 9px/1 Arial, sans-serif;
+  letter-spacing: .12em;
+}
+
+.lessonGrid h3 {
+  margin: auto 0 14px;
+  max-width: 520px;
+  font-size: clamp(38px, 4.5vw, 66px);
+  line-height: .9;
+  letter-spacing: -.05em;
+}
+
+.lessonGrid p {
+  margin: 0;
+  max-width: 590px;
+  color: #c8c1b5;
+  font: 16px/1.4 Georgia, serif;
+}
+
+.platformSplit {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid #171714;
+  border-left: 1px solid #171714;
+}
+
+.platformSplit article {
+  min-height: 360px;
+  padding: 22px;
+  border-right: 1px solid #171714;
+  border-bottom: 1px solid #171714;
+  display: flex;
+  flex-direction: column;
+}
+
+.platformSplit h3 {
+  margin: auto 0 16px;
+  max-width: 580px;
+  font-size: clamp(44px, 5.5vw, 78px);
+  line-height: .88;
+  letter-spacing: -.055em;
+}
+
+.platformSplit p {
+  margin: 0;
+  max-width: 610px;
+  font: 17px/1.4 Georgia, serif;
+  color: #4b473f;
+}
+
+.mineCard {
+  background: #171714;
+  color: #f5f0e4;
+}
+
+.mineCard p {
+  color: #d2cbc0;
+}
+
+.platformNote {
+  max-width: 880px;
+  margin: 36px 0 0;
+  font: 20px/1.4 Georgia, serif;
+}
+
+@media (max-width: 1100px) {
+  .pipeline {
+    grid-template-columns: 1fr;
+  }
+
+  .arrow {
+    transform: rotate(90deg);
+    justify-self: center;
+  }
+
+  .renderers {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+  }
+
+  .generationStrip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .generationStrip div:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .compareHeader,
+  .templateCompare,
+  .editorGrid,
+  .platformSplit {
+    grid-template-columns: 1fr;
+  }
+
+  .templateCompare {
+    gap: 28px;
+  }
+
+  .editorCopy {
+    max-width: 760px;
+  }
+
+  .lessonGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  :global(.caseHero h1) {
+    font-size: clamp(54px, 17vw, 82px);
+  }
+
+  .compareHeader h2,
+  .controlHeader h2 {
+    font-size: clamp(52px, 16vw, 84px);
+  }
+
+  .compareHeader > p {
+    font-size: 18px;
+  }
+
+  .templateCompare figure {
+    box-shadow: 6px 6px 0 #171714;
+  }
+
+  .templateCompare figcaption {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .inputs article {
+    min-height: 145px;
+  }
+
+  .generationStrip {
+    grid-template-columns: 1fr;
+  }
+
+  .generationStrip div:last-child {
+    grid-column: auto;
+  }
+
+  .generationStrip div {
+    min-height: 130px;
+  }
+
+  .renderers {
+    grid-template-columns: 1fr;
+  }
+
+  .lessonGrid article,
+  .platformSplit article {
+    min-height: 270px;
+  }
+}
