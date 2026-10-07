@@ -92,6 +92,7 @@ The current copy is structure and factual draft material, not final application 
   - [x] Homepage opening, featured-project motivations, WeBuddy/UVA Spatial OS origins, and About intro rewritten from Nate voice dump
   - [ ] Deep project pages still need Nate voice pass
     - [x] Della deep page rewritten from Nate voice dump and tightened into a denser case-study layout
+    - [x] VialGrade deep page rewritten from Nate voice dump, grounded in the actual grading/attribution code, and tightened to the Della density
 
 ### Next phase — deepen the remaining stories
 - [x] MoveMate story replaces HOOS Moving and captures the marketplace → moving-help pivot

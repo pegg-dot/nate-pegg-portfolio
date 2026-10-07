@@ -5,7 +5,7 @@ import ProjectBrief from "../../components/ProjectBrief";
 export default function DellaCase() {
   return (
     <CaseShell
-      className="dellaCase"
+      className="caseCompact dellaCase"
       index="01 / DELLA"
       title="DELLA"
       subtitle="Della is an AI employee for nail salons. I started it because I think frontier models will get extremely good at work on a computer, but they still need the live state, workflows, and data of the actual business."
