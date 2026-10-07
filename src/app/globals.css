@@ -1314,3 +1314,9 @@ section { position: relative; z-index: 4; }
     font-size: clamp(44px,12.5vw,56px);
   }
 }
+
+@media (max-width: 680px) {
+  .webuddyCase .caseHero h1 {
+    font-size: clamp(44px,13vw,58px);
+  }
+}

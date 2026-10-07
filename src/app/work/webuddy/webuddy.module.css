@@ -471,3 +471,107 @@
     min-height: 270px;
   }
 }
+
+/* Compact the WeBuddy case so it reads like the newer Della/VialGrade pages. */
+:global(.webuddyCase) .compareHeader {
+  gap: clamp(28px,4vw,56px);
+  margin-bottom: 30px;
+}
+:global(.webuddyCase) .compareHeader h2 {
+  font-size: clamp(46px,6.2vw,90px);
+}
+:global(.webuddyCase) .compareHeader > p {
+  font-size: 18px;
+  line-height: 1.34;
+}
+:global(.webuddyCase) .pipeline {
+  margin-top: 26px;
+}
+:global(.webuddyCase) .inputs article {
+  min-height: 118px;
+  padding: 14px;
+}
+:global(.webuddyCase) .inputs h3 {
+  margin: 22px 0 6px;
+  font-size: 23px;
+}
+:global(.webuddyCase) .modelCard,
+:global(.webuddyCase) .mapperCard {
+  padding: 16px;
+}
+:global(.webuddyCase) .renderers article {
+  padding: 14px;
+}
+:global(.webuddyCase) .renderers b {
+  margin-top: 30px;
+  font-size: 23px;
+}
+:global(.webuddyCase) .controlHeader {
+  margin-bottom: 28px;
+}
+:global(.webuddyCase) .controlHeader h2 {
+  font-size: clamp(48px,6.2vw,88px);
+}
+:global(.webuddyCase) .controlHeader > p {
+  font-size: 18px;
+}
+:global(.webuddyCase) .wideArtifact img {
+  max-height: 430px;
+  object-fit: cover;
+  object-position: top;
+}
+:global(.webuddyCase) .editorGrid {
+  margin-top: 34px;
+}
+:global(.webuddyCase) .editorCopy h3 {
+  font-size: clamp(38px,4.4vw,60px);
+}
+:global(.webuddyCase) .editorCopy p {
+  font-size: 16px;
+}
+:global(.webuddyCase) .editorGrid img {
+  max-height: 390px;
+  object-fit: cover;
+  object-position: top;
+}
+:global(.webuddyCase) .lessonGrid {
+  margin-top: 22px;
+}
+:global(.webuddyCase) .lessonGrid article {
+  min-height: 220px;
+  padding: 17px;
+}
+:global(.webuddyCase) .lessonGrid h3 {
+  font-size: clamp(31px,3.5vw,48px);
+}
+:global(.webuddyCase) .platformSplit article {
+  min-height: 240px;
+  padding: 18px;
+}
+:global(.webuddyCase) .platformSplit h3 {
+  font-size: clamp(36px,4.4vw,58px);
+}
+
+@media (max-width: 680px) {
+  :global(.webuddyCase) .caseHero h1 {
+    font-size: clamp(46px,14.5vw,62px);
+  }
+  :global(.webuddyCase) .compareHeader h2,
+  :global(.webuddyCase) .controlHeader h2 {
+    font-size: clamp(42px,13vw,60px);
+  }
+  :global(.webuddyCase) .wideArtifact img {
+    max-height: 230px;
+  }
+  :global(.webuddyCase) .editorGrid img {
+    max-height: 240px;
+  }
+  :global(.webuddyCase) .inputs article,
+  :global(.webuddyCase) .generationStrip div {
+    min-height: 105px;
+  }
+  :global(.webuddyCase) .lessonGrid article,
+  :global(.webuddyCase) .platformSplit article {
+    min-height: 190px;
+  }
+}

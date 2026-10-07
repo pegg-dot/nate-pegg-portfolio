@@ -95,6 +95,7 @@ The current copy is structure and factual draft material, not final application 
     - [x] VialGrade deep page rewritten from Nate voice dump, grounded in the actual grading/attribution code, and tightened to the Della density
     - [x] Transformer deep page rewritten from Nate voice dump and grounded in the actual model/visualizer repo
     - [x] LOT deep page rewritten from current + prior-chat voice context and grounded in the real-estate repo
+    - [x] WeBuddy deep page rewritten from prior-chat voice context, shortened, and grounded in the existing product architecture
 
 ### Next phase — deepen the remaining stories
 - [x] MoveMate story replaces HOOS Moving and captures the marketplace → moving-help pivot

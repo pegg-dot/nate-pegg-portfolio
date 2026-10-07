@@ -6,45 +6,46 @@ import styles from "./webuddy.module.css";
 const inputRows = [
   {
     label: "GOOGLE PLACES",
-    title: "The public listing",
-    text: "Name, address, phone, hours, rating, review count, a small set of reviews and photos, website, and map coordinates.",
+    title: "Start with what already exists",
+    text: "Name, address, phone, hours, rating, reviews, photos, website, and coordinates.",
   },
   {
     label: "PUBLIC WEB SEARCH",
-    title: "The missing context",
-    text: "AI web search looks for services and prices, the booking link, Instagram handle, an about blurb, specialties, and more public review text.",
+    title: "Fill in more context",
+    text: "Services, prices, booking links, Instagram, specialties, and more public review context.",
   },
   {
     label: "OWNER ANSWERS",
-    title: "The parts only they know",
-    text: "What they are known for, booking link confirmation, average spend, template, plan, email, and name. The onboarding is five screens.",
+    title: "Ask for what the internet cannot know",
+    text: "What they are known for, booking confirmation, average spend, template, plan, and account details.",
   },
 ];
 
 export default function WeBuddyCase() {
   return (
     <CaseShell
+      className="caseCompact webuddyCase"
       index="05 / WEBUDDY"
       title="WEBUDDY"
-      subtitle="WeBuddy turns salon information into a structured business profile, then maps that profile into a finished website. I built it partly because I wanted a useful way to get my foot in the door with salon owners."
+      subtitle="I built WeBuddy while I was cold-calling salons. I thought if I could send an owner something useful first, like a website already built from their business data, I would have a much better way into the conversation."
     >
       <ProjectBrief
         items={[
           {
             label: "WHAT",
-            text: "A website system for salons. It starts with public business data and a short owner onboarding, normalizes everything into one 96-field ClientSite record, generates the missing copy and SEO fields, and renders the same model through reusable templates.",
+            text: "A salon website generator that starts with public business data, asks the owner for what is missing, and turns it into a finished site they can edit and publish.",
           },
           {
             label: "WHY",
-            text: "I did not want another blank-page website builder. I wanted to start with the business itself, get a salon to something useful quickly, and have a reason to start a real conversation with the owner.",
+            text: "Cold calling salons was rough. I wanted to show up with something useful before asking an owner for their time.",
           },
           {
             label: "HOW",
-            text: "Google Places + public web search + owner answers feed one shared data model. mapSiteToProfile turns that model into the shape every template and shared widget reads. The owner can then publish, edit, and keep using the site.",
+            text: "Google Places, public web research, and owner answers feed one structured business record that both templates and the dashboard use.",
           },
           {
             label: "WHEN",
-            text: "Built in 2026 on Base44. Base44 provides hosting, database, auth, backend runtime, scheduling, and AI calls. I designed the product, onboarding flow, data model, generation prompts, background generation system, templates, mapping layer, and dashboard.",
+            text: "Built in 2026 on Base44. It started as a way to get closer to salon owners while I was working on Della.",
           },
         ]}
       />
@@ -52,13 +53,13 @@ export default function WeBuddyCase() {
       <section className="caseBand caseBandInk">
         <div className="caseGrid two">
           <div>
-            <span className="caseLabel">WHY I BUILT IT</span>
-            <h2>I WANTED A WAY INTO THE SALON.</h2>
+            <span className="caseLabel">WHERE IT CAME FROM</span>
+            <h2>COLD CALLING SALONS WAS ROUGH.</h2>
           </div>
           <div className="caseStack">
-            <p>I was already spending a lot of time thinking about salons. WeBuddy was a way to show up with something useful instead of just asking an owner for their time.</p>
-            <p>The idea was simple: do not make the owner start from a blank page. Start from the business data that already exists, ask for the pieces that are missing, and turn that into a site they can actually use.</p>
-            <p>I am starting to send outbound emails now. The next test is whether the product actually gets me into conversations with salon owners.</p>
+            <p>I was trying to talk to salon owners, and just calling them with nothing to show was not a great way in. I thought it would be much better if I could send them something that already looked useful.</p>
+            <p>The idea became: find the salon, pull the public information that already exists, ask the owner for the pieces only they know, and generate a site around the actual business instead of starting from a blank template.</p>
+            <p>That made WeBuddy useful on its own, but it also gave me another reason to talk to the exact same owners I wanted to learn from for Della.</p>
           </div>
         </div>
       </section>
@@ -66,10 +67,10 @@ export default function WeBuddyCase() {
       <section className="caseBand">
         <div className={styles.compareHeader}>
           <div>
-            <span className="caseLabel">TWO TEMPLATES, ONE MODEL</span>
-            <h2>THE PAGE WAS NOT THE HARD PART.</h2>
+            <span className="caseLabel">THE OUTPUT</span>
+            <h2>TWO VERY DIFFERENT SITES FROM THE SAME SYSTEM.</h2>
           </div>
-          <p>The hard part was formalizing the salon once, then making that same structured data work across very different designs without making every business feel like the same generated site.</p>
+          <p>I did not want every salon to look like the same AI-generated page with a different logo. The challenge was keeping one shared business model underneath very different designs.</p>
         </div>
 
         <div className={styles.templateCompare}>
@@ -82,7 +83,7 @@ export default function WeBuddyCase() {
               height={1000}
               sizes="(max-width: 900px) 100vw, 50vw"
             />
-            <figcaption><span>SOFT LUXURY</span><b>Nail Fever</b><small>same shared ClientSite shape</small></figcaption>
+            <figcaption><span>SOFT LUXURY</span><b>Nail Fever</b><small>same shared business record</small></figcaption>
           </figure>
           <figure className={styles.darkFigure}>
             <Image
@@ -93,13 +94,13 @@ export default function WeBuddyCase() {
               height={1000}
               sizes="(max-width: 900px) 100vw, 50vw"
             />
-            <figcaption><span>BOLD STUDIO</span><b>Avant-Garde Salon & Spa</b><small>same shared ClientSite shape</small></figcaption>
+            <figcaption><span>BOLD STUDIO</span><b>Avant-Garde Salon & Spa</b><small>same shared business record</small></figcaption>
           </figure>
         </div>
       </section>
 
       <section className="caseBand caseBandBlue">
-        <span className="caseLabel">THE PIPELINE</span>
+        <span className="caseLabel">HOW IT WORKS</span>
         <div className={styles.pipeline}>
           <div className={styles.inputs}>
             {inputRows.map((row) => (
@@ -114,10 +115,10 @@ export default function WeBuddyCase() {
           <div className={styles.arrow}>→</div>
 
           <article className={styles.modelCard}>
-            <span>ONE RECORD</span>
+            <span>ONE BUSINESS RECORD</span>
             <strong>ClientSite</strong>
             <b>96 fields</b>
-            <p>Identity, contact, location, hours, services, reviews, photos, story, specialties, trust copy, booking, languages, SEO, billing, domain, and generation state.</p>
+            <p>Services, reviews, photos, hours, story, booking, SEO, location, domain, publishing state, and the rest of the salon profile live in one place.</p>
           </article>
 
           <div className={styles.arrow}>→</div>
@@ -125,7 +126,7 @@ export default function WeBuddyCase() {
           <article className={styles.mapperCard}>
             <span>SHARED MAPPER</span>
             <strong>mapSiteToProfile</strong>
-            <p>One function converts the record into the shape both templates and the shared site widgets understand.</p>
+            <p>The same structured business data can feed either template and the shared site components.</p>
           </article>
 
           <div className={styles.arrow}>→</div>
@@ -137,59 +138,37 @@ export default function WeBuddyCase() {
         </div>
       </section>
 
-      <section className="caseBand">
-        <div className="caseGrid two">
-          <div>
-            <span className="caseLabel">GENERATION</span>
-            <h2>THE DATA GETS FILLED IN BEFORE THE DESIGN GETS PRETTY.</h2>
-          </div>
-          <div className="caseStack">
-            <p>Google Places gives the stable listing data. Public web search tries to fill in services, prices, booking links, specialties, and more review context. The owner confirms or adds the pieces that matter.</p>
-            <p>Then the generation step writes the tagline, subheading, about text, owner story, service descriptions, FAQs, why-us points, hygiene and guarantee copy, plus the SEO title and description.</p>
-            <p>The important part is that generation does not directly own the page. It fills the structured record first, so the templates are rendering data instead of one-off AI markup.</p>
-          </div>
-        </div>
-
-        <div className={styles.generationStrip}>
-          <div><span>01</span><b>SAVE THE BUSINESS</b></div>
-          <div><span>02</span><b>ENRICH PUBLIC DATA</b></div>
-          <div><span>03</span><b>GENERATE COPY</b></div>
-          <div><span>04</span><b>MAP TO TEMPLATE</b></div>
-          <div><span>05</span><b>OWNER EDITS + PUBLISHES</b></div>
-        </div>
-      </section>
-
       <section className="caseBand caseBandDark">
         <div className={styles.controlHeader}>
           <span className="caseLabel">AFTER GENERATION</span>
-          <h2>THE OWNER STILL NEEDS CONTROL.</h2>
-          <p>The generated site is the beginning, not the final screenshot. The dashboard carries the site forward after onboarding.</p>
+          <h2>THE OWNER CAN KEEP CHANGING IT.</h2>
+          <p>The product could not just end at “AI made a website.” The owner still needs to control the business information after the first generation.</p>
         </div>
 
         <figure className={styles.wideArtifact}>
           <Image
             src="/webuddy/owner-dashboard.jpg"
             loading="eager"
-            alt="WeBuddy owner dashboard with publishing, site controls, reviews, photos and revenue attribution"
+            alt="WeBuddy owner dashboard with publishing and site controls"
             width={1600}
             height={1000}
             sizes="100vw"
           />
-          <figcaption>Owner dashboard · publish state · services · photos · reviews · site link · booking revenue</figcaption>
+          <figcaption>Owner dashboard · publishing · services · photos · reviews · site controls</figcaption>
         </figure>
 
         <div className={styles.editorGrid}>
           <div className={styles.editorCopy}>
             <span className="caseLabel">VISUAL EDITOR</span>
-            <h3>Mapped data stays editable.</h3>
-            <p>The owner can edit the sections that came out of the structured profile, replace photos, update trust and safety copy, work with location and hours, and preview desktop or mobile.</p>
-            <p>That mattered because the system could not end at “AI made a website.” It had to leave the business with something it could keep changing.</p>
+            <h3>The generated data stays editable.</h3>
+            <p>Owners can change the mapped content, replace photos, update location and hours, and preview the site on desktop or mobile.</p>
+            <p>WeBuddy also generates the basic SEO layer from the salon data, including page titles, meta descriptions, and business + FAQ structured data.</p>
           </div>
           <figure>
             <Image
               src="/webuddy/visual-editor.jpg"
               loading="eager"
-              alt="WeBuddy visual editor showing mapped salon location, hours and replaceable imagery"
+              alt="WeBuddy visual editor showing salon location, hours and imagery"
               width={1600}
               height={1000}
               sizes="(max-width: 900px) 100vw, 58vw"
@@ -198,43 +177,28 @@ export default function WeBuddyCase() {
         </div>
       </section>
 
-      <section className="caseBand">
-        <div className="caseGrid two">
-          <div>
-            <span className="caseLabel">SEO</span>
-            <h2>USE THE DATA THE SALON ALREADY HAS.</h2>
-          </div>
-          <div className="caseStack">
-            <p>WeBuddy generates page titles, meta descriptions, and schema.org business + FAQ data from the salon&apos;s Google listing.</p>
-            <p>The site also adds business, service, FAQ, page, site, and breadcrumb structured data; Open Graph and Twitter fields; location metadata; and lets owners add Google Analytics, Meta Pixel, or Clarity IDs.</p>
-            <p>The “Get Found” view checks basic visibility and whether the salon&apos;s name, address, and phone match the Google listing.</p>
-            <p className={styles.caveat}>It is not a finished SEO platform. Sites are still single-page, there is no sitemap or service-page system yet, and some metadata/canonical behavior still needs work for custom domains.</p>
-          </div>
-        </div>
-      </section>
-
       <section className="caseBand caseBandInk">
         <span className="caseLabel">WHAT GOT HARD</span>
         <div className={styles.lessonGrid}>
           <article>
             <span>01</span>
-            <h3>Formalize once.</h3>
-            <p>If every template expects different fields, there is no system. The shared model had to be specific enough to render a real salon but stable enough that every template could depend on it.</p>
+            <h3>Make the salon structured.</h3>
+            <p>The hard part was deciding what the system actually needs to know about a salon so the same record can power different templates without everything becoming generic.</p>
           </article>
           <article>
             <span>02</span>
-            <h3>Differentiate enough.</h3>
-            <p>A schema can make the sites consistent, but too little business-specific data makes them feel identical. I had to keep adding the kinds of information that actually change the story and presentation.</p>
+            <h3>Public data is messy.</h3>
+            <p>Google gives a useful base, but services, prices, booking links, and the story of the business can be incomplete or spread across different public sources. AI search helps fill that in, but it is not perfect verification.</p>
           </article>
           <article>
             <span>03</span>
-            <h3>Public research is not truth.</h3>
-            <p>The web-search enrichment is useful, but it is still AI reading public results. The prompt says not to invent things, but there is no deterministic verification layer behind it yet.</p>
+            <h3>Generation cannot own the page.</h3>
+            <p>I wanted the AI to fill a structured record first, not just generate one giant block of website code. That way the owner can keep editing the same underlying business instead of starting over.</p>
           </article>
           <article>
             <span>04</span>
-            <h3>Generation has to survive retries.</h3>
-            <p>The business record is saved first, then the AI work happens in the background. That separation made it possible to retry generation without losing the salon or rebuilding the whole onboarding flow.</p>
+            <h3>The product still has rough edges.</h3>
+            <p>There are still things I would change around integrations, SEO, templates, and publishing. It works, but I do not think of it as finished.</p>
           </article>
         </div>
       </section>
@@ -242,29 +206,27 @@ export default function WeBuddyCase() {
       <section className="caseBand">
         <div className={styles.platformSplit}>
           <article>
-            <span className="caseLabel">BASE44 PROVIDES</span>
-            <h3>The platform underneath it.</h3>
-            <p>Hosting and deploys, database and login, backend function runtime, scheduler, AI calls, outgoing email, file uploads, and the AI builder I used to implement the app.</p>
+            <span className="caseLabel">BASE44 PROVIDED</span>
+            <h3>The infrastructure.</h3>
+            <p>Hosting, database, authentication, backend runtime, scheduling, AI calls, uploads, and the AI builder I used to implement the app.</p>
           </article>
           <article className={styles.mineCard}>
             <span className="caseLabel">I DESIGNED</span>
-            <h3>The product on top.</h3>
-            <p>The product and onboarding flow, the 96-field data model, generation prompts, background generation design, two templates, shared mapping layer, dashboard, and the way the salon data moves through the system.</p>
+            <h3>The product.</h3>
+            <p>The onboarding, business model, generation prompts, two templates, shared mapping layer, dashboard, and the way the salon data moves through the system.</p>
           </article>
         </div>
-        <p className={styles.platformNote}>I built WeBuddy on Base44 rather than writing the entire infrastructure stack by hand. The interesting part for me was deciding what the product should know about a salon, how that information should be represented, and how every part of the site should depend on it.</p>
       </section>
 
       <section className="caseBand caseBandBlue">
         <div className="caseGrid two">
           <div>
-            <span className="caseLabel">NOW</span>
-            <h2>THE NEXT TEST IS NOT ANOTHER TEMPLATE.</h2>
+            <span className="caseLabel">WHERE IT IS NOW</span>
+            <h2>THE REAL TEST IS WHETHER OWNERS CARE.</h2>
           </div>
           <div className="caseStack">
-            <p>I am starting outbound now.</p>
-            <p>WeBuddy was always partly a way to get my foot in the door. If I can send a salon something that already understands its business and looks useful, I have a much better reason to start the conversation.</p>
-            <p>The next thing I care about is whether owners actually respond, what they want changed, and whether the system helps me learn the market faster.</p>
+            <p>I built WeBuddy partly because I wanted a better way to get in front of salon owners. Now I am using it for outbound instead of just adding more templates.</p>
+            <p>If I can send a salon something that already understands a lot of its business, that is a much better opening than another cold call. What I care about next is whether owners respond, what they change, and whether it actually helps me learn the market faster.</p>
           </div>
         </div>
       </section>

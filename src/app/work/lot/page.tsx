@@ -23,7 +23,7 @@ export default function LotCase() {
         <div className="caseGrid two">
           <div><span className="caseLabel">WHERE IT CAME FROM</span><h2>I WANTED TO COMPRESS THE RESEARCH.</h2></div>
           <div className="caseStack">
-            <p>My uncle had moved from construction into real-estate development around Charlottesville, and I was interested in finding properties we could hold, rent, or otherwise structure into good deals around UVA.</p>
+            <p>I am a student in Charlottesville, and I know there is real demand for student housing around UVA. That made it a market I actually wanted to understand instead of picking somewhere random.</p>
             <p>What interested me about AI was the idea that you can take a huge amount of accumulated data and knowledge and compress it into something useful. Real estate felt perfect for that because so much of the work is gathering information that already exists, then figuring out what actually matters.</p>
             <p>I had also been learning about creative financing from people like Pace Morby and Grant Cardone, so I wanted the tool to look for opportunities through that lens instead of just telling me whether a property looked cheap or expensive.</p>
           </div>
