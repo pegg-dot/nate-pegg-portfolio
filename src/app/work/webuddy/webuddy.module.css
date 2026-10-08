@@ -700,3 +700,43 @@
     transform: translate(-31%, -1%);
   }
 }
+
+/* Show the whole product surface. These screenshots are intentionally zoomed OUT so the
+   dashboard/editor read as complete tools rather than cropped details. */
+.controlArtifact {
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.controlArtifactCopy {
+  max-width: 760px;
+}
+
+.artifactViewport,
+.dashboardCrop,
+.editorCrop {
+  aspect-ratio: auto;
+  overflow: visible;
+}
+
+.artifactViewport img,
+.dashboardCrop img,
+.editorCrop img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  transform: none;
+}
+
+@media (max-width: 680px) {
+  .dashboardCrop,
+  .editorCrop {
+    aspect-ratio: auto;
+  }
+
+  .dashboardCrop img,
+  .editorCrop img {
+    width: 100%;
+    transform: none;
+  }
+}
