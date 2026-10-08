@@ -575,3 +575,128 @@
     min-height: 190px;
   }
 }
+
+
+/* Focused product artifacts: crop in so the dashboard/editor are actually readable. */
+.controlArtifacts {
+  display: grid;
+  gap: 54px;
+}
+
+.controlArtifact {
+  display: grid;
+  grid-template-columns: minmax(250px, .34fr) minmax(0, 1fr);
+  gap: clamp(26px, 4vw, 56px);
+  align-items: start;
+}
+
+.controlArtifactCopy {
+  padding-top: 8px;
+}
+
+.controlArtifactCopy h3 {
+  margin: 12px 0 14px;
+  font-size: clamp(34px, 4vw, 58px);
+  line-height: .9;
+  letter-spacing: -.05em;
+}
+
+.controlArtifactCopy p {
+  margin: 0;
+  max-width: 430px;
+  color: #c4beb3;
+  font: 16px/1.42 Georgia, serif;
+}
+
+.focusArtifact {
+  margin: 0;
+  border: 1px solid rgba(243,239,227,.48);
+  background: #080808;
+  overflow: hidden;
+}
+
+.artifactViewport {
+  position: relative;
+  overflow: hidden;
+  background: #080808;
+}
+
+.dashboardCrop {
+  aspect-ratio: 16 / 7.1;
+}
+
+.editorCrop {
+  aspect-ratio: 16 / 7.4;
+  background: #f4f1e8;
+}
+
+.artifactViewport img {
+  display: block;
+  max-width: none;
+  height: auto;
+}
+
+.dashboardCrop img {
+  width: 132%;
+  transform: translate(-12%, -3%);
+}
+
+.editorCrop img {
+  width: 145%;
+  transform: translate(-15%, -4%);
+}
+
+.focusArtifact figcaption {
+  padding: 11px 13px;
+  border-top: 1px solid rgba(243,239,227,.32);
+  color: #bcb6ac;
+  font: 800 8px/1.3 Arial, sans-serif;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.controlFootnote {
+  max-width: 760px;
+  margin: 28px 0 0;
+  color: #9f998f;
+  font: 14px/1.4 Georgia, serif;
+}
+
+@media (max-width: 900px) {
+  .controlArtifact {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .controlArtifactCopy {
+    max-width: 650px;
+  }
+}
+
+@media (max-width: 680px) {
+  .controlArtifacts {
+    gap: 42px;
+  }
+
+  .controlArtifactCopy h3 {
+    font-size: clamp(34px, 10.5vw, 46px);
+  }
+
+  .dashboardCrop {
+    aspect-ratio: 1.35 / 1;
+  }
+
+  .editorCrop {
+    aspect-ratio: 1.3 / 1;
+  }
+
+  .dashboardCrop img {
+    width: 205%;
+    transform: translate(-35%, 0);
+  }
+
+  .editorCrop img {
+    width: 220%;
+    transform: translate(-31%, -1%);
+  }
+}
