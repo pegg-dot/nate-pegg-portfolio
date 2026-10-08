@@ -96,6 +96,7 @@ The current copy is structure and factual draft material, not final application 
     - [x] Transformer deep page rewritten from Nate voice dump and grounded in the actual model/visualizer repo
     - [x] LOT deep page rewritten from current + prior-chat voice context and grounded in the real-estate repo
     - [x] WeBuddy deep page rewritten from prior-chat voice context, shortened, and grounded in the existing product architecture
+    - [x] NPGKTrades deep page rewritten from Nate voice context and grounded in the actual copy-trading pipeline
 
 ### Next phase — deepen the remaining stories
 - [x] MoveMate story replaces HOOS Moving and captures the marketplace → moving-help pivot
