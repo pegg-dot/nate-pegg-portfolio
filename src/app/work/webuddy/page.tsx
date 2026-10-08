@@ -142,39 +142,54 @@ export default function WeBuddyCase() {
         <div className={styles.controlHeader}>
           <span className="caseLabel">AFTER GENERATION</span>
           <h2>THE OWNER CAN KEEP CHANGING IT.</h2>
-          <p>The product could not just end at “AI made a website.” The owner still needs to control the business information after the first generation.</p>
+          <p>The product could not just end at “AI made a website.” The owner still needs a place to manage and update it after the first generation.</p>
         </div>
 
-        <figure className={styles.wideArtifact}>
-          <Image
-            src="/webuddy/owner-dashboard.jpg"
-            loading="eager"
-            alt="WeBuddy owner dashboard with publishing and site controls"
-            width={1600}
-            height={1000}
-            sizes="100vw"
-          />
-          <figcaption>Owner dashboard · publishing · services · photos · reviews · site controls</figcaption>
-        </figure>
+        <div className={styles.controlArtifacts}>
+          <article className={styles.controlArtifact}>
+            <div className={styles.controlArtifactCopy}>
+              <span className="caseLabel">OWNER DASHBOARD</span>
+              <h3>Publish and manage the site.</h3>
+              <p>The dashboard is where the owner can see the site status, publish it, and manage the business information around it.</p>
+            </div>
+            <figure className={styles.focusArtifact}>
+              <div className={`${styles.artifactViewport} ${styles.dashboardCrop}`}>
+                <Image
+                  src="/webuddy/owner-dashboard.jpg"
+                  loading="eager"
+                  alt="WeBuddy owner dashboard showing publishing controls, site status, services, photos and reviews"
+                  width={1600}
+                  height={1000}
+                  sizes="100vw"
+                />
+              </div>
+              <figcaption>Owner dashboard · publish state · site controls · services · photos · reviews</figcaption>
+            </figure>
+          </article>
 
-        <div className={styles.editorGrid}>
-          <div className={styles.editorCopy}>
-            <span className="caseLabel">VISUAL EDITOR</span>
-            <h3>The generated data stays editable.</h3>
-            <p>Owners can change the mapped content, replace photos, update location and hours, and preview the site on desktop or mobile.</p>
-            <p>WeBuddy also generates the basic SEO layer from the salon data, including page titles, meta descriptions, and business + FAQ structured data.</p>
-          </div>
-          <figure>
-            <Image
-              src="/webuddy/visual-editor.jpg"
-              loading="eager"
-              alt="WeBuddy visual editor showing salon location, hours and imagery"
-              width={1600}
-              height={1000}
-              sizes="(max-width: 900px) 100vw, 58vw"
-            />
-          </figure>
+          <article className={styles.controlArtifact}>
+            <div className={styles.controlArtifactCopy}>
+              <span className="caseLabel">VISUAL EDITOR</span>
+              <h3>Edit the generated site itself.</h3>
+              <p>The owner can change mapped content, replace photos, update location and hours, and preview the site on desktop or mobile before publishing.</p>
+            </div>
+            <figure className={styles.focusArtifact}>
+              <div className={`${styles.artifactViewport} ${styles.editorCrop}`}>
+                <Image
+                  src="/webuddy/visual-editor.jpg"
+                  loading="eager"
+                  alt="WeBuddy visual editor showing the editable salon website preview"
+                  width={1600}
+                  height={1000}
+                  sizes="100vw"
+                />
+              </div>
+              <figcaption>Visual editor · editable sections · imagery · hours · location · desktop/mobile preview</figcaption>
+            </figure>
+          </article>
         </div>
+
+        <p className={styles.controlFootnote}>WeBuddy also generates the basic SEO layer from the salon data, including page titles, meta descriptions, and business + FAQ structured data.</p>
       </section>
 
       <section className="caseBand caseBandInk">
