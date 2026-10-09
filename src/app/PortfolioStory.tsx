@@ -92,12 +92,12 @@ export default function PortfolioStory() {
         <div className="sectionRail"><span>10</span><span>MADE BY HAND</span><span>GRAPHITE / COLOR</span></div>
         <div className="artLead"><h2>Drawings</h2><div className="artIntro"><p>I started drawing in preschool. I still remember drawing some fish, and my teacher being so impressed that she took me around the school to show the principal and other teachers. Since then, I’ve kept drawing whatever interests me and trying to get better.</p><p>These are a few of my drawings from over the years. I also draw people’s dogs, which people started asking me to do around COVID. A lot of those requests now come through my Instagram, <a href="https://www.instagram.com/nate_draws07/" target="_blank" rel="noreferrer">@nate_draws07</a>.</p></div></div>
         <div className="artWall">
-          <figure className="artPiece p1"><Image src="/art/bob-marley.jpg" alt="Graphite portrait drawing" fill sizes="(max-width: 680px) 90vw, 40vw" /><figcaption>graphite portrait</figcaption></figure>
-          <figure className="artPiece p2" data-pencil-target="art"><Image src="/art/coke-can.jpg" alt="Drawing of a crushed Coca-Cola can" fill sizes="(max-width: 680px) 90vw, 30vw" /><figcaption>colored pencil</figcaption></figure>
-          <figure className="artPiece p3"><Image src="/art/dog-scarf.jpg" alt="Graphite dog portrait" fill sizes="(max-width: 680px) 90vw, 35vw" /><figcaption>commission portrait</figcaption></figure>
+          <figure className="artPiece p1" data-pencil-target="marley"><Image src="/art/bob-marley.jpg" alt="Graphite portrait of Bob Marley" fill sizes="(max-width: 680px) 90vw, 40vw" /><figcaption>graphite portrait</figcaption></figure>
+          <figure className="artPiece p2"><Image src="/art/coke-can.jpg" alt="Drawing of a crushed Coca-Cola can" fill sizes="(max-width: 680px) 90vw, 30vw" /><figcaption>colored pencil</figcaption></figure>
+          <figure className="artPiece p3" data-pencil-target="dog"><Image src="/art/dog-scarf.jpg" alt="Graphite dog portrait" fill sizes="(max-width: 680px) 90vw, 35vw" /><figcaption>commission portrait</figcaption></figure>
           <figure className="artPiece p4"><Image src="/art/house.jpg" alt="Architectural graphite drawing of a house" fill sizes="(max-width: 680px) 90vw, 48vw" /><figcaption>architecture study</figcaption></figure>
           <figure className="artPiece p5"><Image src="/art/moose.jpg" alt="Graphite moose drawing" fill sizes="(max-width: 680px) 90vw, 32vw" /><figcaption>graphite</figcaption></figure>
-          <figure className="artPiece p6"><Image src="/art/miami.jpg" alt="Color drawing collage of Miami" fill sizes="(max-width: 680px) 90vw, 35vw" /><figcaption>Miami</figcaption></figure>
+          <figure className="artPiece p6" data-pencil-target="miami"><Image src="/art/miami.jpg" alt="Color drawing collage of Miami" fill sizes="(max-width: 680px) 90vw, 35vw" /><figcaption>Miami</figcaption></figure>
         </div>
       </section>
 

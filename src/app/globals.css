@@ -1381,10 +1381,29 @@ section[id] { scroll-margin-top: 24px; }
 }
 
 /* Drawings: room for Nate’s story and a readable title on phones. */
-.artLead h2 { font-size: clamp(52px, 10vw, 150px); }
+.artLead { min-height: auto; align-items: start; grid-template-columns: 1fr 1fr; padding: clamp(48px, 6vw, 90px) 0 48px; }
+.artLead h2 { font-size: clamp(52px, 8vw, 120px); line-height: .95; }
+.artIntro { max-width: 560px; }
+.artLead p { max-width: none; font-size: clamp(18px, 1.45vw, 21px); line-height: 1.45; }
 .artIntro p:first-child { margin-top: 0; }
 .artIntro p:last-child { margin-bottom: 0; }
 .artIntro a { text-decoration: underline; text-underline-offset: 4px; }
+.artWall { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 120px 9%; min-height: auto; padding: 80px 4% 100px; }
+.artPiece.p1, .artPiece.p2, .artPiece.p3, .artPiece.p4, .artPiece.p5, .artPiece.p6 { position: relative; inset: auto; width: 100%; height: auto; aspect-ratio: 4 / 5; }
+.artPiece.p2 { width: 74%; justify-self: center; margin-top: 100px; aspect-ratio: 3 / 4; }
+.artPiece.p3 { width: 80%; justify-self: center; }
+.artPiece.p4 { margin-top: 110px; aspect-ratio: 6 / 5; }
+.artPiece.p5 { width: 78%; justify-self: center; aspect-ratio: 3 / 4; }
+.artPiece.p6 { width: 84%; margin-top: 100px; aspect-ratio: 4 / 5; }
+.pencilNote { fill: #514b3f; font-family: "Bradley Hand", "Segoe Print", "Apple Chancery", cursive; font-size: clamp(18px, 1.5vw, 25px); }
 @media (max-width: 680px) {
+  .artLead { grid-template-columns: 1fr; gap: 28px; padding: 44px 0 32px; }
   .artLead h2 { font-size: clamp(52px, 16vw, 90px); }
+  .artWall { grid-template-columns: 1fr; gap: 96px; padding: 70px 0 60px; }
+  .artPiece.p1, .artPiece.p2, .artPiece.p3, .artPiece.p4, .artPiece.p5, .artPiece.p6 { width: 100%; margin-top: 0; }
+  .semanticLine { display: block; }
+  .pencilNote { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .semanticLine { display: block; }
 }

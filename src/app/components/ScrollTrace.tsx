@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
-type Mode = "circle" | "underline" | "bracket" | "star" | "arrow";
+type Mode = "circle" | "underline" | "bracket" | "note" | "arrow";
 
 type Spec = {
   id: string;
@@ -10,19 +10,24 @@ type Spec = {
   mode: Mode;
   tone: "ink" | "paper";
   delay?: number;
+  label?: string;
 };
 
 type Geometry = Spec & {
   d: string;
   start: number;
   end: number;
+  labelX?: number;
+  labelY?: number;
 };
 
 const specs: Spec[] = [
   { id: "della", selector: '[data-pencil-target="della"]', mode: "circle", tone: "ink" },
   { id: "vial", selector: '[data-pencil-target="vial"]', mode: "underline", tone: "ink" },
   { id: "transformer", selector: '[data-pencil-target="transformer"]', mode: "bracket", tone: "paper" },
-  { id: "art", selector: '[data-pencil-target="art"]', mode: "star", tone: "ink" },
+  { id: "marley", selector: '[data-pencil-target="marley"]', mode: "note", tone: "ink", label: "Bob Marley" },
+  { id: "dog", selector: '[data-pencil-target="dog"]', mode: "note", tone: "ink", label: "dog" },
+  { id: "miami", selector: '[data-pencil-target="miami"]', mode: "note", tone: "ink", label: "a little Miami" },
   { id: "rowing", selector: '[data-pencil-target="rowing"]', mode: "arrow", tone: "paper" },
   { id: "about", selector: '[data-pencil-target="about"]', mode: "circle", tone: "ink" },
 ];
@@ -62,18 +67,11 @@ function bracketPath(x: number, y: number, w: number, h: number) {
   return `M ${bx - 20} ${top} C ${bx} ${top}, ${bx} ${top + 14}, ${bx} ${top + 28} L ${bx} ${mid - 16} C ${bx} ${mid - 5}, ${bx + 12} ${mid - 4}, ${bx + 20} ${mid} C ${bx + 12} ${mid + 4}, ${bx} ${mid + 5}, ${bx} ${mid + 16} L ${bx} ${bottom - 28} C ${bx} ${bottom - 14}, ${bx} ${bottom}, ${bx - 20} ${bottom}`;
 }
 
-function starPath(x: number, y: number, w: number, h: number) {
-  const cx = x + w * .82;
-  const cy = y + h * .18;
-  const outer = Math.max(34, Math.min(62, Math.min(w, h) * .15));
-  const inner = outer * .42;
-  const pts: string[] = [];
-  for (let i = 0; i < 10; i += 1) {
-    const r = i % 2 === 0 ? outer : inner;
-    const a = -Math.PI / 2 + (Math.PI * i) / 5;
-    pts.push(`${cx + Math.cos(a) * r} ${cy + Math.sin(a) * r}`);
-  }
-  return `M ${pts[0]} L ${pts.slice(1).join(" L ")} Z`;
+function notePath(x: number, y: number, w: number) {
+  // One continuous, loose stroke in the paper margin, ending just above the art.
+  const endX = x + w * .18;
+  const endY = y - 10;
+  return `M ${x + w * .62} ${y - 48} C ${x + w * .48} ${y - 80}, ${x + w * .13} ${y - 78}, ${endX} ${endY} Q ${endX - 7} ${endY - 5}, ${endX - 13} ${endY - 14} Q ${endX - 5} ${endY - 5}, ${endX} ${endY} Q ${endX + 6} ${endY - 9}, ${endX + 14} ${endY - 13}`;
 }
 
 function arrowPath(x: number, y: number, w: number, h: number) {
@@ -90,7 +88,7 @@ function buildPath(mode: Mode, x: number, y: number, w: number, h: number) {
   if (mode === "circle") return circlePath(x, y, w, h);
   if (mode === "underline") return underlinePath(x, y, w, h);
   if (mode === "bracket") return bracketPath(x, y, w, h);
-  if (mode === "star") return starPath(x, y, w, h);
+  if (mode === "note") return notePath(x, y, w);
   return arrowPath(x, y, w, h);
 }
 
@@ -126,9 +124,9 @@ export default function ScrollTrace() {
         const y = r.top + window.scrollY;
         const w = r.width;
         const h = r.height;
-        const start = Math.max(0, y - window.innerHeight * .72 + (spec.delay ?? 0));
-        const duration = Math.max(260, Math.min(460, 230 + h * .8));
-        return [{ ...spec, d: buildPath(spec.mode, x, y, w, h), start, end: start + duration }];
+        const start = Math.max(0, y - window.innerHeight * (spec.mode === "note" ? .82 : .72) + (spec.delay ?? 0));
+        const duration = spec.mode === "note" ? Math.min(240, window.innerHeight * .3) : Math.max(260, Math.min(460, 230 + h * .8));
+        return [{ ...spec, d: buildPath(spec.mode, x, y, w, h), start, end: start + duration, labelX: x + w * .63, labelY: y - 45 }];
       });
       setGeometry(next);
       requestAnimationFrame(() => setTick((v) => v + 1));
@@ -152,9 +150,15 @@ export default function ScrollTrace() {
   useEffect(() => {
     if (reduced) return;
     let raf = 0;
+    let easedY = window.scrollY;
+    let lastTime = 0;
 
-    const sync = () => {
-      const y = window.scrollY;
+    const sync = (time: number) => {
+      const elapsed = lastTime ? Math.min(64, time - lastTime) : 16;
+      lastTime = time;
+      easedY += (window.scrollY - easedY) * (1 - Math.exp(-elapsed / 65));
+      if (Math.abs(window.scrollY - easedY) < .2) easedY = window.scrollY;
+      const y = easedY;
       setScrollY(y);
 
       const active = geometry.find((g) => {
@@ -181,7 +185,8 @@ export default function ScrollTrace() {
         setTip(null);
       }
 
-      raf = 0;
+      raf = easedY !== window.scrollY ? requestAnimationFrame(sync) : 0;
+      if (!raf) lastTime = 0;
     };
 
     const queue = () => { if (!raf) raf = requestAnimationFrame(sync); };
@@ -212,8 +217,8 @@ export default function ScrollTrace() {
       aria-hidden="true"
     >
       {geometry.map((g) => (
+        <g key={g.id}>
         <path
-          key={g.id}
           ref={(el) => { pathRefs.current[g.id] = el; }}
           className={`semanticInk ${g.tone === "paper" ? "paperInk" : ""}`}
           d={g.d}
@@ -224,6 +229,8 @@ export default function ScrollTrace() {
             strokeDashoffset: 1 - (progress[g.id] ?? 0),
           }}
         />
+        {g.label ? <text className="pencilNote" x={g.labelX} y={g.labelY} transform={`rotate(-5 ${g.labelX} ${g.labelY})`} style={{ opacity: clamp(((progress[g.id] ?? 0) - .45) / .45) }}>{g.label}</text> : null}
+        </g>
       ))}
 
       {!reduced && tip ? (
