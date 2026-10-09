@@ -9,7 +9,7 @@ export default function UvaSpatialCase() {
       className="caseCompact spatialCase"
       index="08 / UVA SPATIAL OS"
       title="UVA SPATIAL OS"
-      subtitle="I started UVA Spatial OS during my first year at UVA because I realized I really didn't know my way around Grounds. Google Maps helped me get between buildings, but the routes it gave me weren't always the most efficient. It didn't know about the smaller paths and back ways I often took around campus. I thought I could make something that understood how I actually moved around UVA. I wanted it to find the quickest route, including those smaller paths, and use my class schedule to tell me when to leave. Ideally, it would know where I was, how long it would take me to get to class, and send me a notification when it was time to go. I also wanted the routes to follow paths that actually exist on Grounds."
+      subtitle="I started UVA Spatial OS this year, my first year at UVA, after realizing I really didn't know my way around Grounds. Google Maps helped me get between buildings, but the routes it gave me weren't always the most efficient. It didn't know about the smaller paths and back ways I often took around campus. I thought I could make something that understood how I actually moved around UVA. I wanted it to find the quickest route, including those smaller paths, and use my class schedule to tell me when to leave. Ideally, it would know where I was, how long it would take me to get to class, and send me a notification when it was time to go. I also wanted the routes to follow paths that actually exist on Grounds."
       external={{ label: "GITHUB", href: "https://github.com/pegg-dot/uva-spatial-os" }}
       actions={[
         { label: "VIEW CODE", href: "https://github.com/pegg-dot/uva-spatial-os", external: true },
@@ -30,7 +30,7 @@ export default function UvaSpatialCase() {
         },
         {
           label: "WHEN",
-          text: "I started it during my first year at UVA in 2026. It's still a local preview, and I need to check the routing data on Grounds before I'd call it ready to use.",
+          text: "It's still a local preview, and I need to check the routing data on Grounds before I'd call it ready to use.",
         },
       ]} />
 
