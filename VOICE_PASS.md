@@ -25,7 +25,7 @@ Editing rule: cut repetition, fix grammar only when it gets in the way, preserve
 5. Say No To Plastic
 6. NPGKTrades
 7. WebBuddy
-8. UVA Spatial OS
+8. Grounds Guide
 9. HOOS Moving
 10. About
 

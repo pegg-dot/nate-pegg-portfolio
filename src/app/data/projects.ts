@@ -64,11 +64,11 @@ export const projects: Project[] = [
     status: "live",
   },
   {
-    slug: "uva-spatial",
-    title: "UVA Spatial OS",
+    slug: "grounds-guide",
+    title: "Grounds Guide",
     kicker: "Campus routing + spatial truth",
     meta: "GIS · entrances · route verification",
-    href: "/work/uva-spatial",
+    href: "/work/grounds-guide",
     status: "building",
   },
   {

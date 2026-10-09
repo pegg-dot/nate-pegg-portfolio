@@ -30,7 +30,7 @@
 
 **Deferred:** no deletion of the deeper stories; they move into the project pages instead of crowding the index.
 
-**Revisit checkpoint:** once WeBuddy and UVA Spatial OS have their own story pages, check whether any homepage spotlight still contains information that belongs one level deeper.
+**Revisit checkpoint:** once WeBuddy and Grounds Guide have their own story pages, check whether any homepage spotlight still contains information that belongs one level deeper.
 
 ## Pivot — 2026-09-26, pass 3
 
@@ -89,7 +89,7 @@ The current copy is structure and factual draft material, not final application 
 - [x] LOT, NPGKTrades and Say No To Plastic story pages
 - [x] art and rowing kept as personal chapters
 - [x] Nate pass on all first-person wording using his spoken answers as the source
-  - [x] Homepage opening, featured-project motivations, WeBuddy/UVA Spatial OS origins, and About intro rewritten from Nate voice dump
+  - [x] Homepage opening, featured-project motivations, WeBuddy/Grounds Guide origins, and About intro rewritten from Nate voice dump
   - [x] Deep project pages completed in Nate's voice
     - [x] Della deep page rewritten from Nate voice dump and tightened into a denser case-study layout
     - [x] VialGrade deep page rewritten from Nate voice dump, grounded in the actual grading/attribution code, and tightened to the Della density
@@ -99,13 +99,13 @@ The current copy is structure and factual draft material, not final application 
     - [x] NPGKTrades deep page rewritten from Nate voice context and grounded in the actual copy-trading pipeline
     - [x] Say No To Plastic deep page rewritten from Nate voice context and grounded in the live client project + source/validation architecture
     - [x] MoveMate deep page rewritten in Nate voice around the marketplace → moving-help shift, assumption testing, campus posters, and current MVP
-    - [x] UVA Spatial OS deep page grounded in the routing repo, current local preview, schedule ingestion, validation limits, and Nate's UVA origin story
+    - [x] Grounds Guide deep page grounded in the routing repo, current local preview, schedule ingestion, validation limits, and Nate's UVA origin story
 
 ### Completed — deepen the remaining stories
 - [x] MoveMate story replaces HOOS Moving and captures the marketplace → moving-help pivot
 - [x] MoveMate campus poster campaign restored
 - [x] WeBuddy artifact + story, including structured data model, template mapping, owner dashboard, SEO scope and Base44 split
-- [x] UVA Spatial OS artifact + story
+- [x] Grounds Guide artifact + story
 
 ### Current phase — launch hardening
 - [ ] image/performance pass
