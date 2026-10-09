@@ -18,19 +18,19 @@ export default function PlasticCase() {
       <ProjectBrief items={[
         {
           label: "WHAT",
-          text: "A public education platform around Homo Plasticus, microplastics, and Dr. Haddad's broader work. It now includes the book, interactive science, newsletters, podcast and TEDx content, practical guides, and owner tools.",
+          text: "A website around Dr. Haddad's book and his work on microplastics. It now includes the book, science pages, newsletters, a body experience, practical guides, podcast and TEDx content, and tools for managing the site.",
         },
         {
           label: "WHY",
-          text: "The original goal was to give people a place to buy the book, learn more about plastic, sign up for weekly newsletters, and eventually support a broader project around affiliates, products, and awareness.",
+          text: "The original goal was to give people a place to buy the book, learn more about plastic, sign up for weekly newsletters, and eventually grow the project through things like affiliates, products, and more awareness.",
         },
         {
           label: "HOW",
-          text: "I built the site around an interactive body journey, study-backed content, practical exposure guides, book and media pages, newsletter infrastructure, admin tools, and a source/validation system underneath it.",
+          text: "I built the site, the interactive body experience, newsletter flow, book and media pages, admin tools, Spanish content, and the source and validation work behind the science pages.",
         },
         {
           label: "WHEN",
-          text: "Built in 2026 as a real client project for Dr. Elie Haddad. The scope kept growing as we figured out what the project could become.",
+          text: "Built in 2026 for Dr. Elie Haddad. It started as a book website and kept expanding as we worked on it.",
         },
       ]} />
 
@@ -38,7 +38,7 @@ export default function PlasticCase() {
         <div className="caseGrid two">
           <div>
             <span className="caseLabel">WHERE IT STARTED</span>
-            <h2>IT STARTED AS A WEBSITE FOR HIS NEW BOOK.</h2>
+            <h2>HOMO PLASTICUS.</h2>
           </div>
           <div className="caseStack">
             <p>Dr. Elie Haddad originally asked me to build a website around his new book, <em>Homo Plasticus</em>. The goal was not just to have a page where people could buy the book, but to create a place where people could learn more about plastic, sign up for newsletters, and eventually support a broader project around affiliates, products, and awareness.</p>
@@ -61,13 +61,12 @@ export default function PlasticCase() {
       <section className="caseBand caseBandBlue">
         <div className="caseGrid two">
           <div>
-            <span className="caseLabel">WHAT IT TURNED INTO</span>
-            <h2>THE BOOK BECAME ONE PART OF A MUCH BIGGER SITE.</h2>
+            <span className="caseLabel">HOW IT GREW</span>
+            <h2>MORE THAN A BOOK SITE.</h2>
           </div>
           <div className="caseStack">
-            <p>As we kept working on it, the site expanded into the main home for the science, the book, weekly newsletters, practical guides, Dr. Haddad’s podcast and TEDx work, and the other parts of the project.</p>
-            <p>The biggest visual piece became the body experience. Instead of just putting research into cards or articles, I wanted somebody to be able to move through the body and understand where researchers are actually finding plastic-derived material and what each study does and does not show.</p>
-            <p>We also built the less visible parts around that: newsletter sending, owner-facing content tools, Spanish content, source traceability, and validation so the site could keep growing without every change turning into a rebuild.</p>
+            <p>As we kept working on it, we kept adding more. We added the science pages, the anatomy experience, weekly newsletters, practical guides, Dr. Haddad’s podcast and TEDx work, Spanish content, and admin tools so he could manage parts of the site himself.</p>
+            <p>A lot of the project grew from Dr. Haddad going through the site, sending me changes, and coming up with new things he wanted to add. Something we thought was finished would usually lead to another part of the site.</p>
           </div>
         </div>
       </section>
@@ -75,13 +74,13 @@ export default function PlasticCase() {
       <section className="caseBand caseBandInk">
         <div className="caseGrid two">
           <div>
-            <span className="caseLabel">THE PART I KEPT PUSHING</span>
-            <h2>THE MICROPLASTICS HAD TO FEEL LIKE PART OF THE BODY.</h2>
+            <span className="caseLabel">THE BODY EXPERIENCE</span>
+            <h2>MAKING THE SCIENCE VISUAL.</h2>
           </div>
           <div className="caseStack">
-            <p>I did not want the anatomy section to just have a generic image of microplastics sitting beside it. I wanted the particles to actually exist inside and around the live 3D body so the science felt connected to what you were looking at.</p>
-            <p>I also kept changing how the particles looked because having every one of them show up as the same little colored dot felt fake. I wanted fibers, flakes, shards, different sizes and colors, and enough variation that it felt more like the material the site was actually talking about.</p>
-            <p>A lot of the work became figuring out how to make a pretty technical subject feel visual without turning it into decoration.</p>
+            <p>The anatomy became one of the biggest parts of the site. I did not want it to just be a 3D body with some generic microplastic image beside it. I wanted the particles to actually exist inside and around the body so what you were looking at felt connected to the science.</p>
+            <p>I also kept changing the particles because having every one of them show up as the same little colored dot looked fake. I wanted fibers, flakes, shards, different sizes and colors, and enough variation that it actually felt like the material we were talking about.</p>
+            <p>At the same time, I had to be careful not to make the science seem more certain than it was. A 3D body can look very authoritative, so I wanted the study, what it found, and its limitations to stay connected to the visual instead of making claims the research did not actually make.</p>
           </div>
         </div>
       </section>
@@ -89,32 +88,17 @@ export default function PlasticCase() {
       <section className="caseBand">
         <div className="caseGrid two">
           <div>
-            <span className="caseLabel">WHAT MADE IT HARD</span>
-            <h2>THE VISUALS COULD NOT SAY MORE THAN THE SCIENCE DID.</h2>
+            <span className="caseLabel">CLIENT WORK</span>
+            <h2>WORKING WITH DR. HADDAD.</h2>
           </div>
           <div className="caseStack">
-            <p>Microplastics are a subject where it is very easy to make something sound scarier or more certain than the underlying research actually is. A dramatic body visualization can make a claim feel authoritative even when the paper itself is much narrower.</p>
-            <p>So I ended up caring a lot about keeping the source, what the study found, and its limitations attached to the experience. The repo has source audits, content validation, accessibility checks, and release checks because I did not want the visual side to outrun the evidence underneath it.</p>
-            <p>The challenge was making the science understandable for a normal person without pretending the research proves something it does not.</p>
+            <p>This was also one of the first projects where I was building for somebody else instead of just myself. Dr. Haddad would review things, send changes, and add ideas, and I had to keep adjusting the site around what he actually wanted.</p>
+            <p>That is how it ended up becoming much bigger than the original book website without just turning into a bunch of random pages.</p>
           </div>
         </div>
       </section>
 
       <section className="caseBand caseBandBlue">
-        <div className="caseGrid two">
-          <div>
-            <span className="caseLabel">WORKING WITH A REAL CLIENT</span>
-            <h2>THE PROJECT KEPT CHANGING AS WE USED IT.</h2>
-          </div>
-          <div className="caseStack">
-            <p>This was also one of the projects where I learned how different it is to build for an actual person instead of just myself. Dr. Haddad would review the site, send changes, add new ideas, and sometimes the thing we thought was finished would turn into another part of the project.</p>
-            <p>That is how the site ended up expanding from the book into newsletters, the science experience, podcast and TEDx content, owner tools, Spanish parity, and the other pieces that are there now.</p>
-            <p>I had to keep making those additions without letting the whole thing turn into a bunch of disconnected pages.</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="caseBand">
         <span className="caseLabel">WHAT EXISTS NOW</span>
         <div className="buildFacts">
           <span>Homo Plasticus</span>
