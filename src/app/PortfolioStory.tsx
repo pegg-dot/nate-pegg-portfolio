@@ -90,7 +90,7 @@ export default function PortfolioStory() {
 
       <section className="artSection" id="draw">
         <div className="sectionRail"><span>10</span><span>MADE BY HAND</span><span>GRAPHITE / COLOR</span></div>
-        <div className="artLead"><h2>THE LINE<br/>LEAVES<br/>THE SCREEN.</h2><p>I drew long before I built software. I still like making something where every mark is mine and there is no undo button.</p></div>
+        <div className="artLead"><h2>Drawings</h2><div className="artIntro"><p>I started drawing in preschool. I still remember drawing some fish, and my teacher being so impressed that she took me around the school to show the principal and other teachers. Since then, I’ve kept drawing whatever interests me and trying to get better.</p><p>These are a few of my drawings from over the years. I also draw people’s dogs, which people started asking me to do around COVID. A lot of those requests now come through my Instagram, <a href="https://www.instagram.com/nate_draws07/" target="_blank" rel="noreferrer">@nate_draws07</a>.</p></div></div>
         <div className="artWall">
           <figure className="artPiece p1"><Image src="/art/bob-marley.jpg" alt="Graphite portrait drawing" fill sizes="(max-width: 680px) 90vw, 40vw" /><figcaption>graphite portrait</figcaption></figure>
           <figure className="artPiece p2" data-pencil-target="art"><Image src="/art/coke-can.jpg" alt="Drawing of a crushed Coca-Cola can" fill sizes="(max-width: 680px) 90vw, 30vw" /><figcaption>colored pencil</figcaption></figure>

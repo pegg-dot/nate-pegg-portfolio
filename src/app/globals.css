@@ -1379,3 +1379,12 @@ section[id] { scroll-margin-top: 24px; }
   .benchCard:hover, .projectActions a:hover, .caseHeroActions a:hover { transform: none !important; }
   .originRow:hover { padding-left: 8px; padding-right: 8px; }
 }
+
+/* Drawings: room for Nate’s story and a readable title on phones. */
+.artLead h2 { font-size: clamp(52px, 10vw, 150px); }
+.artIntro p:first-child { margin-top: 0; }
+.artIntro p:last-child { margin-bottom: 0; }
+.artIntro a { text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 680px) {
+  .artLead h2 { font-size: clamp(52px, 16vw, 90px); }
+}
