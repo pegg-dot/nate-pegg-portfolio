@@ -19,6 +19,7 @@ type Geometry = Spec & {
   end: number;
   labelX?: number;
   labelY?: number;
+  labelAngle?: number;
 };
 
 const specs: Spec[] = [
@@ -67,11 +68,36 @@ function bracketPath(x: number, y: number, w: number, h: number) {
   return `M ${bx - 20} ${top} C ${bx} ${top}, ${bx} ${top + 14}, ${bx} ${top + 28} L ${bx} ${mid - 16} C ${bx} ${mid - 5}, ${bx + 12} ${mid - 4}, ${bx + 20} ${mid} C ${bx + 12} ${mid + 4}, ${bx} ${mid + 5}, ${bx} ${mid + 16} L ${bx} ${bottom - 28} C ${bx} ${bottom - 14}, ${bx} ${bottom}, ${bx - 20} ${bottom}`;
 }
 
-function notePath(x: number, y: number, w: number) {
-  // One continuous, loose stroke in the paper margin, ending just above the art.
+function noteGeometry(id: string, x: number, y: number, w: number, h: number, narrow: boolean) {
+  if (id === "dog" && !narrow) {
+    // A small loop beside the portrait, pointing back into its right edge.
+    const right = x + w;
+    const endY = y + h * .43;
+    return {
+      d: `M ${right + 42} ${y + h * .25 + 18} C ${right + 95} ${y + h * .29}, ${right + 92} ${endY + 14}, ${right + 12} ${endY} Q ${right + 18} ${endY - 6}, ${right + 26} ${endY - 9} Q ${right + 17} ${endY - 3}, ${right + 12} ${endY} L ${right + 25} ${endY + 10}`,
+      anchorY: y + h * .25,
+      labelX: right + 24, labelY: y + h * .25 + 2, labelAngle: 8,
+    };
+  }
+  if (id === "miami" || id === "dog") {
+    // A low, wandering tail that turns upward from the note below the drawing.
+    const bottom = y + h;
+    const endX = x + w * (id === "miami" ? .86 : .65);
+    const endY = bottom + 12;
+    return {
+      d: `M ${x + w * (id === "miami" ? .61 : .28)} ${bottom + 48} C ${x + w * .79} ${bottom + 89}, ${x + w * .98} ${bottom + 57}, ${endX} ${endY} Q ${endX - 1} ${endY + 10}, ${endX - 4} ${endY + 18} Q ${endX - 1} ${endY + 7}, ${endX} ${endY} L ${endX + 15} ${endY + 9}`,
+      anchorY: bottom + 30,
+      labelX: x + w * .08, labelY: bottom + 51, labelAngle: id === "miami" ? -3 : 6,
+    };
+  }
+  // A broad swoop above Marley, turning down toward the top-left corner.
   const endX = x + w * .18;
   const endY = y - 10;
-  return `M ${x + w * .62} ${y - 48} C ${x + w * .48} ${y - 80}, ${x + w * .13} ${y - 78}, ${endX} ${endY} Q ${endX - 7} ${endY - 5}, ${endX - 13} ${endY - 14} Q ${endX - 5} ${endY - 5}, ${endX} ${endY} Q ${endX + 6} ${endY - 9}, ${endX + 14} ${endY - 13}`;
+  return {
+    d: `M ${x + w * .62} ${y - 48} C ${x + w * .48} ${y - 80}, ${x + w * .13} ${y - 78}, ${endX} ${endY} Q ${endX - 7} ${endY - 5}, ${endX - 13} ${endY - 14} Q ${endX - 5} ${endY - 5}, ${endX} ${endY} Q ${endX + 6} ${endY - 9}, ${endX + 14} ${endY - 13}`,
+    anchorY: y - 40,
+    labelX: x + w * .63, labelY: y - 45, labelAngle: -5,
+  };
 }
 
 function arrowPath(x: number, y: number, w: number, h: number) {
@@ -88,7 +114,6 @@ function buildPath(mode: Mode, x: number, y: number, w: number, h: number) {
   if (mode === "circle") return circlePath(x, y, w, h);
   if (mode === "underline") return underlinePath(x, y, w, h);
   if (mode === "bracket") return bracketPath(x, y, w, h);
-  if (mode === "note") return notePath(x, y, w);
   return arrowPath(x, y, w, h);
 }
 
@@ -124,9 +149,10 @@ export default function ScrollTrace() {
         const y = r.top + window.scrollY;
         const w = r.width;
         const h = r.height;
-        const start = Math.max(0, y - window.innerHeight * (spec.mode === "note" ? .82 : .72) + (spec.delay ?? 0));
+        const note = spec.mode === "note" ? noteGeometry(spec.id, x, y, w, h, width <= 680) : null;
+        const start = Math.max(0, (note?.anchorY ?? y) - window.innerHeight * (note ? .82 : .72) + (spec.delay ?? 0));
         const duration = spec.mode === "note" ? Math.min(240, window.innerHeight * .3) : Math.max(260, Math.min(460, 230 + h * .8));
-        return [{ ...spec, d: buildPath(spec.mode, x, y, w, h), start, end: start + duration, labelX: x + w * .63, labelY: y - 45 }];
+        return [{ ...spec, d: note?.d ?? buildPath(spec.mode, x, y, w, h), start, end: start + duration, labelX: note?.labelX, labelY: note?.labelY, labelAngle: note?.labelAngle }];
       });
       setGeometry(next);
       requestAnimationFrame(() => setTick((v) => v + 1));
@@ -229,7 +255,7 @@ export default function ScrollTrace() {
             strokeDashoffset: 1 - (progress[g.id] ?? 0),
           }}
         />
-        {g.label ? <text className="pencilNote" x={g.labelX} y={g.labelY} transform={`rotate(-5 ${g.labelX} ${g.labelY})`} style={{ opacity: clamp(((progress[g.id] ?? 0) - .45) / .45) }}>{g.label}</text> : null}
+        {g.label ? <text className="pencilNote" x={g.labelX} y={g.labelY} transform={`rotate(${g.labelAngle ?? 0} ${g.labelX} ${g.labelY})`} style={{ opacity: clamp(((progress[g.id] ?? 0) - .45) / .45) }}>{g.label}</text> : null}
         </g>
       ))}
 
