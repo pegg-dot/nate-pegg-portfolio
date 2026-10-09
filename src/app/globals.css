@@ -1395,7 +1395,14 @@ section[id] { scroll-margin-top: 24px; }
 .artPiece.p4 { margin-top: 110px; aspect-ratio: 6 / 5; }
 .artPiece.p5 { width: 78%; justify-self: center; aspect-ratio: 3 / 4; }
 .artPiece.p6 { width: 84%; margin-top: 100px; aspect-ratio: 4 / 5; }
-.pencilNote { fill: #514b3f; font-family: "Bradley Hand", "Segoe Print", "Apple Chancery", cursive; font-size: clamp(18px, 1.5vw, 25px); }
+@font-face {
+  font-family: "Pencil Notes";
+  src: url("/fonts/kalam-regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+.pencilNote { fill: #514b3f; font-family: "Pencil Notes", cursive; font-size: clamp(18px, 1.5vw, 25px); }
 @media (max-width: 680px) {
   .artLead { grid-template-columns: 1fr; gap: 28px; padding: 44px 0 32px; }
   .artLead h2 { font-size: clamp(52px, 16vw, 90px); }
