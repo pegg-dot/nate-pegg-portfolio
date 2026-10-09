@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -17,7 +16,8 @@ const workbench = [
 
 export default function PortfolioStory() {
   return (
-    <main className="portfolioMain">
+    <main className="portfolioMain" id="main-content" tabIndex={-1}>
+      <h1 className="srOnly">Nate Pegg: things I build and draw</h1>
       <ScrollTrace />
       <div className="paperNoise" aria-hidden="true" />
 
@@ -44,7 +44,7 @@ export default function PortfolioStory() {
           <div className="projectActions"><Link href="/work/della">READ THE STORY →</Link><a href="https://hellodella.com" target="_blank" rel="noreferrer">OPEN DELLA ↗</a></div>
         </div>
         <div className="spotlightGrid">
-          <div className="spotlightImage"><Image src="/della/room-identity.png" alt="Della workspace showing the AI employee's permissions, activity and state" fill sizes="(max-width: 900px) 100vw, 58vw" /></div>
+          <div className="spotlightImage"><Image src="/della/room-identity.png" alt="Della workspace showing the AI employee's permissions, activity and state" fill sizes="(max-width: 980px) 90vw, 50vw" /></div>
           <div className="spotlightText"><span className="microLabel">WHY I STARTED</span><h2>I thought vertical AI was going to be a lot more than just putting a chatbot on a business.</h2><p>A nail salon has live appointments, missed calls, repeat customers, texts, DMs, cancellations, and a lot of little things a generic model does not know. I wanted to see if I could connect into all of that and actually do the work, starting with communications.</p><div className="spotlightChips"><span>voice</span><span>persistent context</span><span>Square bookings</span><span>knowledge + tools</span></div></div>
         </div>
       </section>
@@ -57,7 +57,7 @@ export default function PortfolioStory() {
           <div className="projectActions"><Link href="/work/vialgrade">READ THE STORY →</Link><a href="https://vialgrade.com" target="_blank" rel="noreferrer">OPEN VIALGRADE ↗</a><a href="https://github.com/pegg-dot/vial" target="_blank" rel="noreferrer">CODE ↗</a></div>
         </div>
         <div className="spotlightGrid reverse">
-          <div className="spotlightImage vialPreview"><Image src="/vialgrade/home.jpg" alt="VialGrade homepage and search interface" fill sizes="(max-width: 900px) 100vw, 58vw" /></div>
+          <div className="spotlightImage vialPreview"><Image src="/vialgrade/home.jpg" alt="VialGrade homepage and search interface" fill sizes="(max-width: 980px) 90vw, 50vw" /></div>
           <div className="spotlightText"><span className="microLabel">WHY I STARTED</span><h2>I knew a lot of people who wanted to try peptides, but they were buying from sketchy labs or just from friends.</h2><p>I thought it would be useful to have one place that grades the vendors and storefronts and lets you see why they got that grade. I am not making money from it. I just wanted a better way to compare them.</p><div className="spotlightChips"><span>vendors</span><span>compounds</span><span>lab evidence</span><span>source history</span></div></div>
         </div>
       </section>
@@ -70,7 +70,7 @@ export default function PortfolioStory() {
           <div className="projectActions"><Link href="/work/transformer">READ THE STORY →</Link><a href="https://transformer-viz-eight.vercel.app" target="_blank" rel="noreferrer">OPEN VISUALIZER ↗</a><a href="https://github.com/pegg-dot/Transformer" target="_blank" rel="noreferrer">CODE ↗</a></div>
         </div>
         <div className="spotlightGrid">
-          <div className="spotlightImage transformerPreview"><Image src="/transformer/qkv.webp" alt="Transformer visualizer showing query, key and value projections" fill sizes="(max-width: 900px) 100vw, 58vw" /></div>
+          <div className="spotlightImage transformerPreview"><Image src="/transformer/qkv.webp" alt="Transformer visualizer showing query, key and value projections" fill sizes="(max-width: 980px) 90vw, 50vw" /></div>
           <div className="spotlightText spotlightTextLight"><span className="microLabel">WHY I STARTED</span><h2>I wanted to understand what was actually happening inside a transformer.</h2><p>I had been studying the concepts, but building one from scratch made them click a lot more. Then I built the visualizer because I thought it would be another challenge and a better way to see what the model was doing.</p><div className="spotlightChips"><span>10.79M params</span><span>6 blocks</span><span>6 heads</span><span>real activations</span></div></div>
         </div>
       </section>
@@ -92,12 +92,12 @@ export default function PortfolioStory() {
         <div className="sectionRail"><span>10</span><span>MADE BY HAND</span><span>GRAPHITE / COLOR</span></div>
         <div className="artLead"><h2>THE LINE<br/>LEAVES<br/>THE SCREEN.</h2><p>I drew long before I built software. I still like making something where every mark is mine and there is no undo button.</p></div>
         <div className="artWall">
-          <figure className="artPiece p1"><Image src="/art/bob-marley.jpg" alt="Graphite portrait drawing" fill sizes="40vw" /><figcaption>graphite portrait</figcaption></figure>
-          <figure className="artPiece p2" data-pencil-target="art"><Image src="/art/coke-can.jpg" alt="Drawing of a crushed Coca-Cola can" fill sizes="30vw" /><figcaption>colored pencil</figcaption></figure>
-          <figure className="artPiece p3"><Image src="/art/dog-scarf.jpg" alt="Graphite dog portrait" fill sizes="35vw" /><figcaption>commission portrait</figcaption></figure>
-          <figure className="artPiece p4"><Image src="/art/house.jpg" alt="Architectural graphite drawing of a house" fill sizes="48vw" /><figcaption>architecture study</figcaption></figure>
-          <figure className="artPiece p5"><Image src="/art/moose.jpg" alt="Graphite moose drawing" fill sizes="32vw" /><figcaption>graphite</figcaption></figure>
-          <figure className="artPiece p6"><Image src="/art/miami.jpg" alt="Color drawing collage of Miami" fill sizes="35vw" /><figcaption>Miami</figcaption></figure>
+          <figure className="artPiece p1"><Image src="/art/bob-marley.jpg" alt="Graphite portrait drawing" fill sizes="(max-width: 680px) 90vw, 40vw" /><figcaption>graphite portrait</figcaption></figure>
+          <figure className="artPiece p2" data-pencil-target="art"><Image src="/art/coke-can.jpg" alt="Drawing of a crushed Coca-Cola can" fill sizes="(max-width: 680px) 90vw, 30vw" /><figcaption>colored pencil</figcaption></figure>
+          <figure className="artPiece p3"><Image src="/art/dog-scarf.jpg" alt="Graphite dog portrait" fill sizes="(max-width: 680px) 90vw, 35vw" /><figcaption>commission portrait</figcaption></figure>
+          <figure className="artPiece p4"><Image src="/art/house.jpg" alt="Architectural graphite drawing of a house" fill sizes="(max-width: 680px) 90vw, 48vw" /><figcaption>architecture study</figcaption></figure>
+          <figure className="artPiece p5"><Image src="/art/moose.jpg" alt="Graphite moose drawing" fill sizes="(max-width: 680px) 90vw, 32vw" /><figcaption>graphite</figcaption></figure>
+          <figure className="artPiece p6"><Image src="/art/miami.jpg" alt="Color drawing collage of Miami" fill sizes="(max-width: 680px) 90vw, 35vw" /><figcaption>Miami</figcaption></figure>
         </div>
       </section>
 
@@ -114,7 +114,7 @@ export default function PortfolioStory() {
         <div className="aboutLead"><span className="microLabel">ABOUT ME, WITHOUT TURNING THIS INTO A RÉSUMÉ</span><h2>THE PROJECTS ARE<br/>ONLY PART OF IT.</h2></div>
 
         <div className="aboutPortraitGrid">
-          <div className="aboutPortrait"><Image src="/rowing/race-close.jpg" alt="Nate Pegg rowing for Team USA" fill sizes="(max-width: 900px) 100vw, 46vw" /></div>
+          <div className="aboutPortrait"><Image src="/rowing/race-close.jpg" alt="Nate Pegg rowing for Team USA" fill sizes="(max-width: 980px) 86vw, 40vw" /></div>
           <div className="aboutIntro">
             <span className="microLabel">I&apos;M NATE.</span>
             <p>I grew up in Miami and I&apos;m now a first-year at UVA. I&apos;ve always liked creating things. These days a lot of that is software and AI, but I still draw, lift, play sports, and spend a lot of time with friends.</p>

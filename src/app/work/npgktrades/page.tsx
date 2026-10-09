@@ -58,9 +58,9 @@ export default function NpgkCase() {
         <span className="caseLabel">THE PATH</span>
         <div className="copyFlow"><span>detect</span><i>→</i><span>aggregate</span><i>→</i><span>scale</span><i>→</i><span>price / risk</span><i>→</i><span>execute</span><i>→</i><span>track</span></div>
         <div className="npgkGallery">
-          <div><Image src="/npgk/overview.jpg" alt="NPGKTrades dashboard overview" fill sizes="33vw" /></div>
-          <div><Image src="/npgk/positions.jpg" alt="NPGKTrades positions dashboard" fill sizes="33vw" /></div>
-          <div><Image src="/npgk/analytics.jpg" alt="NPGKTrades analytics dashboard" fill sizes="33vw" /></div>
+          <div><Image src="/npgk/overview.jpg" alt="NPGKTrades dashboard overview" fill sizes="(max-width: 680px) 90vw, 30vw" /></div>
+          <div><Image src="/npgk/positions.jpg" alt="NPGKTrades positions dashboard" fill sizes="(max-width: 680px) 90vw, 30vw" /></div>
+          <div><Image src="/npgk/analytics.jpg" alt="NPGKTrades analytics dashboard" fill sizes="(max-width: 680px) 90vw, 30vw" /></div>
         </div>
       </section>
 

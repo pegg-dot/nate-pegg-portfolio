@@ -21,7 +21,7 @@ export default function CaseShell({
   className?: string;
 }) {
   return (
-    <main className={["caseMain", className].filter(Boolean).join(" ")}>
+    <main className={["caseMain", className].filter(Boolean).join(" ")} id="main-content" tabIndex={-1}>
       <header className="caseNav">
         <Link href="/">← NATE PEGG</Link>
         <span>{index}</span>

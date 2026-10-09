@@ -162,7 +162,7 @@ export default function HandwrittenName() {
   const target = reduced ? metrics.total : metrics.total * progress;
 
   return (
-    <div ref={canvasRef} className="nameCanvas" aria-label="Nate Pegg">
+    <div ref={canvasRef} className="nameCanvas" aria-hidden="true">
       <svg viewBox="0 0 640 540" role="img" aria-hidden="true">
         <defs>
           <filter id="graphiteRough" x="-10%" y="-10%" width="120%" height="120%">
@@ -198,7 +198,7 @@ export default function HandwrittenName() {
           </g>
         ) : null}
       </svg>
-      <span className="nameHint">{progress < .98 ? "keep scrolling — I am writing it" : "made by hand, then code"}</span>
+      <span className="nameHint">{!reduced && progress < .98 ? "keep scrolling, I am writing it" : "made by hand, then code"}</span>
     </div>
   );
 }

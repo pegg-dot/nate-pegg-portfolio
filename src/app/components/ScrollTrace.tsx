@@ -226,7 +226,7 @@ export default function ScrollTrace() {
         />
       ))}
 
-      {tip ? (
+      {!reduced && tip ? (
         <g className={`storyPencil semanticPencil ${tip.tone === "paper" ? "paperPencil" : ""}`} transform={`translate(${tip.x} ${tip.y}) rotate(${tip.angle})`}>
           <path className="pencilWood" d="M0 0 L-12 -7 L-12 7 Z" />
           <path className="pencilGraphite" d="M0 0 L-5 -2.7 L-5 2.7 Z" />

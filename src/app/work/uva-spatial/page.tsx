@@ -55,7 +55,6 @@ export default function UvaSpatialCase() {
             width={1440}
             height={1000}
             sizes="100vw"
-            priority
           />
           <figcaption>
             The local student preview. The route engine stays separate from the visual layer, and the product is still explicitly marked as not production-validated.
