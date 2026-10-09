@@ -116,31 +116,11 @@ export default function PortfolioStory() {
         </div>
       </section>
 
-      <section className="aboutSection" id="about">
-        <div className="aboutLead"><span className="microLabel">ABOUT ME, WITHOUT TURNING THIS INTO A RÉSUMÉ</span><h2>THE PROJECTS ARE<br/>ONLY PART OF IT.</h2></div>
-
-        <div className="aboutPortraitGrid">
-          <div className="aboutPortrait"><Image src="/rowing/race-close.jpg" alt="Nate Pegg rowing for Team USA" fill sizes="(max-width: 980px) 86vw, 40vw" /></div>
-          <div className="aboutIntro">
-            <span className="microLabel">I&apos;M NATE.</span>
-            <p>I grew up in Miami and I&apos;m now a first-year at UVA. I&apos;ve always liked creating things. These days a lot of that is software and AI, but I still draw, lift, play sports, and spend a lot of time with friends.</p>
-            <p>I got really into AI because I wanted to understand how it worked, not just use it. Building side projects ended up being the best way for me to learn, so I kept doing more of them.</p>
-            <div className="aboutNow">
-              <span>RIGHT NOW</span>
-              <b>Della</b>
-              <b>VialGrade</b>
-              <b>MoveMate</b>
-              <b>Grounds Guide</b>
-            </div>
-            <small>Genoa, 2024 · Team USA U19 coastal rowing.</small>
-          </div>
-        </div>
-
-        <div className="aboutCards">
-          <article><span>01 / HOME</span><h3>Miami → UVA</h3><p>I went to Ransom Everglades in Miami and now I&apos;m at UVA. A lot of what I build still starts with something I saw around me first.</p></article>
-          <article><span>02 / THE SHIRT</span><h3>Apparently one shirt was enough.</h3><p>When I was four or five I had two or three copies of the same red-and-blue striped shirt with a little green alien on it. I wore it nearly every day.</p></article>
-          <article><span>03 / TIGRE</span><h3 data-pencil-target="about">It was a giraffe.</h3><p>I used to sleep with a tiny giraffe blanket over my ear. I called it Tigre, even though tigre means tiger and the thing was very obviously a giraffe.</p></article>
-          <article><span>04 / STILL TRUE</span><h3>I like making things by hand.</h3><p>I drew long before I wrote code. I still like the fact that a drawing has no undo button and every mark is actually there because I put it there.</p></article>
+      <section className="aboutSection aboutPlain" id="about">
+        <h2>About me</h2>
+        <div className="aboutPlainCopy">
+          <p>I grew up in Miami and went to Ransom Everglades before starting at UVA this year. I&apos;ve always wanted to be an entrepreneur, and over the years I&apos;ve tried a lot of different ideas. More recently, I&apos;ve been spending a lot of time building with AI and trying to understand how it works by making things myself.</p>
+          <p>Outside of that, I like drawing, going to the gym, playing sports, and spending time with friends.</p>
         </div>
       </section>
 
