@@ -101,13 +101,19 @@ export default function PortfolioStory() {
         </div>
       </section>
 
-      <section className="rowingSection" id="row">
-        <div className="rowingImage"><Image src="/rowing/race-close.jpg" alt="Nate Pegg racing for Team USA in the U19 men's double" fill sizes="100vw" /></div>
-        <div className="rowingOverlay">
-          <div className="sectionRail onPhoto"><span>11</span><span>ROWING</span><span>2024</span></div>
-          <div className="rowingStory"><span className="microLabel">SPRING → SUMMER → GENOA</span><h2>THE SUMMER I<br/>ENDED UP IN<br/><span data-pencil-target="rowing">A USA UNIFORM.</span></h2><p>Spring crew turned into beach-sprint trials at South Lido Key. We qualified. School ended, practice kept going, and the next few months were mostly mornings on the water until Worlds in Genoa.</p><div className="rowingFacts"><span>South Lido Key</span><b>1st at Trials</b><span>U19 Men&apos;s Double</span><span>Genoa</span></div></div>
+      <section className="rowingSection rowingCompact" id="row">
+        <div className="sectionRail"><span>11</span><span>ROWING</span><span>GENOA · 2024</span></div>
+        <div className="rowingCompactGrid">
+          <div className="rowingCompactPhotos">
+            <div className="rowingCompactPhoto"><Image src="/rowing/race-close.jpg" alt="Nate Pegg racing for Team USA in the U19 men's coastal double sculls" fill sizes="(max-width: 800px) 90vw, 46vw" /></div>
+            <div className="rowingCompactPhoto wide"><Image src="/rowing/race-wide.jpg" alt="Team USA U19 double racing off the beach in Genoa" fill sizes="(max-width: 800px) 90vw, 46vw" /></div>
+          </div>
+          <div className="rowingCompactCopy">
+            <h2>Rowing</h2>
+            <p>I joined rowing my sophomore year, and my coach thought another rower and I had what it took to try coastal rowing. After Scholastic Nationals, we started going out on Biscayne Bay at 7 a.m. to train. We went to Lido Key for trials and finished first in the time trial, which qualified us to race in Genoa.</p>
+            <p>We took July off, then got back on the water in August and September, including mornings before school. I represented Team USA in the U19 men&apos;s coastal double sculls in Genoa. It was a really good time, and I got to meet other rowers who were aiming for the 2028 Olympics. <a href="https://la28.org/en/games-plan/olympics/coastal-rowing.html" target="_blank" rel="noreferrer">Beach sprint rowing will be part of the Olympics for the first time in 2028.</a></p>
+          </div>
         </div>
-        <div className="rowingWideFrame"><Image src="/rowing/race-wide.jpg" alt="Team USA U19 double racing off the beach" fill sizes="100vw" /><span>U19 MEN&apos;S DOUBLE · TEAM USA</span></div>
       </section>
 
       <section className="aboutSection" id="about">
