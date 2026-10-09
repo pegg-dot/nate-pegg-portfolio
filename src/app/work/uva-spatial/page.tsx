@@ -9,7 +9,7 @@ export default function UvaSpatialCase() {
       className="caseCompact spatialCase"
       index="08 / UVA SPATIAL OS"
       title="UVA SPATIAL OS"
-      subtitle="UVA Spatial OS is a campus navigation project I started after getting to UVA and realizing I did not really know my way around Grounds. I wanted something that could take my actual schedule, know the building and entrance I needed, tell me when to leave, and route me through the paths that actually exist."
+      subtitle="I started UVA Spatial OS during my first year at UVA because I realized I really didn't know my way around Grounds. Google Maps helped me get between buildings, but the routes it gave me weren't always the most efficient. It didn't know about the smaller paths and back ways I often took around campus. I thought I could make something that understood how I actually moved around UVA. I wanted it to find the quickest route, including those smaller paths, and use my class schedule to tell me when to leave. Ideally, it would know where I was, how long it would take me to get to class, and send me a notification when it was time to go. I also wanted the routes to follow paths that actually exist on Grounds."
       external={{ label: "GITHUB", href: "https://github.com/pegg-dot/uva-spatial-os" }}
       actions={[
         { label: "VIEW CODE", href: "https://github.com/pegg-dot/uva-spatial-os", external: true },
@@ -18,11 +18,11 @@ export default function UvaSpatialCase() {
       <ProjectBrief items={[
         {
           label: "WHAT",
-          text: "A UVA-first navigation system that turns a student's real schedule into door-aware routes between classes and other places around Grounds.",
+          text: "A UVA navigation system that uses a student's schedule and the paths around Grounds to plan routes between classes.",
         },
         {
           label: "WHY",
-          text: "Google Maps could get me near a building, but it did not know my schedule, which entrance I needed, when I should leave, or the paths around Grounds I actually cared about.",
+          text: "Google Maps could get me near a building, but it didn't know my schedule, which entrance I needed, when I should leave, or the paths around Grounds I actually used.",
         },
         {
           label: "HOW",
@@ -30,7 +30,7 @@ export default function UvaSpatialCase() {
         },
         {
           label: "WHEN",
-          text: "Started after I got to UVA in 2026. It is still a local preview and I am intentionally not calling it production-ready until the routing data is field-validated.",
+          text: "I started it during my first year at UVA in 2026. It's still a local preview, and I need to check the routing data on Grounds before I'd call it ready to use.",
         },
       ]} />
 
@@ -38,11 +38,11 @@ export default function UvaSpatialCase() {
         <div className="caseGrid two">
           <div>
             <span className="caseLabel">WHERE IT STARTED</span>
-            <h2>I DIDN&apos;T KNOW MY WAY AROUND GROUNDS.</h2>
+            <h2>I wanted my shortcuts to show up on the map.</h2>
           </div>
           <div className="caseStack">
-            <p>When I got to UVA, I barely knew where anything was. Google Maps was useful, but it was not really the thing I wanted. I wanted to be able to put in my actual day and have something tell me where I needed to go next, which way to walk, and when I needed to leave.</p>
-            <p>My first instinct was to make the campus itself really visual, almost like a 3D version of Grounds. Once I started working on it, I realized that a map can look completely believable and still send you to the wrong side of a building or through a path that does not actually connect. So I backed up and started with the routing data first.</p>
+            <p>At first, I pictured a visual version of Grounds that could show me where to go next. I also wanted it to know the smaller paths I took between buildings and plan around the classes I had that day.</p>
+            <p>As I started building it, I realized a map could look believable and still send me to the wrong side of a building or along a path that doesn't connect. I had to figure out what campus data I could trust before I kept working on the 3D version.</p>
           </div>
         </div>
       </section>
@@ -66,11 +66,11 @@ export default function UvaSpatialCase() {
         <div className="caseGrid two">
           <div>
             <span className="caseLabel">ROUTING</span>
-            <h2>A ROUTE THAT LOOKS RIGHT CAN STILL BE WRONG.</h2>
+            <h2>The paths had to match the real campus.</h2>
           </div>
           <div className="caseStack">
             <p>The line on the map was the easy part. The harder part was deciding what I could actually trust. Two walkways can cross in 2D without really connecting. A building center is not the same thing as the door you can use. An accessible route needs actual accessible entrance evidence.</p>
-            <p>I built the graph from source-backed UVA walkway data and kept the routing rules conservative on purpose. If the evidence is not good enough, the system blocks the route instead of filling in the gap because it looks obvious on a screen.</p>
+            <p>I built the graph from UVA walkway data and kept the routing rules conservative. If there isn't enough evidence, the system blocks the route instead of filling in a gap because it looks like a path on the map.</p>
             <p>That also meant keeping the 3D campus separate. The visual world can make the route easier to understand later, but it never gets to create a walkway or override the routing graph.</p>
           </div>
         </div>
@@ -94,12 +94,12 @@ export default function UvaSpatialCase() {
         <div className="caseGrid two">
           <div>
             <span className="caseLabel">MY DAY</span>
-            <h2>THE CALENDAR IS PART OF THE ROUTE.</h2>
+            <h2>I wanted it to plan around my classes.</h2>
           </div>
           <div className="caseStack">
-            <p>A route is not that useful if the app does not know where I actually need to be next. I added a My Day mode where I can enter classes manually or import one day from a calendar and route the transitions between them through the same engine.</p>
-            <p>The schedule import is deterministic. It can read an .ics file or structured pasted text, but it does not use an LLM to guess what a location means. If a class location does not match a reviewed UVA facility or alias, it stays unresolved until I correct it.</p>
-            <p>That was intentional. For something like this, I would rather have the system tell me it is unsure than confidently send me to the wrong place.</p>
+            <p>I added My Day so I could enter classes myself or import a day's schedule and have it plan the walk between each class.</p>
+            <p>The schedule import can read an .ics file or structured text. It doesn't use an LLM to guess what a location means. If a class location doesn't match a UVA building or a reviewed name for it, the app leaves it unresolved until I correct it.</p>
+            <p>For something like this, I'd rather have it tell me it's unsure than send me to the wrong place.</p>
           </div>
         </div>
 
@@ -125,19 +125,19 @@ export default function UvaSpatialCase() {
           <article><strong>4</strong><span>route profiles</span></article>
           <article><strong>20 / 25</strong><span>benchmark routes currently routed</span></article>
         </div>
-        <p className="caseFootnote">The five benchmark routes that do not route are kept blocked because the current evidence is missing a supported connection or entrance. I would rather leave those visible than make the benchmark look better by guessing.</p>
+        <p className="caseFootnote">The five benchmark routes that do not route are kept blocked because the current evidence is missing a supported connection or entrance. I'd rather leave those visible than make the benchmark look better by guessing.</p>
       </section>
 
       <section className="caseBand">
         <div className="caseGrid two">
           <div>
             <span className="caseLabel">WHERE IT IS NOW</span>
-            <h2>IT&apos;S STILL A PREVIEW.</h2>
+            <h2>I haven't checked every route in person yet.</h2>
           </div>
           <div className="caseStack">
-            <p>The local product can search UVA facilities, switch between fastest, accessible, night and low-hill routing, import a schedule, build a day, and calculate leave-by times. There is also a lot of testing and source auditing behind it because I do not want the UI to make the data look more finished than it is.</p>
-            <p>The big thing still missing is field validation. There are doors and route connections I need to actually check on Grounds before I would trust this as a real navigation product. Ordinary entrance coverage also still needs to get broader before the preview works well across the whole campus.</p>
-            <p>After that, I still want to come back to the part that made me want to build it in the first place: a really good visual version of UVA. I just want the cool part sitting on top of something that is actually right.</p>
+            <p>The local product can search UVA facilities, switch between fastest, accessible, night and low-hill routing, import a schedule, build a day, and calculate leave-by times. I've done a lot of testing and source checks, but I still don't want the page to make the data look more finished than it is.</p>
+            <p>I still need to check more doors and route connections on Grounds before I'd trust this for getting around campus. The entrance data also needs to cover more of the ordinary buildings.</p>
+            <p>I still want to build the visual version of UVA I pictured at the beginning. I want it to sit on top of routes I can trust.</p>
           </div>
         </div>
       </section>
