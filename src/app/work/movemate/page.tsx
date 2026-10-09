@@ -1,3 +1,4 @@
+import Image from "next/image";
 import CaseShell from "../../components/CaseShell";
 import ProjectBrief from "../../components/ProjectBrief";
 import styles from "./movemate.module.css";
@@ -110,30 +111,19 @@ export default function MoveMateCase() {
           </div>
         </div>
 
-        <div className={styles.posterSignals}>
-          <article>
-            <span>POSTER 01</span>
-            <h3>This is a poster about your move.</h3>
-            <p>Move-out help for students.</p>
-          </article>
-          <article>
-            <span>POSTER 02</span>
-            <h3>Sell it. Donate it. Don&apos;t dump it.</h3>
-            <p>Your furniture deserves a better ending than the curb.</p>
-          </article>
-          <article>
-            <span>POSTER 03</span>
-            <h3>Your couch still doesn&apos;t have a plan.</h3>
-            <p>Move it, sell it, donate it, or figure it out with us.</p>
-          </article>
-          <article>
-            <span>POSTER 04</span>
-            <h3>Stairs? Good luck.</h3>
-            <p>A much simpler version of the same problem.</p>
-          </article>
-        </div>
-
-        <p className="caseFootnote">These are a few of the messages from the actual poster designs we printed and posted around Grounds. The early posters use the HOOS Moving name because that was before we changed it to MoveMate.</p>
+        <figure className={styles.posterCampaign}>
+          <Image
+            src="/movemate/poster-campaign.jpg"
+            alt="MoveMate and HOOS Moving poster designs used around UVA Grounds"
+            width={1000}
+            height={563}
+            sizes="100vw"
+          />
+          <figcaption>
+            <strong>POSTERS WE TESTED AROUND GROUNDS.</strong>
+            <span> The early designs use the HOOS Moving name because that was before we changed it to MoveMate.</span>
+          </figcaption>
+        </figure>
       </section>
 
       <section className="caseBand caseBandDark">
