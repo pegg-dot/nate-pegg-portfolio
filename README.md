@@ -18,7 +18,7 @@ The recurring visual language is a pencil in the margins. It stays pinned while 
 - original art scans
 - Team USA story
 - fuller About section
-- deeper project pages for Della, VialGrade, Transformer, LOT, WeBuddy, NPGKTrades, Say No To Plastic and MoveMate
+- deeper project pages for Della, VialGrade, Transformer, LOT, WeBuddy, NPGKTrades, Say No To Plastic, UVA Spatial OS and MoveMate
 - what / why / how / when orientation at the top of each project page
 
 ## Content rule

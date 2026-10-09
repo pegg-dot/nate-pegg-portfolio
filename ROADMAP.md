@@ -74,7 +74,7 @@ The current copy is structure and factual draft material, not final application 
 
 ## Roadmap ledger
 
-### Current phase — story + motion
+### Completed — story + motion
 - [x] pencil stays pinned in the viewport while it writes the name
 - [x] connected, cursive-style name writing with only natural pen lifts (crossing the t + moving to the last name)
 - [x] scroll input is eased so the pencil catches up smoothly instead of stepping with the scroll wheel
@@ -88,9 +88,9 @@ The current copy is structure and factual draft material, not final application 
 - [x] secondary projects reframed around why they started
 - [x] LOT, NPGKTrades and Say No To Plastic story pages
 - [x] art and rowing kept as personal chapters
-- [ ] Nate pass on all first-person wording using his spoken answers as the source
+- [x] Nate pass on all first-person wording using his spoken answers as the source
   - [x] Homepage opening, featured-project motivations, WeBuddy/UVA Spatial OS origins, and About intro rewritten from Nate voice dump
-  - [ ] Deep project pages still need Nate voice pass
+  - [x] Deep project pages completed in Nate's voice
     - [x] Della deep page rewritten from Nate voice dump and tightened into a denser case-study layout
     - [x] VialGrade deep page rewritten from Nate voice dump, grounded in the actual grading/attribution code, and tightened to the Della density
     - [x] Transformer deep page rewritten from Nate voice dump and grounded in the actual model/visualizer repo
@@ -99,14 +99,15 @@ The current copy is structure and factual draft material, not final application 
     - [x] NPGKTrades deep page rewritten from Nate voice context and grounded in the actual copy-trading pipeline
     - [x] Say No To Plastic deep page rewritten from Nate voice context and grounded in the live client project + source/validation architecture
     - [x] MoveMate deep page rewritten in Nate voice around the marketplace → moving-help shift, assumption testing, campus posters, and current MVP
+    - [x] UVA Spatial OS deep page grounded in the routing repo, current local preview, schedule ingestion, validation limits, and Nate's UVA origin story
 
-### Next phase — deepen the remaining stories
+### Completed — deepen the remaining stories
 - [x] MoveMate story replaces HOOS Moving and captures the marketplace → moving-help pivot
-- [x] MoveMate campus poster campaign added with explicit AI-composite disclosure and per-poster metrics note
+- [x] MoveMate campus poster campaign restored
 - [x] WeBuddy artifact + story, including structured data model, template mapping, owner dashboard, SEO scope and Base44 split
-- [ ] UVA Spatial OS artifact + story
+- [x] UVA Spatial OS artifact + story
 
-### Then — launch hardening
+### Current phase — launch hardening
 - [ ] image/performance pass
 - [ ] mobile pass
 - [ ] accessibility / reduced-motion pass

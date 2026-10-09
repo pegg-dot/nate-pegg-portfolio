@@ -68,7 +68,7 @@ export const projects: Project[] = [
     title: "UVA Spatial OS",
     kicker: "Campus routing + spatial truth",
     meta: "GIS · entrances · route verification",
-    href: "https://github.com/pegg-dot/uva-spatial-os",
+    href: "/work/uva-spatial",
     status: "building",
   },
   {
