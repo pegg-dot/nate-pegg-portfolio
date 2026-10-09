@@ -3,214 +3,192 @@ import ProjectBrief from "../../components/ProjectBrief";
 import styles from "./movemate.module.css";
 
 const team = [
-  {
-    name: "Nate Pegg",
-    year: "First-year · UVA",
-    detail: "Product + engineering. I build the software, but the product decisions, testing, launch ideas, and operating plan are shared with the team.",
-  },
-  {
-    name: "Jack Dofflemeyer",
-    year: "Third-year · UVA",
-    detail: "Charlottesville. Works across product decisions, validation, launch experiments, and the operating side of MoveMate.",
-  },
-  {
-    name: "Will Franey",
-    year: "First-year · UVA",
-    detail: "Works across product decisions, validation, launch experiments, and figuring out what students actually need from the service.",
-  },
-  {
-    name: "Bobby Wholey",
-    year: "First-year · UVA",
-    detail: "Works across product decisions, validation, launch experiments, and the marketplace / moving model as it develops.",
-  },
-  {
-    name: "Jack Duffins",
-    year: "Second-year · UVA",
-    detail: "Charlottesville. Previously attended college in Jacksonville and played lacrosse. Works across product, launch, and operations with the team.",
-  },
+  { name: "Nate Pegg", year: "First-year · UVA" },
+  { name: "Jack Dofflemeyer", year: "Third-year · UVA" },
+  { name: "Will Franey", year: "First-year · UVA" },
+  { name: "Bobby Wholey", year: "First-year · UVA" },
+  { name: "Jack Duffins", year: "Second-year · UVA" },
 ];
 
 export default function MoveMateCase() {
   return (
     <CaseShell
+      className="caseCompact movemateCase"
       index="09 / MOVEMATE"
       title="MOVEMATE"
-      subtitle="MoveMate helps UVA students move in and move out. The marketplace is still there, but it now sits underneath the main job: make the move itself easier, then help with the things students still need or need to get rid of."
+      subtitle="MoveMate is a UVA project my friends and I started around move-in and move-out. We first thought the main thing would be a student marketplace for furniture, but after working through the idea we realized the more immediate problem was helping students actually move the stuff."
       external={{ label: "LAUNCH MVP", href: "https://move-mate.netlify.app" }}
       actions={[{ label: "OPEN LAUNCH MVP", href: "https://move-mate.netlify.app", external: true }]}
     >
       <ProjectBrief items={[
         {
           label: "WHAT",
-          text: "Move-in and move-out help for UVA students, with a student marketplace underneath it. The moving service is the wedge; the marketplace becomes the natural place for the furniture and things that are left over or still needed.",
+          text: "Move-in and move-out help for UVA students, with a student marketplace around the same problem.",
         },
         {
           label: "WHY",
-          text: "We started with a marketplace, but marketplaces are cyclical and hard to make useful before enough people are there. Moving is a sharper problem where one successful job can create much more value for one student.",
+          text: "Students are constantly moving furniture in and out of apartments around UVA. The marketplace idea made sense, but the actual moving problem was more immediate.",
         },
         {
           label: "HOW",
-          text: "We mapped roughly 20 assumptions by importance and confidence, then focused on the important assumptions we were least sure about. The launch MVP and QR posters are there to measure interest and get the first users before we recruit a large moving network.",
+          text: "We worked through about 20 assumptions, built a simple MVP, put posters around Grounds, and are trying to get real requests before building a huge operation around it.",
         },
         {
           label: "WHEN",
-          text: "The project started as HOOS Moving and evolved into MoveMate in fall 2026. The current launch MVP is live now; the service, student-helper network, volunteer model, and fuller marketplace are the next operating layer.",
+          text: "Started in fall 2026. The project was originally called HOOS Moving before becoming MoveMate.",
         },
       ]} />
 
       <section className="caseBand">
         <div className="caseGrid two">
           <div>
-            <span className="caseLabel">THE PIVOT</span>
-            <h2>THE MARKETPLACE STOPPED BEING THE PRODUCT.</h2>
+            <span className="caseLabel">WHERE IT STARTED</span>
+            <h2>A MARKETPLACE FOR MOVE-IN AND MOVE-OUT.</h2>
           </div>
           <div className="caseStack">
-            <p>At first, the idea centered on a UVA marketplace. The problem was that the marketplace was both cyclical and dependent on enough buyers and sellers showing up at the same time.</p>
-            <p>Moving had a much clearer job to be done. If somebody needs help getting a couch out of a fourth-floor apartment, that problem is already real before we have perfect marketplace liquidity.</p>
-            <p>So we flipped the relationship: moving became the primary offer, and the marketplace became the backbone around the move.</p>
+            <p>The first version of the idea was mostly a student marketplace. Around move-out, people have couches, desks, beds, mini-fridges, and a bunch of other stuff they need to get rid of. Then a few months later another group of students is moving in and needs a lot of the same things.</p>
+            <p>It felt like there should be a better way to connect those two sides instead of having furniture get thrown out or students start from scratch every year.</p>
           </div>
         </div>
       </section>
 
       <section className="caseBand caseBandBlue">
-        <span className="caseLabel">HOW WE MADE THE DECISION</span>
+        <div className="caseGrid two">
+          <div>
+            <span className="caseLabel">HOW IT CHANGED</span>
+            <h2>MOVING HELP FIRST.</h2>
+          </div>
+          <div className="caseStack">
+            <p>Once we started thinking about the marketplace more seriously, the cold-start problem became pretty obvious. A marketplace is only useful if enough buyers and sellers are there at the same time.</p>
+            <p>The moving problem does not have that same issue. If somebody needs help getting a couch down four flights of stairs, they already have a problem even if there are zero listings on the marketplace.</p>
+            <p>So we changed the order. Help with the move first, then let the marketplace handle the furniture that is still left over or the things somebody still needs.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="caseBand">
+        <span className="caseLabel">HOW WE THOUGHT THROUGH IT</span>
         <div className={styles.matrixWrap}>
           <div className={styles.axisY}>IMPORTANCE ↑</div>
           <div className={styles.matrix}>
             <article className={styles.quietCell}>
               <span>HIGH CONFIDENCE</span>
-              <h3>Already understood</h3>
-              <p>Do not spend the next week proving what we already believe.</p>
+              <h3>We already had evidence.</h3>
+              <p>These were not the questions we needed to spend the most time on.</p>
             </article>
             <article className={styles.focusCell}>
               <span>LOW CONFIDENCE</span>
-              <h3>Important + unsure</h3>
-              <p>This is where we focused: the assumptions that could kill the idea if we were wrong.</p>
+              <h3>Important and still unclear.</h3>
+              <p>This is where we focused because being wrong here could change the whole idea.</p>
             </article>
             <article className={styles.quietCell}>
               <span>LOW IMPORTANCE</span>
-              <h3>Can wait</h3>
-              <p>Interesting questions, but not the ones that determine whether MoveMate deserves to exist.</p>
+              <h3>Could wait.</h3>
+              <p>Questions that mattered eventually, but not before we knew whether students cared.</p>
             </article>
             <article className={styles.quietCell}>
               <span>LOW IMPORTANCE</span>
-              <h3>Noise</h3>
-              <p>Do not optimize this before the core behavior is real.</p>
+              <h3>Not worth optimizing yet.</h3>
+              <p>We did not want to spend time polishing things before the core behavior was real.</p>
             </article>
           </div>
           <div className={styles.axisX}>CONFIDENCE →</div>
         </div>
-        <p className="caseFootnote">We listed about 20 assumptions, plotted how important each one was and how confident we were in it, then iterated on the important assumptions with the least evidence.</p>
-      </section>
-
-      <section className="caseBand">
-        <div className="caseGrid two">
-          <div>
-            <span className="caseLabel">THE LAUNCH MVP</span>
-            <h2>FIRST, FIND OUT IF PEOPLE ACTUALLY RAISE THEIR HAND.</h2>
-          </div>
-          <div className="caseStack">
-            <p>The current MVP is intentionally earlier than the full service. The goal is not just vague “interest”; it is to get the first real people into the funnel so we have somebody to learn from and eventually serve.</p>
-            <p>Posters around UVA point directly to the launch MVP. We are testing different messages and incentives instead of waiting until every piece of the moving operation and marketplace is finished.</p>
-            <p>If the demand is there, we can fulfill the early moves, recruit student helpers or volunteers as we need them, and keep building the operating system behind the service.</p>
-            <a className={styles.liveButton} href="https://move-mate.netlify.app" target="_blank" rel="noreferrer">OPEN MOVE-MATE.NETLIFY.APP ↗</a>
-          </div>
-        </div>
+        <p className="caseFootnote">We wrote down about 20 assumptions, ranked them by how important they were and how confident we were in them, and tried to focus on the important ones we had the least evidence for.</p>
       </section>
 
       <section className="caseBand">
         <div className={styles.posterHeader}>
           <div>
-            <span className="caseLabel">CAMPUS LAUNCH</span>
-            <h2>WE DID NOT WAIT FOR THE FULL SERVICE TO EXIST BEFORE TESTING WHETHER ANYONE CARED.</h2>
+            <span className="caseLabel">TESTING IT AT UVA</span>
+            <h2>POSTERS AROUND GROUNDS.</h2>
           </div>
           <div className={styles.posterCopy}>
-            <p>The posters are part of the launch experiment. Different versions test different reasons a student might care about MoveMate, but they all push toward the same MVP.</p>
-            <p><strong>The image below is an AI-generated composite.</strong> The poster designs themselves have been printed and posted around campus.</p>
-            <p>We also track performance internally for each poster separately, so we can compare which framing actually gets people into the funnel. I have not published those numbers here yet.</p>
+            <p>We built a simple MVP and started putting posters around UVA instead of waiting until the whole moving operation was finished.</p>
+            <p>Different posters use different messages, but they all send people to the same place so we can see what actually gets students to respond.</p>
+            <p>The earliest posters still use the HOOS Moving name because that was the name before we changed it to MoveMate.</p>
           </div>
         </div>
-
-        <figure className={styles.posterCampaign}>
-          <img
-            src="/movemate/poster-campaign-ai.webp"
-            alt="AI-generated composite showing four MoveMate campus poster designs that were printed and posted around UVA"
-          />
-          <figcaption>
-            <strong>AI-GENERATED COMPOSITE.</strong>
-            <span> Real posters were printed and posted around campus · internal performance is tracked per poster.</span>
-          </figcaption>
-        </figure>
 
         <div className={styles.posterSignals}>
           <article>
-            <span>01 / DISTRIBUTION</span>
-            <h3>Printed + posted</h3>
-            <p>These are not mock campaign ideas sitting in Figma. We printed versions of the posters and put them around campus.</p>
+            <span>POSTER 01</span>
+            <h3>This is a poster about your move.</h3>
+            <p>Move-out help for students.</p>
           </article>
           <article>
-            <span>02 / ONE DESTINATION</span>
-            <h3>Same launch MVP</h3>
-            <p>The campaign sends students into the same early MoveMate funnel at move-mate.netlify.app.</p>
+            <span>POSTER 02</span>
+            <h3>Sell it. Donate it. Don&apos;t dump it.</h3>
+            <p>Your furniture deserves a better ending than the curb.</p>
           </article>
           <article>
-            <span>03 / LEARNING</span>
-            <h3>Metrics per poster</h3>
-            <p>We keep the performance of each poster separate internally so the launch teaches us which message is actually working.</p>
+            <span>POSTER 03</span>
+            <h3>Your couch still doesn&apos;t have a plan.</h3>
+            <p>Move it, sell it, donate it, or figure it out with us.</p>
+          </article>
+          <article>
+            <span>POSTER 04</span>
+            <h3>Stairs? Good luck.</h3>
+            <p>A much simpler version of the same problem.</p>
           </article>
         </div>
+
+        <p className="caseFootnote">These are a few of the messages from the actual poster designs we printed and posted around Grounds. The early posters use the HOOS Moving name because that was before we changed it to MoveMate.</p>
       </section>
 
       <section className="caseBand caseBandDark">
-        <span className="caseLabel">THE LOOP WE ARE BUILDING TOWARD</span>
+        <span className="caseLabel">HOW IT FITS TOGETHER</span>
         <div className={styles.loop}>
           <article>
             <span>MOVE OUT</span>
-            <h3>Need help getting out?</h3>
-            <p>Book the move. If you still have furniture or things you do not want, the marketplace is right there.</p>
+            <h3>Help getting everything out.</h3>
+            <p>If there is furniture left over, it can move into the marketplace instead of just being thrown away.</p>
           </article>
           <div className={styles.loopArrow}>→</div>
           <article className={styles.marketplace}>
-            <span>BACKBONE</span>
-            <h3>MoveMate marketplace</h3>
-            <p>Items leaving one apartment can become things another student needs.</p>
+            <span>MARKETPLACE</span>
+            <h3>Things one student no longer needs.</h3>
+            <p>The same furniture can become something another student needs a few months later.</p>
           </article>
           <div className={styles.loopArrow}>→</div>
           <article>
             <span>MOVE IN</span>
-            <h3>Still need something?</h3>
-            <p>Get help moving in, then use the marketplace for the desk, lamp, couch, mini-fridge, or whatever is still missing.</p>
+            <h3>Help getting settled.</h3>
+            <p>Then the marketplace can fill in whatever is still missing after the move.</p>
           </article>
         </div>
       </section>
 
       <section className="caseBand">
-        <span className="caseLabel">THE TEAM</span>
-        <div className={styles.teamIntro}>
-          <h2>FIVE OF US. ONE BUILDER. SHARED PRODUCT DECISIONS.</h2>
-          <p>I am the only person writing the product code right now. That does not mean the rest of the project is solo. The pivot, assumption map, launch ideas, incentives, validation, and operating plan are things we work through together.</p>
+        <div className="caseGrid two">
+          <div>
+            <span className="caseLabel">THE TEAM</span>
+            <h2>FIVE OF US AT UVA.</h2>
+          </div>
+          <div className="caseStack">
+            <p>I am the one writing the product code right now, but the idea is not something I am working on alone. The five of us have been working through the product, posters, testing, launch, and how we would actually fulfill the first moves.</p>
+          </div>
         </div>
         <div className={styles.teamGrid}>
           {team.map((person) => (
             <article key={person.name}>
               <span>{person.year}</span>
               <h3>{person.name}</h3>
-              <p>{person.detail}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="caseBand caseBandInk">
+      <section className="caseBand caseBandBlue">
         <div className="caseGrid two">
           <div>
-            <span className="caseLabel">WHAT HAPPENS NEXT</span>
-            <h2>DO NOT BUILD THE WHOLE MOVING COMPANY BEFORE THE FIRST MOVE.</h2>
+            <span className="caseLabel">WHERE IT IS NOW</span>
+            <h2>THE MVP IS LIVE.</h2>
           </div>
           <div className="caseStack">
-            <p>Use the MVP and posters to get the first real users.</p>
-            <p>Learn which move-in and move-out jobs people actually ask for, then serve them and recruit supply only when demand requires it.</p>
-            <p>Build the fuller moving workflow and marketplace around behavior we have actually seen instead of around assumptions we never tested.</p>
+            <p>Right now we are trying to get the first actual requests instead of building a huge moving network before we know we need one.</p>
+            <p>If people start asking for help, we can do the early moves ourselves and bring in student helpers or volunteers as demand grows. Then we can build more of the moving workflow and marketplace around what people actually use.</p>
+            <a className={styles.liveButton} href="https://move-mate.netlify.app" target="_blank" rel="noreferrer">OPEN MOVE-MATE.NETLIFY.APP ↗</a>
           </div>
         </div>
       </section>

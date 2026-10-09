@@ -324,3 +324,79 @@
     font-size: 8px;
   }
 }
+
+
+/* Compact MoveMate after the voice pass. */
+:global(.movemateCase) .matrixWrap {
+  margin-top: 28px;
+}
+
+:global(.movemateCase) .matrix article {
+  min-height: 180px;
+  padding: 18px;
+}
+
+:global(.movemateCase) .matrix h3 {
+  font-size: clamp(28px, 3.2vw, 44px);
+}
+
+:global(.movemateCase) .posterHeader {
+  gap: clamp(28px, 4vw, 58px);
+  margin-bottom: 28px;
+}
+
+:global(.movemateCase) .posterHeader h2 {
+  font-size: clamp(44px, 5.8vw, 78px);
+}
+
+:global(.movemateCase) .posterSignals {
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 28px;
+}
+
+:global(.movemateCase) .posterSignals article {
+  min-height: 170px;
+  padding: 18px;
+}
+
+:global(.movemateCase) .posterSignals h3 {
+  font-size: clamp(28px, 3vw, 42px);
+}
+
+:global(.movemateCase) .loop article {
+  min-height: 220px;
+  padding: 18px;
+}
+
+:global(.movemateCase) .loop h3 {
+  font-size: clamp(30px, 3.4vw, 46px);
+}
+
+:global(.movemateCase) .teamGrid article {
+  min-height: 150px;
+  padding: 16px;
+}
+
+:global(.movemateCase) .teamGrid h3 {
+  margin: auto 0 0;
+}
+
+@media (max-width: 680px) {
+  :global(.movemateCase) .caseHero h1 {
+    font-size: clamp(44px, 13vw, 58px);
+  }
+
+  :global(.movemateCase) .caseGrid h2,
+  :global(.movemateCase) .posterHeader h2 {
+    overflow-wrap: anywhere;
+  }
+
+  :global(.movemateCase) .posterSignals {
+    grid-template-columns: 1fr;
+  }
+
+  :global(.movemateCase) .posterSignals article,
+  :global(.movemateCase) .teamGrid article {
+    min-height: 120px;
+  }
+}

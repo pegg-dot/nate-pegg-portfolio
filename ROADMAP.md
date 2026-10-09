@@ -98,6 +98,7 @@ The current copy is structure and factual draft material, not final application 
     - [x] WeBuddy deep page rewritten from prior-chat voice context, shortened, and grounded in the existing product architecture
     - [x] NPGKTrades deep page rewritten from Nate voice context and grounded in the actual copy-trading pipeline
     - [x] Say No To Plastic deep page rewritten from Nate voice context and grounded in the live client project + source/validation architecture
+    - [x] MoveMate deep page rewritten in Nate voice around the marketplace → moving-help shift, assumption testing, campus posters, and current MVP
 
 ### Next phase — deepen the remaining stories
 - [x] MoveMate story replaces HOOS Moving and captures the marketplace → moving-help pivot
