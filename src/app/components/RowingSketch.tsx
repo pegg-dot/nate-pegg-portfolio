@@ -10,9 +10,14 @@ const strokes = [
   "M103 89 L91 70 L117 70 M103 111 L91 130 L117 130 M174 89 L162 70 L188 70 M174 111 L162 130 L188 130",
   "M116 100 C116 92 130 92 130 100 C130 108 116 108 116 100 M121 96 L105 90 L96 100 L105 110 L121 104 M105 92 L116 100 L105 108",
   "M187 100 C187 92 201 92 201 100 C201 108 187 108 187 100 M192 96 L176 90 L167 100 L176 110 L192 104 M176 92 L187 100 L176 108",
-  "M113 99 L86 28 L81 14 Q78 10 72 14 L76 30 L86 28 M113 101 L86 172 L81 186 Q78 190 72 186 L76 170 L86 172",
-  "M184 99 L157 28 L152 14 Q149 10 143 14 L147 30 L157 28 M184 101 L157 172 L152 186 Q149 190 143 186 L147 170 L157 172",
 ];
+const oars = [
+  { pivotX: 102, pivotY: 70, side: 1, bladeX: 80, shaft: "M113 99 L86 28", blade: "M86 28 L81 14 Q78 10 72 14 L76 30 Z" },
+  { pivotX: 102, pivotY: 130, side: -1, bladeX: 80, shaft: "M113 101 L86 172", blade: "M86 172 L81 186 Q78 190 72 186 L76 170 Z" },
+  { pivotX: 173, pivotY: 70, side: 1, bladeX: 151, shaft: "M184 99 L157 28", blade: "M157 28 L152 14 Q149 10 143 14 L147 30 Z" },
+  { pivotX: 173, pivotY: 130, side: -1, bladeX: 151, shaft: "M184 101 L157 172", blade: "M157 172 L152 186 Q149 190 143 186 L147 170 Z" },
+];
+const drawingPaths = [...strokes, ...oars.flatMap((oar) => [oar.shaft, oar.blade])];
 const clamp = (n: number) => Math.max(0, Math.min(1, n));
 
 export default function RowingSketch() {
@@ -87,6 +92,17 @@ export default function RowingSketch() {
   const scale = width < 600 ? .72 : 1;
   const x = 4 + travel * Math.max(0, width - 320 * scale);
   const total = lengths.reduce((sum, n) => sum + n, 0);
+  // Both scullers move together. The blades feather on the forward recovery
+  // and square up for the drive back toward the stern.
+  const phase = reduced ? 0 : (travel * 3) % 1;
+  const sweep = 30 * (1 - Math.cos(phase * Math.PI * 2));
+  const feather = phase < .5 ? 1 - .8 * Math.sin(phase * Math.PI * 2) : 1;
+  const path = (i: number) => {
+    const length = lengths[i] || 1;
+    const start = lengths.slice(0, i).reduce((sum, n) => sum + n, 0);
+    const visible = reduced ? 1 : clamp((drawn * total - start) / length);
+    return <path key={i} ref={(el) => { paths.current[i] = el; }} className="rowingSketchLine" d={drawingPaths[i]} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - visible} />;
+  };
 
   return (
     <div className="rowingSketch" ref={container} aria-hidden="true">
@@ -95,12 +111,15 @@ export default function RowingSketch() {
           <path d={`M10 98 Q${x * .3} 92 ${x + 20} 100 M4 110 Q${x * .6} 118 ${x + 20} 108`} />
         </g>
         <g transform={`translate(${x} ${104 - 100 * scale}) scale(${scale})`}>
-          {strokes.map((d, i) => {
-            const length = lengths[i] || 1;
-            const start = lengths.slice(0, i).reduce((sum, n) => sum + n, 0);
-            const visible = reduced ? 1 : clamp((drawn * total - start) / length);
-            return <path key={i} ref={(el) => { paths.current[i] = el; }} className="rowingSketchLine" d={d} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - visible} />;
-          })}
+          {strokes.map((_, i) => path(i))}
+          {oars.map((oar, i) => (
+            <g key={i} className="rowingOar" transform={`rotate(${sweep * oar.side} ${oar.pivotX} ${oar.pivotY})`}>
+              {path(strokes.length + i * 2)}
+              <g className="rowingBlade" transform={`translate(${oar.bladeX} 0) scale(${feather} 1) translate(${-oar.bladeX} 0)`}>
+                {path(strokes.length + i * 2 + 1)}
+              </g>
+            </g>
+          ))}
           {!reduced && tip ? <DrawingPencil x={tip.x} y={tip.y} scale={.7} /> : null}
         </g>
       </svg>
