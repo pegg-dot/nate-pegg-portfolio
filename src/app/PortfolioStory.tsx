@@ -121,6 +121,7 @@ export default function PortfolioStory() {
         <div className="aboutPlainCopy">
           <p>I grew up in Miami and went to Ransom Everglades before starting at UVA this year. I&apos;ve always wanted to be an entrepreneur, and over the years I&apos;ve tried a lot of different ideas. More recently, I&apos;ve been spending a lot of time building with AI and trying to understand how it works by making things myself.</p>
           <p>Outside of that, I like drawing, going to the gym, playing sports, and spending time with friends.</p>
+          <p>Fun fact: when I was four, I had two of the same blue and red striped shirt with a little green alien on it. I wore it nearly every day and refused to wear other shirts.</p>
         </div>
       </section>
 
