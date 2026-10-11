@@ -46,3 +46,9 @@ npm run test:della
 The suite uses installed Google Chrome plus Playwright WebKit on macOS. Visual baselines are platform-specific and should only be updated after inspecting the rendered changes, never just to make tests pass. Browser screenshots and reports are ignored build artifacts; the reviewed baseline images are tracked in `tests/della-visual.spec.ts-snapshots/`.
 
 For deployed-route checks, set `DELLA_TEST_URL` to the portfolio origin. The tests never click the external Open Della links or send real messages.
+
+## Footer writing note
+
+The homepage footer has a native, keyboard-accessible disclosure for *After Abundance*. The PDF is the original 42-page file, unchanged (SHA-256 `3bdb1da4a89c997beda1f92650606834b7f199193533a97666d99231ea24dfb0`). It is not downloaded until a visitor follows the link. The paper retains its human-direction / AI-assisted drafting attribution.
+
+Run `npx playwright test -c playwright-writing.config.ts` after a production build. Set `PORTFOLIO_TEST_URL` to verify a deployed origin.

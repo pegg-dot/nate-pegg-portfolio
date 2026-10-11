@@ -5,6 +5,7 @@ import Link from "next/link";
 import HandwrittenName from "./components/HandwrittenName";
 import ScrollTrace from "./components/ScrollTrace";
 import RowingSketch from "./components/RowingSketch";
+import PortfolioFooter from "./components/PortfolioFooter";
 
 const workbench = [
   { title: "LOT", what: "Real-estate acquisition workspace for finding, underwriting and tracking opportunities.", origin: "My uncle said he could help me learn real estate, so I built a tool to help me.", meta: "parcel data · underwriting · owner research", href: "/work/lot", action: "story" },
@@ -127,10 +128,7 @@ export default function PortfolioStory() {
         </div>
       </section>
 
-      <footer className="siteFooter">
-        <div><span>NATE PEGG</span><span>2026</span></div>
-        <div><a href="https://github.com/pegg-dot" target="_blank" rel="noreferrer">GitHub ↗</a><a href="mailto:nate@natepegg.com">Email ↗</a><a href="#top">Top ↑</a></div>
-      </footer>
+      <PortfolioFooter />
     </main>
   );
 }

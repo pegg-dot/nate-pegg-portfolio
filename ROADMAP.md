@@ -128,3 +128,12 @@ The shared four-column brief remains on other project pages. Della now has a pro
 - [x] Inspect movement, visual states, and screenshot baselines before release.
 
 This does not mark the entire portfolio's image, accessibility, mobile, link or domain pass complete. Those remain the launch-hardening items above.
+
+## Footer writing note - October 11, 2026
+
+- [x] Add a quiet "one more thing..." disclosure at the bottom of the homepage.
+- [x] Link the original *After Abundance* PDF without rewriting the paper or removing its attribution.
+- [x] Keep the existing footer links and preserve all project pages, the signature, and rowing source.
+- [x] Verify keyboard use, no-JavaScript reading, four responsive widths, footer accessibility and original-file integrity in Chrome and WebKit.
+
+VialGrade design is being discussed; its page has not been changed in this iteration.
