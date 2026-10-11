@@ -4,7 +4,7 @@ on:
     branches: [design/transformer-story-20261011, main]
     paths:
       - 'src/app/work/transformer/**'
-      - 'scripts/prepare-transformer.py'
+      - 'scripts/*transformer*'
       - 'tests/transformer*'
       - 'playwright-transformer.config.ts'
       - '.github/workflows/transformer-story.yml'
@@ -25,16 +25,16 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
-      - name: Extract and verify immutable data and original writing
-        run: python3 scripts/prepare-transformer.py
-      - name: Save generated source fixtures on the isolated design branch
+      - name: Extract immutable data and apply isolated source refinements
+        run: python3 scripts/transformer-bootstrap.py
+      - name: Save generated source only on the isolated design branch
         if: github.ref_name == 'design/transformer-story-20261011'
         run: |
-          git add src/app/work/transformer/capture.json src/app/work/transformer/story-copy.json tests/fixtures/transformer-original-copy.json
+          git add src/app/work/transformer tests/fixtures/transformer-original-copy.json tests/transformer.spec.ts
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m 'Pin real Transformer activations and unchanged original writing'
+            git commit -m 'Pin captured activations and normalize source glyphs'
             git push origin HEAD:design/transformer-story-20261011
           fi
           git rev-parse HEAD
@@ -59,6 +59,5 @@ jobs:
           path: |
             qa/
             test-results/
-            src/app/work/transformer/capture.json
-            src/app/work/transformer/story-copy.json
+            src/app/work/transformer/
           retention-days: 7
