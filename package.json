@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:della": "playwright test"
+    "test:della": "playwright test",
+    "test:vial": "playwright test -c playwright-vial.config.ts"
   },
   "dependencies": {
     "motion": "14.1.0",

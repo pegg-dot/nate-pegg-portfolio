@@ -136,4 +136,17 @@ This does not mark the entire portfolio's image, accessibility, mobile, link or 
 - [x] Keep the existing footer links and preserve all project pages, the signature, and rowing source.
 - [x] Verify keyboard use, no-JavaScript reading, four responsive widths, footer accessibility and original-file integrity in Chrome and WebKit.
 
-VialGrade design is being discussed; its page has not been changed in this iteration.
+The writing-note iteration did not change VialGrade. Its subsequent redesign is recorded below.
+
+
+## VialGrade case study - approved design iteration, October 11, 2026
+
+- [x] Replace the shared brief layout with a document-inspection story without rewriting the original prose.
+- [x] Compare matching, missing, and conflicting fictional records; synchronized field highlights and a mobile paired-value readout.
+- [x] Use the actual pinned letter-grade projection with fictional, explicitly supplied verdicts. Missing evidence remains ungraded.
+- [x] Explain referral tags without sending tracking requests or implying a completed purchase.
+- [x] Mark old metrics and the retained product image as historical.
+- [x] Verify source parity, keyboard use, motion, static reading, accessibility, and five responsive widths in Chrome and WebKit.
+- [x] Inspect the rendered states and preserve reviewed visual baselines.
+
+The remaining site-wide launch-hardening items above are not marked complete by this route-specific work.

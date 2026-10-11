@@ -1,0 +1,33 @@
+{
+  "intro": "VialGrade is a research site I built after a friend who follows peptide research told me how many students were buying from vendors that all claimed to be verified but were hard to trust. I wanted to see what could actually be checked.",
+  "originFriend": "A friend of mine is really into biomedicine and peptide research. He told me a lot of people around him wanted to buy peptides, but that a lot of the market felt sketchy.",
+  "originClaims": "When I started looking, that was basically my reaction too. Every site had verified COAs, third-party testing, purity numbers, and a “research use only” disclaimer. It was hard to tell what any of it actually proved.",
+  "originGoal": "So I thought, why can't I use AI and software to cross-check the claims? I didn’t want to build a site telling people what to take. I wanted to build something that makes the evidence easier to inspect.",
+  "gradingAreas": "The grading engine looks across four areas: independent testing, regulatory and operator signals, reputation, and business signals. It cross-checks COAs, batches, lab records, and the other evidence I can actually trace.",
+  "gradingUnknown": "I learned pretty quickly that missing evidence can’t automatically count against somebody, and a clean-looking website can’t count as proof either. If there isn’t enough evidence, the site can return no grade at all.",
+  "gradingStrong": "For vendors with a strong record, independent lab testing is what separates the higher grades. Verified negative evidence can pull a grade down or cap it. The point is that the letter has to come from something I can show.",
+  "checkout": "I originally wanted a native checkout, but I couldn’t make that work. So VialGrade links to the original vendor page instead.",
+  "handoff": "That meant my analytics stopped once somebody left the site. I wanted a way to measure whether those outbound links were actually being used and make the source of the traffic visible on the other side.",
+  "attribution": "I ended up building referral attribution into the links. They carry normal UTM tags plus a short VialGrade click reference, so I can measure the handoff and the destination can identify VialGrade as the source. There are no live affiliate deals or native checkout.",
+  "earlyUse": "That honestly surprised me. In the past month it has gotten about 2,000 Google impressions, around 600 clicks into the site, and eight people have signed up. It’s still small, but that made the idea feel a lot more real.",
+  "boundary": "VialGrade doesn’t sell peptides, tell people what to take, or claim that a product is safe, sterile, correctly dosed, or fit for human use.",
+  "purpose": "The thing I’m trying to make better is the evidence layer: what a vendor claims, what records actually exist, where they came from, and what is still unknown.",
+  "brief": [
+    {
+      "label": "WHAT",
+      "text": "A research site that compares vendor claims against lab records, COAs, batch data, public enforcement, and other evidence."
+    },
+    {
+      "label": "WHY",
+      "text": "Every storefront seemed to say verified COAs, third-party testing, and research use only. I wanted one place where those claims could actually be cross-checked."
+    },
+    {
+      "label": "HOW",
+      "text": "I collect records, match certificates and batches, and grade the evidence across testing, regulatory, reputation, and business signals. If there isn’t enough evidence, VialGrade leaves it ungraded."
+    },
+    {
+      "label": "WHEN",
+      "text": "Built in 2026 and still changing. The current version is live at vialgrade.com."
+    }
+  ]
+}

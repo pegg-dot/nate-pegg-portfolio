@@ -52,3 +52,9 @@ For deployed-route checks, set `DELLA_TEST_URL` to the portfolio origin. The tes
 The homepage footer has a native, keyboard-accessible disclosure for *After Abundance*. The PDF is the original 42-page file, unchanged (SHA-256 `3bdb1da4a89c997beda1f92650606834b7f199193533a97666d99231ea24dfb0`). It is not downloaded until a visitor follows the link. The paper retains its human-direction / AI-assisted drafting attribution.
 
 Run `npx playwright test -c playwright-writing.config.ts` after a production build. Set `PORTFOLIO_TEST_URL` to verify a deployed origin.
+
+## VialGrade story verification
+
+The `/work/vialgrade` route has a project-specific document comparison, a pinned real grade projection with fictional inputs, and a non-networked referral-link explanation. Original prose is frozen in `tests/fixtures/vial-original-copy.json`.
+
+Run `npm run test:vial` after a production build. Set `VIAL_TEST_URL` to target a deployed origin. The filename glob intentionally does not match worktree directory names. See `docs/VIALGRADE_STORY_2026-10-11.md` for source provenance, scope, and test coverage.
