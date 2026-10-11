@@ -1,45 +1,57 @@
 name: Transformer story verification
 on:
   push:
-    branches: [design/transformer-story-20261011]
+    branches: [design/transformer-story-20261011, main]
+    paths:
+      - 'src/app/work/transformer/**'
+      - 'scripts/prepare-transformer.py'
+      - 'tests/transformer*'
+      - 'playwright-transformer.config.ts'
+      - '.github/workflows/transformer-story.yml'
   workflow_dispatch:
+concurrency:
+  group: transformer-story-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
-      - name: Inspect pinned activation source
+      - name: Extract and verify immutable data and original writing
+        run: python3 scripts/prepare-transformer.py
+      - name: Save generated source fixtures on the isolated design branch
+        if: github.ref_name == 'design/transformer-story-20261011'
         run: |
-          mkdir -p qa
-          python3 - <<'PY'
-          import json, urllib.request, hashlib
-          commit='f6ba652589871a0b95f71a41b9910269ec7cf8db'
-          url=f'https://raw.githubusercontent.com/pegg-dot/Transformer/{commit}/viz/public/activations.json'
-          raw=urllib.request.urlopen(url,timeout=90).read()
-          a=json.loads(raw)
-          print('SOURCE',json.dumps({'model':a['model'],'run':a['run'],'tokens':a['token_strs'][:20],'shape':len(a['tokens']),'sha256':hashlib.sha256(raw).hexdigest()}))
-          n=min(12,len(a['run']['prompt_token_ids'])) or min(12,len(a['tokens']))
-          dims=8
-          cut=lambda x:[row[:dims] for row in x[:n]]
-          data={'source':{'repository':'pegg-dot/Transformer','commit':commit,'path':'viz/public/activations.json','sha256':hashlib.sha256(raw).hexdigest()},'model':a['model'],'run':a['run'],'length':n,'shownDimensions':dims,'vocab':a['vocab'],'tokens':a['tokens'][:n],'characters':a['token_strs'][:n],'tokenEmbedding':cut(a['token_emb']),'positionEmbedding':cut(a['pos_emb']),'embeddingSum':cut(a['embed_sum']),'blocks':[{'weights':[[row[:n] for row in h[:n]] for h in b['attn']['weights']],'attentionOut':cut(b['attn']['out']),'residualMid':cut(b['resid_mid']),'feedForwardOut':cut(b['ffn']['out']),'residualOut':cut(b['resid_out'])} for b in a['blocks']],'logits':a['logits'][:n]}
-          with open('qa/transformer-capture.json','w') as f:json.dump(data,f,separators=(',',':'),allow_nan=False)
-          with open('qa/metadata.json','w') as f:json.dump({'model':a['model'],'run':a['run'],'prefix':data['characters'],'size':len(json.dumps(data))},f,indent=2)
-          print('SLICE',json.dumps({'prefix':data['characters'],'tokens':data['tokens'],'size':len(json.dumps(data))}))
-          PY
-      - name: Validate implementation when present
-        if: ${{ hashFiles('playwright-transformer.config.ts') != '' }}
+          git add src/app/work/transformer/capture.json src/app/work/transformer/story-copy.json tests/fixtures/transformer-original-copy.json
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'Pin real Transformer activations and unchanged original writing'
+            git push origin HEAD:design/transformer-story-20261011
+          fi
+          git rev-parse HEAD
+      - name: Build and exercise the page
         run: |
           npm ci --no-audit --no-fund
           npm run lint
           npm run build
           npx playwright install --with-deps chromium webkit
           npx playwright test -c playwright-transformer.config.ts
+      - name: Check the live route after production deployment
+        if: github.ref_name == 'main'
+        run: |
+          node - <<'JS'
+          (async()=>{ for(let i=0;i<30;i++){const r=await fetch('https://nate-pegg-portfolio.vercel.app/work/transformer');const t=await r.text();if(t.includes('data-testid="transformer-lab"'))process.exit(0);await new Promise(r=>setTimeout(r,5000));}process.exit(1);})()
+          JS
+          TRANSFORMER_TEST_URL=https://nate-pegg-portfolio.vercel.app npx playwright test -c playwright-transformer.config.ts
       - uses: actions/upload-artifact@v5
         if: ${{ !cancelled() }}
         with:
@@ -47,4 +59,6 @@ jobs:
           path: |
             qa/
             test-results/
+            src/app/work/transformer/capture.json
+            src/app/work/transformer/story-copy.json
           retention-days: 7
