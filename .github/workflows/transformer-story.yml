@@ -7,6 +7,7 @@ on:
       - 'scripts/*transformer*'
       - 'tests/transformer*'
       - 'playwright-transformer.config.ts'
+      - 'playwright-preserved.config.ts'
       - '.github/workflows/transformer-story.yml'
   workflow_dispatch:
 concurrency:
@@ -25,26 +26,34 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
-      - name: Extract immutable data and apply isolated source refinements
+          cache: npm
+      - name: Apply final isolated refinements
         run: python3 scripts/transformer-bootstrap.py
-      - name: Save generated source only on the isolated design branch
+      - name: Commit the bounded bootstrap result
         if: github.ref_name == 'design/transformer-story-20261011'
         run: |
-          git add src/app/work/transformer tests/fixtures/transformer-original-copy.json tests/transformer.spec.ts
+          git add src/app/work/transformer
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m 'Pin captured activations and normalize source glyphs'
+            git commit -m 'Refine Safari controls, mobile residual view and image sizing'
             git push origin HEAD:design/transformer-story-20261011
           fi
           git rev-parse HEAD
-      - name: Build and exercise the page
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Lint and production build
+        run: npm run lint && npm run build
+      - name: Install browser test runtimes
+        run: npx playwright install --with-deps chromium webkit
+      - name: Transformer browser and numerical checks
         run: |
-          npm ci --no-audit --no-fund
-          npm run lint
-          npm run build
-          npx playwright install --with-deps chromium webkit
           npx playwright test -c playwright-transformer.config.ts
+          cp qa/transformer-results.json qa/local-transformer-results.json
+      - name: Della, VialGrade and writing-note regression checks
+        run: |
+          npx playwright test -c playwright-preserved.config.ts
+          cp qa/preserved-results.json qa/local-preserved-results.json
       - name: Check the live route after production deployment
         if: github.ref_name == 'main'
         run: |
@@ -52,6 +61,7 @@ jobs:
           (async()=>{ for(let i=0;i<30;i++){const r=await fetch('https://nate-pegg-portfolio.vercel.app/work/transformer');const t=await r.text();if(t.includes('data-testid="transformer-lab"'))process.exit(0);await new Promise(r=>setTimeout(r,5000));}process.exit(1);})()
           JS
           TRANSFORMER_TEST_URL=https://nate-pegg-portfolio.vercel.app npx playwright test -c playwright-transformer.config.ts
+          TRANSFORMER_TEST_URL=https://nate-pegg-portfolio.vercel.app npx playwright test -c playwright-preserved.config.ts
       - uses: actions/upload-artifact@v5
         if: ${{ !cancelled() }}
         with:
