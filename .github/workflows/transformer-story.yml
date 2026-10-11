@@ -1,0 +1,50 @@
+name: Transformer story verification
+on:
+  push:
+    branches: [design/transformer-story-20261011]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Inspect pinned activation source
+        run: |
+          mkdir -p qa
+          python3 - <<'PY'
+          import json, urllib.request, hashlib
+          commit='f6ba652589871a0b95f71a41b9910269ec7cf8db'
+          url=f'https://raw.githubusercontent.com/pegg-dot/Transformer/{commit}/viz/public/activations.json'
+          raw=urllib.request.urlopen(url,timeout=90).read()
+          a=json.loads(raw)
+          print('SOURCE',json.dumps({'model':a['model'],'run':a['run'],'tokens':a['token_strs'][:20],'shape':len(a['tokens']),'sha256':hashlib.sha256(raw).hexdigest()}))
+          n=min(12,len(a['run']['prompt_token_ids'])) or min(12,len(a['tokens']))
+          dims=8
+          cut=lambda x:[row[:dims] for row in x[:n]]
+          data={'source':{'repository':'pegg-dot/Transformer','commit':commit,'path':'viz/public/activations.json','sha256':hashlib.sha256(raw).hexdigest()},'model':a['model'],'run':a['run'],'length':n,'shownDimensions':dims,'vocab':a['vocab'],'tokens':a['tokens'][:n],'characters':a['token_strs'][:n],'tokenEmbedding':cut(a['token_emb']),'positionEmbedding':cut(a['pos_emb']),'embeddingSum':cut(a['embed_sum']),'blocks':[{'weights':[[row[:n] for row in h[:n]] for h in b['attn']['weights']],'attentionOut':cut(b['attn']['out']),'residualMid':cut(b['resid_mid']),'feedForwardOut':cut(b['ffn']['out']),'residualOut':cut(b['resid_out'])} for b in a['blocks']],'logits':a['logits'][:n]}
+          with open('qa/transformer-capture.json','w') as f:json.dump(data,f,separators=(',',':'),allow_nan=False)
+          with open('qa/metadata.json','w') as f:json.dump({'model':a['model'],'run':a['run'],'prefix':data['characters'],'size':len(json.dumps(data))},f,indent=2)
+          print('SLICE',json.dumps({'prefix':data['characters'],'tokens':data['tokens'],'size':len(json.dumps(data))}))
+          PY
+      - name: Validate implementation when present
+        if: ${{ hashFiles('playwright-transformer.config.ts') != '' }}
+        run: |
+          npm ci --no-audit --no-fund
+          npm run lint
+          npm run build
+          npx playwright install --with-deps chromium webkit
+          npx playwright test -c playwright-transformer.config.ts
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: transformer-story-qa
+          path: |
+            qa/
+            test-results/
+          retention-days: 7
