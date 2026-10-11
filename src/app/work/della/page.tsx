@@ -1,82 +1,57 @@
 import Image from "next/image";
-import CaseShell from "../../components/CaseShell";
-import ProjectBrief from "../../components/ProjectBrief";
+import Link from "next/link";
+import type { Metadata } from "next";
+import { ApprovalDemo, BookingDemo, ContextDemo, DellaMark, HeroScene, Icon, MemoryDemo } from "./DellaScenes";
+import copy from "./story-copy.json";
+import s from "./della.module.css";
+
+export const metadata: Metadata = {
+  title: "Della | Nate Pegg",
+  description: "Building an AI employee for nail salons. A look at real bookings, customer memory, and the work around the model.",
+};
 
 export default function DellaCase() {
-  return (
-    <CaseShell
-      className="caseCompact dellaCase"
-      index="01 / DELLA"
-      title="DELLA"
-      subtitle="Della is an AI employee for nail salons. I started it because I think frontier models will get extremely good at work on a computer, but they still need the live state, workflows, and data of the actual business."
-      external={{ label: "LIVE SITE", href: "https://hellodella.com" }}
-      actions={[{ label: "OPEN DELLA", href: "https://hellodella.com", external: true }]}
-    >
-      <ProjectBrief items={[
-        { label: "WHAT", text: "An AI employee for nail salons, starting with calls, messaging, customer memory, scheduling, and real bookings." },
-        { label: "WHY", text: "Frontier models still don’t know the live operational state of a specific salon." },
-        { label: "HOW", text: "A harness around tools, memory, evaluations, permissions, and the salon's existing software." },
-        { label: "WHEN", text: "Started March 11, 2026 as OpenOperator. Medspas first, then nail salons, then communications first." },
-      ]} />
+  return <main className={s.page} id="main-content" tabIndex={-1}>
+    <nav className={s.nav} aria-label="Project navigation"><Link href="/"><Icon name="back" size={15} /> Nate Pegg</Link><span>01 / Della</span><a href="https://hellodella.com" target="_blank" rel="noreferrer">Open Della <span aria-hidden="true">↗</span><span className={s.srOnly}> (opens in a new tab)</span></a></nav>
+    <section className={s.hero} aria-labelledby="della-title">
+      <div className={s.heroCopy}><span className={s.eyebrow}>An AI employee for nail salons</span><h1 id="della-title"><DellaMark /> Della<span className={s.titlePeriod}>.</span></h1><p className={s.lede}>{copy.intro}</p><div className={s.heroActions}><a href="#booking" className={s.primaryButton}>Follow a booking <Icon name="arrow" size={16} /></a><a href="#origin" className={s.textButton}>How it started</a></div><span className={s.heroDate}>Building since March 11, 2026</span></div>
+      <HeroScene />
+    </section>
+    <nav className={s.chapterNav} aria-label="Inside this project"><span>Inside Della</span><a href="#booking">01 <b>The call</b></a><a href="#memory">02 <b>The memory</b></a><a href="#control">03 <b>Your OK</b></a><a href="#build">04 <b>Behind it</b></a></nav>
 
-      <section className="caseBand caseBandInk">
-        <div className="caseGrid two">
-          <div><span className="caseLabel">WHY THIS</span><h2>FRONTIER MODELS DON&apos;T KNOW THE SALON.</h2></div>
-          <div className="caseStack">
-            <p>I got really interested in agentic AI during the OpenClaw moment. I think frontier models will eventually be better than humans at a lot of work that happens on a computer.</p>
-            <p>What they still don’t have on their own is the salon itself: its customers, appointments, messages, software, history, and live state. That’s where the harness around the model matters.</p>
-            <p>Medspas were first, but the compliance risk was too high. Nail salons were a cleaner start, and communications became the wedge because a missed call is basically found revenue if Della can answer and book it.</p>
-          </div>
-        </div>
-      </section>
+    <section className={`${s.section} ${s.origin}`} id="origin" aria-labelledby="origin-title">
+      <div className={s.originAside}><span className={s.eyebrow}>Where it started</span><h2 id="origin-title">The model still<br />needs the salon.</h2><div className={s.originTimeline}><span><i />OpenOperator<small>March 11, 2026</small></span><span><i />Nail salons<small>A more focused start</small></span><span><i />Communications<small>The first part to get right</small></span></div></div>
+      <div className={s.prose}><p>{copy.originInterest}</p><p>{copy.originContext}</p><p>{copy.originPivot}</p></div>
+    </section>
 
-      <section className="caseBand">
-        <div className="caseGrid two">
-          <div><span className="caseLabel">WHAT I BUILT</span><h2>IT CAN ACTUALLY DO THE WORK.</h2></div>
-          <div className="caseStack">
-            <p>A salon can have Della answer all the time, only after hours, or only when nobody picks up. It can answer service and policy questions, book or cancel, hand off the call, and remember the customer from last time.</p>
-            <p>If someone asks whether 4:30 is open, Della checks the real schedule. If it says it booked something, the appointment has to actually exist in Square.</p>
-            <p>The same system is expanding into texts, Instagram DMs, WhatsApp, Facebook, reviews, and follow-up.</p>
-          </div>
-        </div>
-      </section>
+    <section className={`${s.section} ${s.bookingSection}`} id="booking" aria-labelledby="booking-title">
+      <div className={s.bookingNarrative}><span className={s.eyebrow}>01 / The call</span><h2 id="booking-title">From a call<br />to the calendar.</h2><div className={s.prose}><p>{copy.capabilities}</p><p>{copy.bookingTruth}</p></div><div className={s.marginNote}><span className={s.smallRule} /><h3>The model saying it happened isn’t enough.</h3><p>{copy.verification}</p></div></div>
+      <div><BookingDemo /><p className={s.expansionNote}>{copy.expansion}</p></div>
+    </section>
 
-      <section className="caseBand caseBandBlue">
-        <div className="caseGrid two">
-          <div><span className="caseLabel">A CALL I REMEMBER</span><h2>IT REMEMBERED MY CHIPPED NAIL.</h2></div>
-          <div className="caseMemoryStack">
-            <div><span>CALL 1</span><p>I told Della I had chipped my nail.</p></div>
-            <i>a couple days later</i>
-            <div className="agentMemory"><span>DELLA</span><p>It asked how my chipped nail was doing and whether I had gone to the doctor for it.</p></div>
-            <small>That was cool because it wasn’t starting over from zero. It remembered something from the last conversation and brought it back up on the next call.</small>
-          </div>
-        </div>
-      </section>
+    <section className={s.memorySection} id="memory" aria-labelledby="memory-title"><div className={s.sectionInner}>
+      <div className={s.memoryHeading}><div><span className={s.eyebrow}>02 / A call I remember</span><h2 id="memory-title">It remembered<br />my chipped nail.</h2></div><p className={s.memoryReflection}>{copy.reflection}</p></div>
+      <MemoryDemo />
+      <div className={s.memoryCost}><h3>Memory has a cost too.</h3><p>{copy.memoryCost}</p></div>
+    </div></section>
 
-      <section className="caseBand">
-        <span className="caseLabel">WHAT GOT HARD</span>
-        <div className="lessonGrid">
-          <article><span>01</span><h3>Latency adds up fast.</h3><p>Database lookups, memory, tools, and everything else around the model can make a voice call feel slower. I can optimize my side, but I’m still building on top of model latency I don’t control.</p></article>
-          <article><span>02</span><h3>The model saying it happened isn’t enough.</h3><p>Early on, Della would sometimes say it booked something when it had not, or take an action it shouldn’t have taken. I had to add verification, guardrails, and checks around what actually happened.</p></article>
-          <article><span>03</span><h3>The model needs the right kind of context.</h3><p>Policies and service information can come from salon knowledge, but appointments and other live state have to come from the real systems. Getting that split right matters a lot.</p></article>
-          <article><span>04</span><h3>Memory has a cost too.</h3><p>I wanted Della to remember customers across conversations, but storing and retrieving that context without making the call noticeably slower became its own database problem.</p></article>
-        </div>
-      </section>
+    <section className={`${s.section} ${s.controlSection}`} id="control" aria-labelledby="control-title">
+      <div className={s.controlHeading}><div><span className={s.eyebrow}>03 / Working with the owner</span><h2 id="control-title">Some things<br />need your OK.</h2></div><p className={s.editorialCaption}>A closer look at the review flow: a draft can be ready without being allowed to leave. Open it, inspect the proposed action, and make a decision in the demo.</p></div>
+      <ApprovalDemo />
+    </section>
 
-      <section className="caseBand dellaVisualBand">
-        <span className="caseLabel">THE CURRENT WORKSPACE</span>
-        <div className="caseImageWide dellaRoomImage"><Image src="/della/room-identity.png" alt="Della workspace showing permissions, state and activity" fill sizes="100vw" /></div>
-      </section>
+    <section className={s.buildSection} id="build" aria-labelledby="build-title"><div className={s.sectionInner}>
+      <div className={s.buildGrid}><div><span className={s.eyebrow}>04 / Behind the conversation</span><h2 id="build-title">The right context.<br />From the right place.</h2><div className={s.prose}><p>{copy.context}</p></div></div><ContextDemo /></div>
+      <div className={s.latencyRow}><div><h3>Latency adds up fast.</h3><p>{copy.latency}</p></div><div className={s.latencyVisual}><div className={s.dependencyChain}><span>Context</span><Icon name="arrow" size={14} /><span>Model</span><Icon name="arrow" size={14} /><span>Tools</span><Icon name="arrow" size={14} /><span>Response</span></div><p>Illustrative dependencies, not a measured latency trace.</p></div></div>
+    </div></section>
 
-      <section className="caseBand caseBandDark">
-        <div className="caseGrid two">
-          <div><span className="caseLabel">WHERE IT IS NOW</span><h2>I&apos;M GETTING IT INTO REAL SALONS.</h2></div>
-          <div className="caseStack">
-            <p>Real calls have gone through the system, real Square appointments have been created, and customer context carries across conversations.</p>
-            <p>I’m working on getting clients now. At the same time I’m tightening reliability, latency, memory, and guardrails around actual salon use.</p>
-          </div>
-        </div>
-      </section>
-    </CaseShell>
-  );
+    <section className={`${s.section} ${s.workspaceSection}`} aria-labelledby="workspace-title"><div className={s.workspaceHeading}><div><span className={s.eyebrow}>The wider workspace</span><h2 id="workspace-title">And this is where<br />it comes together.</h2></div><p className={s.editorialCaption}>The full interface has room for the work, the owner&apos;s decisions, and the record of what happened. The walkthroughs above isolate one piece at a time.</p></div>
+      <figure className={s.workspaceFigure}><div className={s.captureBar}><span><DellaMark small /> The Della workspace</span><span>Earlier interface capture</span></div><Image src="/della/workspace-context.webp" alt="Earlier Della workspace showing which actions need owner approval and which can be handled within its permissions. Identifying details have been removed." width={1760} height={1250} sizes="(max-width: 720px) 100vw, 90vw" /><figcaption>Earlier workspace capture, with identifying details removed. Shown for interface context, not as evidence of customer traction or revenue.</figcaption></figure>
+      <details className={s.projectNotes}><summary>Project notes <span aria-hidden="true">+</span></summary><div>{copy.brief.map(([label, text]) => <p key={label}>{text}</p>)}</div></details>
+    </section>
+
+    <section className={s.currentSection} aria-labelledby="current-title"><div className={s.currentInner}><div><span className={s.eyebrow}>Where it is now</span><h2 id="current-title">I’m getting it<br />into real salons.</h2><a className={s.lightButton} href="https://hellodella.com" target="_blank" rel="noreferrer">Open Della <span aria-hidden="true">↗</span><span className={s.srOnly}> (opens in a new tab)</span></a></div><div className={s.prose}><p>{copy.currentProof}</p><p>{copy.currentWork}</p></div></div></section>
+    <footer className={s.footer}><Link href="/"><Icon name="back" size={16} /> Back to all projects</Link><Link href="/work/vialgrade">Next: VialGrade <Icon name="arrow" size={16} /></Link></footer>
+    <noscript><style>{`[data-testid="booking-demo"] button, [data-testid="booking-demo"] fieldset, [data-testid="memory-demo"] button, [data-testid="approval-demo"] button, [data-testid="context-demo"] button { display: none !important; }`}</style><p className={s.noScript}>The story and examples are readable without JavaScript. Interactive walkthrough controls require JavaScript; open “Read the whole sequence” for the complete booking explanation.</p></noscript>
+  </main>;
 }

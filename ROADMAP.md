@@ -113,3 +113,18 @@ The current copy is structure and factual draft material, not final application 
 - [ ] accessibility / reduced-motion pass
 - [ ] final links + resume + artist account
 - [ ] final domain
+
+## Della case study - approved design iteration, October 11, 2026
+
+The shared four-column brief remains on other project pages. Della now has a project-specific story: a booking request moves to the calendar, customer context persists between two recollections, and a proposed message stops at an owner-approval boundary. This changes the presentation of Della, not the portfolio's goal or the other project pages.
+
+- [x] Preserve all 16 original prose blocks and all four brief facts, with a frozen copy test.
+- [x] Della-specific opening, booking illustration, memory transition and approval drawer.
+- [x] Explicit failed booking outcome; no confirmation without a matching illustrative receipt.
+- [x] Source-of-truth explanation and unmeasured latency dependency illustration.
+- [x] Earlier workspace image retained as a labeled, redacted derivative.
+- [x] Local-only interactions, keyboard focus loop, reduced-motion and no-JavaScript explanations.
+- [x] Responsive checks at 360, 390, 768, 1024 and 1440 pixels; Chrome and WebKit browser coverage.
+- [x] Inspect movement, visual states, and screenshot baselines before release.
+
+This does not mark the entire portfolio's image, accessibility, mobile, link or domain pass complete. Those remain the launch-hardening items above.

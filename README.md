@@ -19,7 +19,7 @@ The recurring visual language is a pencil in the margins. It stays pinned while 
 - Team USA story
 - fuller About section
 - deeper project pages for Della, VialGrade, Transformer, LOT, WeBuddy, NPGKTrades, Say No To Plastic, Grounds Guide and MoveMate
-- what / why / how / when orientation at the top of each project page
+- shared project orientation on the other case studies; Della has its own narrative with local interactive booking, memory, and approval walkthroughs
 
 ## Content rule
 
@@ -31,3 +31,18 @@ Long-form personal prose should remain Nate's. Short copy can be assembled from 
 npm install
 npm run dev
 ```
+
+## Della story verification
+
+The `/work/della` page preserves its original approved prose in `story-copy.json`. The frozen source fixture is `tests/fixtures/della-original-copy.json` (baseline commit `f5bc2c8`). Illustrative interactions have no connection to the Della backend or Square.
+
+```bash
+npm run lint
+npm run build
+npx playwright install webkit
+npm run test:della
+```
+
+The suite uses installed Google Chrome plus Playwright WebKit on macOS. Visual baselines are platform-specific and should only be updated after inspecting the rendered changes, never just to make tests pass. Browser screenshots and reports are ignored build artifacts; the reviewed baseline images are tracked in `tests/della-visual.spec.ts-snapshots/`.
+
+For deployed-route checks, set `DELLA_TEST_URL` to the portfolio origin. The tests never click the external Open Della links or send real messages.
