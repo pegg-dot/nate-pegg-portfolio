@@ -28,7 +28,7 @@ export default function MoveMateCase() {
         },
         {
           label: "WHY",
-          text: "Students are constantly moving furniture in and out of apartments around UVA. The marketplace idea made sense, but the actual moving problem was more immediate.",
+          text: "In my entrepreneurship class, we have to start something. My friends and I started with a furniture marketplace, worked through our top 20 assumptions, and realized moving itself was the better problem to solve first.",
         },
         {
           label: "HOW",
@@ -61,7 +61,7 @@ export default function MoveMateCase() {
           </div>
           <div className="caseStack">
             <p>Once we started thinking about the marketplace more seriously, the cold-start problem became pretty obvious. A marketplace is only useful if enough buyers and sellers are there at the same time.</p>
-            <p>The moving problem does not have that same issue. If somebody needs help getting a couch down four flights of stairs, they already have a problem even if there are zero listings on the marketplace.</p>
+            <p>The moving problem doesn’t have that same issue. If somebody needs help getting a couch down four flights of stairs, they already have a problem even if there are zero listings on the marketplace.</p>
             <p>So we changed the order. Help with the move first, then let the marketplace handle the furniture that is still left over or the things somebody still needs.</p>
           </div>
         </div>
@@ -75,7 +75,7 @@ export default function MoveMateCase() {
             <article className={styles.quietCell}>
               <span>HIGH CONFIDENCE</span>
               <h3>We already had evidence.</h3>
-              <p>These were not the questions we needed to spend the most time on.</p>
+              <p>These weren’t the questions we needed to spend the most time on.</p>
             </article>
             <article className={styles.focusCell}>
               <span>LOW CONFIDENCE</span>
@@ -90,7 +90,7 @@ export default function MoveMateCase() {
             <article className={styles.quietCell}>
               <span>LOW IMPORTANCE</span>
               <h3>Not worth optimizing yet.</h3>
-              <p>We did not want to spend time polishing things before the core behavior was real.</p>
+              <p>We didn’t want to spend time polishing things before the core behavior was real.</p>
             </article>
           </div>
           <div className={styles.axisX}>CONFIDENCE →</div>
@@ -132,7 +132,7 @@ export default function MoveMateCase() {
           <article>
             <span>MOVE OUT</span>
             <h3>Help getting everything out.</h3>
-            <p>If there is furniture left over, it can move into the marketplace instead of just being thrown away.</p>
+            <p>If there’s furniture left over, it can move into the marketplace instead of just being thrown away.</p>
           </article>
           <div className={styles.loopArrow}>→</div>
           <article className={styles.marketplace}>
@@ -156,7 +156,7 @@ export default function MoveMateCase() {
             <h2>FIVE OF US AT UVA.</h2>
           </div>
           <div className="caseStack">
-            <p>I am the one writing the product code right now, but the idea is not something I am working on alone. The five of us have been working through the product, posters, testing, launch, and how we would actually fulfill the first moves.</p>
+            <p>I’m the one writing the product code right now, but the idea isn’t something I’m working on alone. The five of us have been working through the product, posters, testing, launch, and how we would actually fulfill the first moves.</p>
           </div>
         </div>
         <div className={styles.teamGrid}>

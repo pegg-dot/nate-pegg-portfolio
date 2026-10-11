@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import DrawingPencil from "./DrawingPencil";
 
 const strokes = [
   // "Nate" as one continuous handwriting stroke.
@@ -120,7 +121,10 @@ export default function HandwrittenName() {
       }
     };
 
-    const animate = () => {
+    let lastTime = 0;
+    const animate = (time: number) => {
+      const elapsed = lastTime ? Math.min(48, time - lastTime) : 16;
+      lastTime = time;
       const current = currentProgressRef.current;
       const target = targetProgressRef.current;
       const distance = target - current;
@@ -130,10 +134,13 @@ export default function HandwrittenName() {
         setProgress(target);
         updateTip(target);
         animationRef.current = 0;
+        lastTime = 0;
         return;
       }
 
-      const next = current + distance * .16;
+      // Cap the writing speed even when the visitor scrolls quickly.
+      const step = distance * (1 - Math.exp(-elapsed / 180));
+      const next = current + Math.sign(step) * Math.min(Math.abs(step), elapsed / 4200);
       currentProgressRef.current = next;
       setProgress(next);
       updateTip(next);
@@ -188,17 +195,9 @@ export default function HandwrittenName() {
         </g>
 
         {!reduced && progress < .999 ? (
-          <g className="heroPencil heroPencilWriting" transform={`translate(${tip.x} ${tip.y}) rotate(${tip.angle})`}>
-            <path className="pencilWood" d="M0 0 L-15 -8 L-15 8 Z" />
-            <path className="pencilGraphite" d="M0 0 L-5.5 -3 L-5.5 3 Z" />
-            <rect className="pencilBody" x="-92" y="-8" width="77" height="16" rx="2" />
-            <path className="pencilEdge" d="M-92 -2 L-15 -2" />
-            <rect className="pencilFerrule" x="-108" y="-8" width="16" height="16" />
-            <rect className="pencilEraser" x="-128" y="-8" width="20" height="16" rx="5" />
-          </g>
+          <DrawingPencil x={tip.x} y={tip.y} scale={.9} />
         ) : null}
       </svg>
-      <span className="nameHint">{!reduced && progress < .98 ? "keep scrolling, I am writing it" : "made by hand, then code"}</span>
     </div>
   );
 }

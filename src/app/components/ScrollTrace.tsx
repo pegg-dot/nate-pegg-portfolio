@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import DrawingPencil from "./DrawingPencil";
 
 type Mode = "circle" | "underline" | "bracket" | "note" | "arrow";
 
@@ -25,7 +26,7 @@ type Geometry = Spec & {
 const specs: Spec[] = [
   { id: "della", selector: '[data-pencil-target="della"]', mode: "circle", tone: "ink" },
   { id: "vial", selector: '[data-pencil-target="vial"]', mode: "underline", tone: "ink" },
-  { id: "transformer", selector: '[data-pencil-target="transformer"]', mode: "bracket", tone: "paper" },
+  { id: "transformer", selector: '[data-pencil-target="transformer"]', mode: "underline", tone: "paper" },
   { id: "marley", selector: '[data-pencil-target="marley"]', mode: "note", tone: "ink", label: "Bob Marley" },
   { id: "dog", selector: '[data-pencil-target="dog"]', mode: "note", tone: "ink", label: "Mowgli" },
   { id: "miami", selector: '[data-pencil-target="miami"]', mode: "note", tone: "ink", label: "a little Miami" },
@@ -122,7 +123,7 @@ export default function ScrollTrace() {
   const pathRefs = useRef<Record<string, SVGPathElement | null>>({});
   const [geometry, setGeometry] = useState<Geometry[]>([]);
   const [page, setPage] = useState({ width: 1, height: 1 });
-  const [scrollY, setScrollY] = useState(0);
+  const [drawn, setDrawn] = useState<Record<string, number>>({});
   const [reduced, setReduced] = useState(false);
   const [tip, setTip] = useState<{ x: number; y: number; angle: number; tone: "ink" | "paper" } | null>(null);
   const [, setTick] = useState(0);
@@ -150,8 +151,8 @@ export default function ScrollTrace() {
         const w = r.width;
         const h = r.height;
         const note = spec.mode === "note" ? noteGeometry(spec.id, x, y, w, h, width <= 680) : null;
-        const start = Math.max(0, (note?.anchorY ?? y) - window.innerHeight * (note ? .82 : .72) + (spec.delay ?? 0));
-        const duration = spec.mode === "note" ? Math.min(240, window.innerHeight * .3) : Math.max(260, Math.min(460, 230 + h * .8));
+        const start = Math.max(0, (note?.anchorY ?? y) - window.innerHeight * .88 + (spec.delay ?? 0));
+        const duration = window.innerHeight * (spec.mode === "note" ? .5 : .62);
         return [{ ...spec, d: note?.d ?? buildPath(spec.mode, x, y, w, h), start, end: start + duration, labelX: note?.labelX, labelY: note?.labelY, labelAngle: note?.labelAngle }];
       });
       setGeometry(next);
@@ -176,42 +177,31 @@ export default function ScrollTrace() {
   useEffect(() => {
     if (reduced) return;
     let raf = 0;
-    let easedY = window.scrollY;
     let lastTime = 0;
+    const current: Record<string, number> = {};
+    // Already-passed sections render complete when opening a deep anchor.
+    geometry.forEach((g) => { current[g.id] = window.scrollY >= g.end ? 1 : 0; });
 
     const sync = (time: number) => {
-      const elapsed = lastTime ? Math.min(64, time - lastTime) : 16;
+      const elapsed = lastTime ? Math.min(48, time - lastTime) : 16;
       lastTime = time;
-      easedY += (window.scrollY - easedY) * (1 - Math.exp(-elapsed / 65));
-      if (Math.abs(window.scrollY - easedY) < .2) easedY = window.scrollY;
-      const y = easedY;
-      setScrollY(y);
-
-      const active = geometry.find((g) => {
-        const p = clamp((y - g.start) / Math.max(1, g.end - g.start));
-        return p > 0 && p < 1;
-      });
-
-      if (active) {
-        const path = pathRefs.current[active.id];
-        if (path) {
-          const p = clamp((y - active.start) / Math.max(1, active.end - active.start));
-          const len = path.getTotalLength();
-          const local = len * p;
-          const here = path.getPointAtLength(local);
-          const ahead = path.getPointAtLength(Math.min(len, local + 4));
-          setTip({
-            x: here.x,
-            y: here.y,
-            angle: Math.atan2(ahead.y - here.y, ahead.x - here.x) * 180 / Math.PI,
-            tone: active.tone,
-          });
-        }
-      } else {
-        setTip(null);
+      let pending = false;
+      for (const g of geometry) {
+        const target = clamp((window.scrollY - g.start) / Math.max(1, g.end - g.start));
+        const delta = target - current[g.id];
+        const step = delta * (1 - Math.exp(-elapsed / 160));
+        const speed = elapsed / (g.mode === "note" ? 1800 : 2200);
+        current[g.id] = Math.abs(delta) < .0005 ? target : current[g.id] + Math.sign(step) * Math.min(Math.abs(step), speed);
+        if (current[g.id] !== target) pending = true;
       }
-
-      raf = easedY !== window.scrollY ? requestAnimationFrame(sync) : 0;
+      setDrawn({ ...current });
+      const active = geometry.find((g) => current[g.id] > .001 && current[g.id] < .999);
+      const path = active ? pathRefs.current[active.id] : null;
+      if (active && path) {
+        const here = path.getPointAtLength(path.getTotalLength() * current[active.id]);
+        setTip({ x: here.x, y: here.y, angle: 128, tone: active.tone });
+      } else setTip(null);
+      raf = pending ? requestAnimationFrame(sync) : 0;
       if (!raf) lastTime = 0;
     };
 
@@ -224,13 +214,7 @@ export default function ScrollTrace() {
     };
   }, [geometry, reduced]);
 
-  const progress = useMemo(() => {
-    const map: Record<string, number> = {};
-    geometry.forEach((g) => {
-      map[g.id] = reduced ? 1 : clamp((scrollY - g.start) / Math.max(1, g.end - g.start));
-    });
-    return map;
-  }, [geometry, reduced, scrollY]);
+  const progress = Object.fromEntries(geometry.map((g) => [g.id, reduced ? 1 : (drawn[g.id] ?? 0)]));
 
   return (
     <svg
@@ -260,14 +244,7 @@ export default function ScrollTrace() {
       ))}
 
       {!reduced && tip ? (
-        <g className={`storyPencil semanticPencil ${tip.tone === "paper" ? "paperPencil" : ""}`} transform={`translate(${tip.x} ${tip.y}) rotate(${tip.angle})`}>
-          <path className="pencilWood" d="M0 0 L-12 -7 L-12 7 Z" />
-          <path className="pencilGraphite" d="M0 0 L-5 -2.7 L-5 2.7 Z" />
-          <rect className="pencilBody" x="-68" y="-7" width="56" height="14" rx="2" />
-          <path className="pencilEdge" d="M-68 -1.5 L-12 -1.5" />
-          <rect className="pencilFerrule" x="-80" y="-7" width="12" height="14" />
-          <rect className="pencilEraser" x="-94" y="-7" width="14" height="14" rx="4" />
-        </g>
+        <DrawingPencil x={tip.x} y={tip.y} scale={.85} />
       ) : null}
     </svg>
   );

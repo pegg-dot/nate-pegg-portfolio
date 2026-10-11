@@ -22,7 +22,7 @@ export default function PlasticCase() {
         },
         {
           label: "WHY",
-          text: "The original goal was to give people a place to buy the book, learn more about plastic, sign up for weekly newsletters, and eventually grow the project through things like affiliates, products, and more awareness.",
+          text: "Dr. Haddad asked me to make a website for his new book, Homo Plasticus, with plans to eventually expand into newsletters, affiliates, and merchandise.",
         },
         {
           label: "HOW",
@@ -41,7 +41,7 @@ export default function PlasticCase() {
             <h2>HOMO PLASTICUS.</h2>
           </div>
           <div className="caseStack">
-            <p>Dr. Elie Haddad originally asked me to build a website around his new book, <em>Homo Plasticus</em>. The goal was not just to have a page where people could buy the book, but to create a place where people could learn more about plastic, sign up for newsletters, and eventually support a broader project around affiliates, products, and awareness.</p>
+            <p>Dr. Elie Haddad originally asked me to build a website around his new book, <em>Homo Plasticus</em>. The goal wasn’t just to have a page where people could buy the book, but to create a place where people could learn more about plastic, sign up for newsletters, and eventually support a broader project around affiliates, products, and awareness.</p>
             <p>It started as a website to sell his book, and since then it has turned into a much larger project.</p>
           </div>
         </div>
@@ -78,9 +78,9 @@ export default function PlasticCase() {
             <h2>MAKING THE SCIENCE VISUAL.</h2>
           </div>
           <div className="caseStack">
-            <p>The anatomy became one of the biggest parts of the site. I did not want it to just be a 3D body with some generic microplastic image beside it. I wanted the particles to actually exist inside and around the body so what you were looking at felt connected to the science.</p>
+            <p>The anatomy became one of the biggest parts of the site. I didn’t want it to just be a 3D body with some generic microplastic image beside it. I wanted the particles to actually exist inside and around the body so what you were looking at felt connected to the science.</p>
             <p>I also kept changing the particles because having every one of them show up as the same little colored dot looked fake. I wanted fibers, flakes, shards, different sizes and colors, and enough variation that it actually felt like the material we were talking about.</p>
-            <p>At the same time, I had to be careful not to make the science seem more certain than it was. A 3D body can look very authoritative, so I wanted the study, what it found, and its limitations to stay connected to the visual instead of making claims the research did not actually make.</p>
+            <p>At the same time, I had to be careful not to make the science seem more certain than it was. A 3D body can look very authoritative, so I wanted the study, what it found, and its limitations to stay connected to the visual instead of making claims the research didn’t actually make.</p>
           </div>
         </div>
       </section>
@@ -93,7 +93,7 @@ export default function PlasticCase() {
           </div>
           <div className="caseStack">
             <p>This was also one of the first projects where I was building for somebody else instead of just myself. Dr. Haddad would review things, send changes, and add ideas, and I had to keep adjusting the site around what he actually wanted.</p>
-            <p>That is how it ended up becoming much bigger than the original book website without just turning into a bunch of random pages.</p>
+            <p>That’s how it ended up becoming much bigger than the original book website without just turning into a bunch of random pages.</p>
           </div>
         </div>
       </section>

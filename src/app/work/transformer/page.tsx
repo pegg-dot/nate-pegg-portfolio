@@ -27,7 +27,7 @@ export default function TransformerCase() {
           <div><span className="caseLabel">WHERE IT CAME FROM</span><h2>I COULD EXPLAIN IT. I WANTED TO SEE IT.</h2></div>
           <div className="caseStack">
             <p>During my daily studying I got to the point where I could kind of explain the transformer pipeline: tokenization, attention, the MLP, residual connections, and then the output.</p>
-            <p>But being able to repeat the steps was different from really understanding them. Residual connections were one of the things I could not quite picture, and the training side was the same with backpropagation, gradient descent, and Adam.</p>
+            <p>But being able to repeat the steps was different from really understanding them. Residual connections were one of the things I couldn’t quite picture, and the training side was the same with backpropagation, gradient descent, and Adam.</p>
             <p>I watched a few of Andrej Karpathy&apos;s longer videos and 3Blue1Brown, which gave me a much better foundation. Then I wanted to actually build it, because learning while doing has always made things click more for me than just reading about them.</p>
           </div>
         </div>

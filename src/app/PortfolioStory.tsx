@@ -4,14 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import HandwrittenName from "./components/HandwrittenName";
 import ScrollTrace from "./components/ScrollTrace";
+import RowingSketch from "./components/RowingSketch";
 
 const workbench = [
-  { title: "LOT", what: "Real-estate acquisition workspace for finding, underwriting and tracking opportunities.", origin: "My uncle said he could help me learn real estate, so I built the workspace I wanted beside me.", meta: "parcel data · underwriting · owner research", href: "/work/lot", action: "story" },
-  { title: "WeBuddy", what: "Salon website system that turns public business data and a short owner onboarding into a structured, editable site.", origin: "Cold calling salons was rough. I thought if I could send them something useful first, like a site already built from their business data, I would have a better way in.", meta: "Google listing import · 96-field model · templates", href: "/work/webuddy", action: "story" },
-  { title: "NPGKTrades", what: "Polymarket copy-trading system with bankroll-relative sizing and deterministic risk gates.", origin: "I knew the trader. I wanted to mirror the allocation instead of blindly copying the dollar amount.", meta: "detect · aggregate · size · risk · execute", href: "/work/npgktrades", action: "story" },
-  { title: "Say No To Plastic", what: "Interactive microplastics education site built around evidence, anatomy and practical guides.", origin: "The job was turning dense papers and scattered headlines into something a normal person could actually explore.", meta: "research communication · 3D anatomy · guides", href: "/work/say-no-to-plastic", action: "story" },
-  { title: "Grounds Guide", what: "Campus routing system where GIS, entrances and pedestrian truth matter more than a plausible-looking line.", origin: "I didn't know my way around Grounds. I wanted something that knew the smaller paths I took, used my schedule, and told me when to leave.", meta: "GIS · entrances · routing truth", href: "/work/grounds-guide", action: "story" },
-  { title: "MoveMate", what: "Move-in and move-out help for UVA students, with a student marketplace underneath it.", origin: "We started with a marketplace, mapped roughly 20 assumptions, and realized moving itself was the sharper problem to solve first.", meta: "UVA · moving help · marketplace backbone", href: "/work/movemate", action: "story" },
+  { title: "LOT", what: "Real-estate acquisition workspace for finding, underwriting and tracking opportunities.", origin: "My uncle said he could help me learn real estate, so I built a tool to help me.", meta: "parcel data · underwriting · owner research", href: "/work/lot", action: "story" },
+  { title: "WeBuddy", what: "Salon website system that turns public business data and a short owner onboarding into a structured, editable site.", origin: "Getting my foot in the door with nail salons was rough. I thought if I could send something useful, like a site I’d already built from the business’s data, I’d have a better way in.", meta: "Google listing import · 96-field model · templates", href: "/work/webuddy", action: "story" },
+  { title: "NPGKTrades", what: "Polymarket copy-trading system with bankroll-relative sizing and deterministic risk gates.", origin: "I knew the trader and thought it would be an interesting challenge to mirror his allocation instead of blindly copying the dollar amounts.", meta: "detect · aggregate · size · risk · execute", href: "/work/npgktrades", action: "story" },
+  { title: "Say No To Plastic", what: "Interactive microplastics education site built around evidence, anatomy and practical guides.", origin: "Dr. Haddad asked me to make a website for his new book, Homo Plasticus, with plans to eventually expand into newsletters, affiliates, and merchandise.", meta: "research communication · 3D anatomy · guides", href: "/work/say-no-to-plastic", action: "story" },
+  { title: "Grounds Guide", what: "Campus routing system where GIS, entrances and pedestrian truth matter more than a plausible-looking line.", origin: "Starting at the University of Virginia, I didn’t know my way around Grounds. I noticed Google Maps missed shortcuts and smaller paths, so I wanted a guide specifically for UVA students that could also import your schedule and tell you when to leave.", meta: "GIS · entrances · routing truth", href: "/work/grounds-guide", action: "story" },
+  { title: "MoveMate", what: "Move-in and move-out help for UVA students, with a student marketplace underneath it.", origin: "In my entrepreneurship class, we have to start something. My friends and I started a marketplace for buying and selling furniture, mapped out our top 20 assumptions, and realized moving itself was the better problem to solve first.", meta: "UVA · moving help · marketplace backbone", href: "/work/movemate", action: "story" },
 ];
 
 export default function PortfolioStory() {
@@ -33,7 +34,7 @@ export default function PortfolioStory() {
       <section className="chapterIntro" id="work">
         <span className="microLabel">HOW I GOT INTO THIS</span>
         <h2>I&apos;ve always liked<br/>creating things.</h2>
-        <p>Growing up, I always wanted to be an entrepreneur. I tried a clothing brand, a marketplace for fitness clubs and organizations, and a bunch of other stuff I thought would be cool. Once I got really into AI, building side projects became how I really learned. Some start because I see a problem. Others because I want to understand something better or challenge myself and see if I can build it.</p>
+        <p>Growing up, I always wanted to be an entrepreneur. I tried a clothing brand, a marketplace for fitness clubs and organizations, and a bunch of other stuff I thought would be cool. Once I got really into AI, building side projects became a way to learn and be prepared for the future. Some started as problems I saw, but others were just because I wanted to understand something better, challenge myself, and see if I could build it.</p>
       </section>
 
       <section className="dellaStorySection projectSpotlight">
@@ -45,7 +46,7 @@ export default function PortfolioStory() {
         </div>
         <div className="spotlightGrid">
           <div className="spotlightImage"><Image src="/della/room-identity.png" alt="Della workspace showing the AI employee's permissions, activity and state" fill sizes="(max-width: 980px) 90vw, 50vw" /></div>
-          <div className="spotlightText"><span className="microLabel">WHY I STARTED</span><h2>I thought vertical AI was going to be a lot more than just putting a chatbot on a business.</h2><p>A nail salon has live appointments, missed calls, repeat customers, texts, DMs, cancellations, and a lot of little things a generic model does not know. I wanted to see if I could connect into all of that and actually do the work, starting with communications.</p><div className="spotlightChips"><span>voice</span><span>persistent context</span><span>Square bookings</span><span>knowledge + tools</span></div></div>
+          <div className="spotlightText"><span className="microLabel">WHY I STARTED</span><h2>I thought vertical AI was going to be a lot more than just putting a chatbot on a business.</h2><p>A nail salon has live appointments, missed calls, repeat customers, texts, DMs, cancellations, and a lot of little things a generic model doesn’t know. I wanted to see if I could connect into all of that and actually do the work, starting with communications.</p><div className="spotlightChips"><span>voice</span><span>persistent context</span><span>Square bookings</span><span>knowledge + tools</span></div></div>
         </div>
       </section>
 
@@ -58,7 +59,7 @@ export default function PortfolioStory() {
         </div>
         <div className="spotlightGrid reverse">
           <div className="spotlightImage vialPreview"><Image src="/vialgrade/home.jpg" alt="VialGrade homepage and search interface" fill sizes="(max-width: 980px) 90vw, 50vw" /></div>
-          <div className="spotlightText"><span className="microLabel">WHY I STARTED</span><h2>I knew a lot of people who wanted to try peptides, but they were buying from sketchy labs or just from friends.</h2><p>I thought it would be useful to have one place that grades the vendors and storefronts and lets you see why they got that grade. I am not making money from it. I just wanted a better way to compare them.</p><div className="spotlightChips"><span>vendors</span><span>compounds</span><span>lab evidence</span><span>source history</span></div></div>
+          <div className="spotlightText"><span className="microLabel">WHY I STARTED</span><h2>I knew a lot of people who wanted to try peptides, but they were buying from sketchy labs or just from friends.</h2><p>I thought it would be useful to have one place that grades the vendors and storefronts and lets you see why they got that grade.</p><div className="spotlightChips"><span>vendors</span><span>compounds</span><span>lab evidence</span><span>source history</span></div></div>
         </div>
       </section>
 
@@ -89,8 +90,8 @@ export default function PortfolioStory() {
       </section>
 
       <section className="artSection" id="draw">
-        <div className="sectionRail"><span>10</span><span>MADE BY HAND</span><span>GRAPHITE / COLOR</span></div>
-        <div className="artLead"><h2>Drawings</h2><div className="artIntro"><p>I started drawing in preschool. I still remember drawing some fish, and my teacher being so impressed that she took me around the school to show the principal and other teachers. Since then, I’ve kept drawing whatever interests me and trying to get better.</p><p>These are a few of my drawings from over the years. I also draw people’s dogs, which people started asking me to do around COVID. A lot of those requests now come through my Instagram, <a href="https://www.instagram.com/nate_draws07/" target="_blank" rel="noreferrer">@nate_draws07</a>.</p></div></div>
+        <div className="sectionRail"><span>10</span><span>DRAWINGS</span><span>GRAPHITE / COLOR</span></div>
+        <div className="artLead"><h2>Drawings</h2><div className="artIntro"><p>I started drawing in preschool. I still remember drawing some fish, and my teacher being so impressed that she took me around the school to show the principal and other teachers. Since then, I’ve kept drawing whatever interests me and trying to get better.</p><p>These are a few of my drawings from over the years. Around COVID, people started commissioning dog portraits, including drawings to remember pets they’d lost. A lot of those requests now come through my Instagram, <a href="https://www.instagram.com/nate_draws07/" target="_blank" rel="noreferrer">@nate_draws07</a>.</p></div></div>
         <div className="artWall">
           <figure className="artPiece p1" data-pencil-target="marley"><Image src="/art/bob-marley.jpg" alt="Graphite portrait of Bob Marley" fill sizes="(max-width: 680px) 90vw, 40vw" /><figcaption>graphite portrait</figcaption></figure>
           <figure className="artPiece p2"><Image src="/art/coke-can.jpg" alt="Drawing of a crushed Coca-Cola can" fill sizes="(max-width: 680px) 90vw, 30vw" /><figcaption>colored pencil</figcaption></figure>
@@ -114,6 +115,7 @@ export default function PortfolioStory() {
             <p>We took July off, then got back on the water in August and September, including mornings before school. I represented Team USA in the U19 men&apos;s coastal double sculls in Genoa. It was a really good time, and I got to meet other rowers who were aiming for the 2028 Olympics. <a href="https://la28.org/en/games-plan/olympics/coastal-rowing.html" target="_blank" rel="noreferrer">Beach sprint rowing will be part of the Olympics for the first time in 2028.</a></p>
           </div>
         </div>
+        <RowingSketch />
       </section>
 
       <section className="aboutSection aboutPlain" id="about">

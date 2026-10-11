@@ -14,7 +14,7 @@ export default function DellaCase() {
     >
       <ProjectBrief items={[
         { label: "WHAT", text: "An AI employee for nail salons, starting with calls, messaging, customer memory, scheduling, and real bookings." },
-        { label: "WHY", text: "Frontier models still do not know the live operational state of a specific salon." },
+        { label: "WHY", text: "Frontier models still don’t know the live operational state of a specific salon." },
         { label: "HOW", text: "A harness around tools, memory, evaluations, permissions, and the salon's existing software." },
         { label: "WHEN", text: "Started March 11, 2026 as OpenOperator. Medspas first, then nail salons, then communications first." },
       ]} />
@@ -24,7 +24,7 @@ export default function DellaCase() {
           <div><span className="caseLabel">WHY THIS</span><h2>FRONTIER MODELS DON&apos;T KNOW THE SALON.</h2></div>
           <div className="caseStack">
             <p>I got really interested in agentic AI during the OpenClaw moment. I think frontier models will eventually be better than humans at a lot of work that happens on a computer.</p>
-            <p>What they still do not have on their own is the salon itself: its customers, appointments, messages, software, history, and live state. That is where the harness around the model matters.</p>
+            <p>What they still don’t have on their own is the salon itself: its customers, appointments, messages, software, history, and live state. That’s where the harness around the model matters.</p>
             <p>Medspas were first, but the compliance risk was too high. Nail salons were a cleaner start, and communications became the wedge because a missed call is basically found revenue if Della can answer and book it.</p>
           </div>
         </div>
@@ -48,7 +48,7 @@ export default function DellaCase() {
             <div><span>CALL 1</span><p>I told Della I had chipped my nail.</p></div>
             <i>a couple days later</i>
             <div className="agentMemory"><span>DELLA</span><p>It asked how my chipped nail was doing and whether I had gone to the doctor for it.</p></div>
-            <small>That was cool because it was not starting over from zero. It remembered something from the last conversation and brought it back up on the next call.</small>
+            <small>That was cool because it wasn’t starting over from zero. It remembered something from the last conversation and brought it back up on the next call.</small>
           </div>
         </div>
       </section>
@@ -56,8 +56,8 @@ export default function DellaCase() {
       <section className="caseBand">
         <span className="caseLabel">WHAT GOT HARD</span>
         <div className="lessonGrid">
-          <article><span>01</span><h3>Latency adds up fast.</h3><p>Database lookups, memory, tools, and everything else around the model can make a voice call feel slower. I can optimize my side, but I am still building on top of model latency I do not control.</p></article>
-          <article><span>02</span><h3>The model saying it happened is not enough.</h3><p>Early on, Della would sometimes say it booked something when it had not, or take an action it should not have taken. I had to add verification, guardrails, and checks around what actually happened.</p></article>
+          <article><span>01</span><h3>Latency adds up fast.</h3><p>Database lookups, memory, tools, and everything else around the model can make a voice call feel slower. I can optimize my side, but I’m still building on top of model latency I don’t control.</p></article>
+          <article><span>02</span><h3>The model saying it happened isn’t enough.</h3><p>Early on, Della would sometimes say it booked something when it had not, or take an action it shouldn’t have taken. I had to add verification, guardrails, and checks around what actually happened.</p></article>
           <article><span>03</span><h3>The model needs the right kind of context.</h3><p>Policies and service information can come from salon knowledge, but appointments and other live state have to come from the real systems. Getting that split right matters a lot.</p></article>
           <article><span>04</span><h3>Memory has a cost too.</h3><p>I wanted Della to remember customers across conversations, but storing and retrieving that context without making the call noticeably slower became its own database problem.</p></article>
         </div>
@@ -73,7 +73,7 @@ export default function DellaCase() {
           <div><span className="caseLabel">WHERE IT IS NOW</span><h2>I&apos;M GETTING IT INTO REAL SALONS.</h2></div>
           <div className="caseStack">
             <p>Real calls have gone through the system, real Square appointments have been created, and customer context carries across conversations.</p>
-            <p>I am working on getting clients now. At the same time I am tightening reliability, latency, memory, and guardrails around actual salon use.</p>
+            <p>I’m working on getting clients now. At the same time I’m tightening reliability, latency, memory, and guardrails around actual salon use.</p>
           </div>
         </div>
       </section>

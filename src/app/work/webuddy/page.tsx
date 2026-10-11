@@ -16,7 +16,7 @@ const inputRows = [
   },
   {
     label: "OWNER ANSWERS",
-    title: "Ask for what the internet cannot know",
+    title: "Ask for what the internet can’t know",
     text: "What they are known for, booking confirmation, average spend, template, plan, and account details.",
   },
 ];
@@ -37,7 +37,7 @@ export default function WeBuddyCase() {
           },
           {
             label: "WHY",
-            text: "Cold calling salons was rough. I wanted to show up with something useful before asking an owner for their time.",
+            text: "Getting my foot in the door with nail salons was rough. I thought a site I’d already built from the business’s data would give me something useful to send them.",
           },
           {
             label: "HOW",
@@ -57,7 +57,7 @@ export default function WeBuddyCase() {
             <h2>COLD CALLING SALONS WAS ROUGH.</h2>
           </div>
           <div className="caseStack">
-            <p>I was trying to talk to salon owners, and just calling them with nothing to show was not a great way in. I thought it would be much better if I could send them something that already looked useful.</p>
+            <p>I was trying to talk to salon owners, and just calling them with nothing to show wasn’t a great way in. I thought it would be much better if I could send them something that already looked useful.</p>
             <p>The idea became: find the salon, pull the public information that already exists, ask the owner for the pieces only they know, and generate a site around the actual business instead of starting from a blank template.</p>
             <p>That made WeBuddy useful on its own, but it also gave me another reason to talk to the exact same owners I wanted to learn from for Della.</p>
           </div>
@@ -70,7 +70,7 @@ export default function WeBuddyCase() {
             <span className="caseLabel">THE OUTPUT</span>
             <h2>TWO VERY DIFFERENT SITES FROM THE SAME SYSTEM.</h2>
           </div>
-          <p>I did not want every salon to look like the same AI-generated page with a different logo. The challenge was keeping one shared business model underneath very different designs.</p>
+          <p>I didn’t want every salon to look like the same AI-generated page with a different logo. The challenge was keeping one shared business model underneath very different designs.</p>
         </div>
 
         <div className={styles.templateCompare}>
@@ -142,7 +142,7 @@ export default function WeBuddyCase() {
         <div className={styles.controlHeader}>
           <span className="caseLabel">AFTER GENERATION</span>
           <h2>THE OWNER CAN KEEP CHANGING IT.</h2>
-          <p>The product could not just end at “AI made a website.” The owner still needs a place to manage and update it after the first generation.</p>
+          <p>The product couldn’t just end at “AI made a website.” The owner still needs a place to manage and update it after the first generation.</p>
         </div>
 
         <div className={styles.controlArtifacts}>
@@ -203,17 +203,17 @@ export default function WeBuddyCase() {
           <article>
             <span>02</span>
             <h3>Public data is messy.</h3>
-            <p>Google gives a useful base, but services, prices, booking links, and the story of the business can be incomplete or spread across different public sources. AI search helps fill that in, but it is not perfect verification.</p>
+            <p>Google gives a useful base, but services, prices, booking links, and the story of the business can be incomplete or spread across different public sources. AI search helps fill that in, but it isn’t perfect verification.</p>
           </article>
           <article>
             <span>03</span>
-            <h3>Generation cannot own the page.</h3>
+            <h3>Generation can’t own the page.</h3>
             <p>I wanted the AI to fill a structured record first, not just generate one giant block of website code. That way the owner can keep editing the same underlying business instead of starting over.</p>
           </article>
           <article>
             <span>04</span>
             <h3>The product still has rough edges.</h3>
-            <p>There are still things I would change around integrations, SEO, templates, and publishing. It works, but I do not think of it as finished.</p>
+            <p>There are still things I would change around integrations, SEO, templates, and publishing. It works, but I don’t think of it as finished.</p>
           </article>
         </div>
       </section>
@@ -240,7 +240,7 @@ export default function WeBuddyCase() {
             <h2>THE REAL TEST IS WHETHER OWNERS CARE.</h2>
           </div>
           <div className="caseStack">
-            <p>I built WeBuddy partly because I wanted a better way to get in front of salon owners. Now I am using it for outbound instead of just adding more templates.</p>
+            <p>I built WeBuddy partly because I wanted a better way to get in front of salon owners. Now I’m using it for outbound instead of just adding more templates.</p>
             <p>If I can send a salon something that already understands a lot of its business, that is a much better opening than another cold call. What I care about next is whether owners respond, what they change, and whether it actually helps me learn the market faster.</p>
           </div>
         </div>

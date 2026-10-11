@@ -14,16 +14,16 @@ export default function LotCase() {
     >
       <ProjectBrief items={[
         { label: "WHAT", text: "A Charlottesville-first map and research workspace that ranks properties against my own real-estate thesis." },
-        { label: "WHY", text: "There is a ridiculous amount of public and market data around a property. I wanted AI to help compress that into something I could actually use." },
+        { label: "WHY", text: "My uncle said he could help me learn real estate, so I built a tool to help me." },
         { label: "HOW", text: "It combines parcel, zoning, assessment, ownership, flood, market, and underwriting data, then scores each property against an explicit thesis and financing rules." },
-        { label: "WHEN", text: "Built in 2026 at UVA. It is useful now, but still unfinished and something I am building mainly for myself and my uncle." },
+        { label: "WHEN", text: "Built in 2026 at UVA. It’s useful now, but still unfinished and something I’m building mainly for myself and my uncle." },
       ]} />
 
       <section className="caseBand">
         <div className="caseGrid two">
           <div><span className="caseLabel">WHERE IT CAME FROM</span><h2>I WANTED TO COMPRESS THE RESEARCH.</h2></div>
           <div className="caseStack">
-            <p>I am a student in Charlottesville, and I know there is real demand for student housing around UVA. That made it a market I actually wanted to understand instead of picking somewhere random.</p>
+            <p>I’m a student in Charlottesville, and I know there’s real demand for student housing around UVA. That made it a market I actually wanted to understand instead of picking somewhere random.</p>
             <p>What interested me about AI was the idea that you can take a huge amount of accumulated data and knowledge and compress it into something useful. Real estate felt perfect for that because so much of the work is gathering information that already exists, then figuring out what actually matters.</p>
             <p>I had also been learning about creative financing from people like Pace Morby and Grant Cardone, so I wanted the tool to look for opportunities through that lens instead of just telling me whether a property looked cheap or expensive.</p>
           </div>
@@ -45,9 +45,9 @@ export default function LotCase() {
         <div className="caseGrid two compactTop">
           <div><span className="caseLabel">WHAT IT ACTUALLY DOES</span><h2>THE MAP IS BUILT AROUND MY THESIS.</h2></div>
           <div className="caseStack">
-            <p>LOT pulls together public parcel data, zoning, assessments, ownership, flood information, market context, and underwriting. Then it grades properties based on the strategy I am actually looking for.</p>
+            <p>LOT pulls together public parcel data, zoning, assessments, ownership, flood information, market context, and underwriting. Then it grades properties based on the strategy I’m actually looking for.</p>
             <p>The financing side can compare traditional structures with things like seller financing, subject-to, and hybrids. The math stays deterministic, while the AI is there to help organize the reasoning and explain the tradeoffs.</p>
-            <p>The point is not a universal &ldquo;good deal&rdquo; score. A property can be good for one thesis and useless for another, so I wanted the ranking to always be tied back to what I am actually trying to do.</p>
+            <p>The point isn’t a universal &ldquo;good deal&rdquo; score. A property can be good for one thesis and useless for another, so I wanted the ranking to always be tied back to what I’m actually trying to do.</p>
           </div>
         </div>
       </section>
@@ -67,8 +67,8 @@ export default function LotCase() {
         <div className="caseGrid two">
           <div><span className="caseLabel">WHERE IT IS NOW</span><h2>USEFUL, BUT NOT FINISHED.</h2></div>
           <div className="caseStack">
-            <p>This is not something I am trying to turn into a real-estate software company right now. I built it mainly because I wanted the tool for myself and my uncle.</p>
-            <p>I am actually looking for opportunities around Charlottesville, so I expect to keep using and improving it. Right now it is useful, but there are still parts of the data, scoring, and workflow I want to finish before I would call it done.</p>
+            <p>This isn’t something I’m trying to turn into a real-estate software company right now. I built it mainly because I wanted the tool for myself and my uncle.</p>
+            <p>I’m actually looking for opportunities around Charlottesville, so I expect to keep using and improving it. Right now it’s useful, but there are still parts of the data, scoring, and workflow I want to finish before I would call it done.</p>
           </div>
         </div>
       </section>
