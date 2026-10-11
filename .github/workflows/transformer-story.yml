@@ -19,27 +19,16 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: npm
-      - name: Apply final isolated refinements
-        run: python3 scripts/transformer-bootstrap.py
-      - name: Commit the bounded bootstrap result
-        if: github.ref_name == 'design/transformer-story-20261011'
+      - name: Verify pinned model data and approved writing
         run: |
-          git add src/app/work/transformer
-          if ! git diff --cached --quiet; then
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m 'Refine Safari controls, mobile residual view and image sizing'
-            git push origin HEAD:design/transformer-story-20261011
-          fi
-          git rev-parse HEAD
+          python3 scripts/prepare-transformer.py
+          git diff --exit-code -- src/app/work/transformer tests/fixtures/transformer-original-copy.json
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
       - name: Lint and production build
