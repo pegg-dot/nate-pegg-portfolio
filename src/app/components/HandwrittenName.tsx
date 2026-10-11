@@ -25,9 +25,6 @@ type Metrics = {
 export default function HandwrittenName() {
   const canvasRef = useRef<HTMLDivElement>(null);
   const refs = useRef<Array<SVGPathElement | null>>([]);
-  const targetProgressRef = useRef(0);
-  const currentProgressRef = useRef(0);
-  const animationRef = useRef(0);
   const [metrics, setMetrics] = useState<Metrics>({
     lengths: [],
     starts: [],
@@ -121,48 +118,22 @@ export default function HandwrittenName() {
       }
     };
 
-    let lastTime = 0;
-    const animate = (time: number) => {
-      const elapsed = lastTime ? Math.min(48, time - lastTime) : 16;
-      lastTime = time;
-      const current = currentProgressRef.current;
-      const target = targetProgressRef.current;
-      const distance = target - current;
-
-      if (Math.abs(distance) < .00045) {
-        currentProgressRef.current = target;
-        setProgress(target);
-        updateTip(target);
-        animationRef.current = 0;
-        lastTime = 0;
-        return;
-      }
-
-      // Cap the writing speed even when the visitor scrolls quickly.
-      const step = distance * (1 - Math.exp(-elapsed / 180));
-      const next = current + Math.sign(step) * Math.min(Math.abs(step), elapsed / 4200);
-      currentProgressRef.current = next;
-      setProgress(next);
-      updateTip(next);
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    const updateTarget = () => {
+    const updateProgress = () => {
       const hero = canvasRef.current?.closest<HTMLElement>(".hero");
       if (!hero) return;
       const range = Math.max(1, hero.offsetHeight - window.innerHeight);
-      targetProgressRef.current = Math.min(1, Math.max(0, (window.scrollY - hero.offsetTop) / range));
-      if (!animationRef.current) animationRef.current = requestAnimationFrame(animate);
+      // Scroll distance controls the stroke directly, with no catch-up animation.
+      const next = Math.min(1, Math.max(0, (window.scrollY - hero.offsetTop) / range));
+      setProgress(next);
+      updateTip(next);
     };
 
-    updateTarget();
-    window.addEventListener("scroll", updateTarget, { passive: true });
-    window.addEventListener("resize", updateTarget);
+    updateProgress();
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
     return () => {
-      window.removeEventListener("scroll", updateTarget);
-      window.removeEventListener("resize", updateTarget);
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-      animationRef.current = 0;
+      window.removeEventListener("scroll", updateProgress);
+      window.removeEventListener("resize", updateProgress);
     };
   }, [metrics, reduced]);
 
