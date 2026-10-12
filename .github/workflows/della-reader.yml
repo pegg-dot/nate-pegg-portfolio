@@ -1,0 +1,41 @@
+name: Della reader-first checks
+on:
+  push:
+    branches: [design/della-refine-20261011, main]
+    paths:
+      - 'src/app/work/della/**'
+      - 'public/della/**'
+      - 'tests/della*'
+      - 'playwright-della-harden.config.ts'
+      - '.github/workflows/della-reader.yml'
+  workflow_dispatch:
+concurrency:
+  group: della-reader-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Lint and production build
+        run: npm run lint && npm run build
+      - name: Browser runtimes
+        run: npx playwright install --with-deps chromium webkit
+      - name: Della behavior and unchanged project regression tests
+        run: npx playwright test -c playwright-della-harden.config.ts
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: della-reader-qa
+          path: |
+            qa/della-harden-results.json
+            test-results/
+          retention-days: 7

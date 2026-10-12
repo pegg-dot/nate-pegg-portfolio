@@ -1,36 +1,20 @@
 {
-  "originInterest": "I got really interested in agentic AI during the OpenClaw moment. I think frontier models will eventually be better than humans at a lot of work that happens on a computer.",
-  "originContext": "What they still don’t have on their own is the salon itself: its customers, appointments, messages, software, history, and live state. That’s where the harness around the model matters.",
-  "originPivot": "Medspas were first, but the compliance risk was too high. Nail salons were a cleaner start, and communications became the wedge because a missed call is basically found revenue if Della can answer and book it.",
-  "capabilities": "A salon can have Della answer all the time, only after hours, or only when nobody picks up. It can answer service and policy questions, book or cancel, hand off the call, and remember the customer from last time.",
-  "bookingTruth": "If someone asks whether 4:30 is open, Della checks the real schedule. If it says it booked something, the appointment has to actually exist in Square.",
-  "expansion": "The same system is expanding into texts, Instagram DMs, WhatsApp, Facebook, reviews, and follow-up.",
+  "intro": "Della is an AI employee I'm building for nail salons, starting with calls and bookings. It can check the salon's schedule and make the appointment while the customer is still on the phone.",
+  "coverage": "The owner decides when it picks up, including after hours or when nobody answers.",
+  "why": [
+    "I got really interested in agents after seeing what people were doing with OpenClaw. I think models will eventually be better than us at a lot of work on a computer, but they still need to know how a particular business works and have a way to act on that information.",
+    "That's the part I wanted to build. I started on March 11, 2026 as OpenOperator, originally for medspas. The compliance risk pushed me toward nail salons, and calls gave me something specific to get right: could Della answer someone and actually book them in?"
+  ],
+  "bookingProblem": "Early on, Della would sometimes say it had booked an appointment when it hadn't. The caller could think they were booked in while the salon had nothing on its calendar. I had to add checks around what actually happened, rather than trust what the model said happened.",
+  "sources": "That also changed how I handled information. A cancellation policy can come from the salon's saved information, but an open time needs a fresh check. Remembering that 4:30 was free yesterday doesn't tell you whether it's free now.",
+  "technical": "The harness is the software I'm building around the model. It gives Della access to the salon's information and booking tools, keeps customer context between calls, and checks whether an action succeeded. I'm building around existing models, not training a new one. On calls, that also lets it answer service questions, cancel a booking or hand the caller to someone at the salon.",
   "memoryFirst": "I told Della I had chipped my nail.",
-  "memorySecond": "It asked how my chipped nail was doing and whether I had gone to the doctor for it.",
-  "latency": "Database lookups, memory, tools, and everything else around the model can make a voice call feel slower. I can optimize my side, but I’m still building on top of model latency I don’t control.",
-  "verification": "Early on, Della would sometimes say it booked something when it had not, or take an action it shouldn’t have taken. I had to add verification, guardrails, and checks around what actually happened.",
-  "context": "Policies and service information can come from salon knowledge, but appointments and other live state have to come from the real systems. Getting that split right matters a lot.",
-  "memoryCost": "I wanted Della to remember customers across conversations, but storing and retrieving that context without making the call noticeably slower became its own database problem.",
-  "currentProof": "Real calls have gone through the system, real Square appointments have been created, and customer context carries across conversations.",
-  "currentWork": "I’m working on getting clients now. At the same time I’m tightening reliability, latency, memory, and guardrails around actual salon use.",
-  "intro": "Della is an AI employee for nail salons. I started it because I think frontier models will get extremely good at work on a computer, but they still need the live state, workflows, and data of the actual business.",
-  "reflection": "That was cool because it wasn’t starting over from zero. It remembered something from the last conversation and brought it back up on the next call.",
-  "brief": [
-    [
-      "WHAT",
-      "An AI employee for nail salons, starting with calls, messaging, customer memory, scheduling, and real bookings."
-    ],
-    [
-      "WHY",
-      "Frontier models still don’t know the live operational state of a specific salon."
-    ],
-    [
-      "HOW",
-      "A harness around tools, memory, evaluations, permissions, and the salon's existing software."
-    ],
-    [
-      "WHEN",
-      "Started March 11, 2026 as OpenOperator. Medspas first, then nail salons, then communications first."
-    ]
-  ]
+  "memorySecond": "When I called again a couple of days later, it asked how my chipped nail was doing and whether I had gone to the doctor for it.",
+  "memoryReflection": "That was cool because it wasn't starting over from zero. It remembered something from the last conversation and brought it back up on the next call.",
+  "control": "I don't want the owner to have to approve every normal booking, but I also don't want Della making decisions they never agreed to. The owner chooses what it can handle on its own and what it has to ask about.",
+  "controlExample": "A follow-up is one example. Della can draft the message, but when that action needs approval, it waits for the owner to review it.",
+  "latency": "A voice call makes every delay obvious. Looking up the calendar or finding context from an old conversation takes time, so I'm working on keeping those checks fast without skipping them. Some of the delay comes from the model itself, which I don't control.",
+  "current": "I've had real calls go through the system and create appointments in Square. I'm working on getting it into salons now, while tightening the parts that have to hold up when someone else is relying on it.",
+  "direction": "Calls are where I started, but I don't want Della to just be a receptionist. I'm expanding into messages and follow-up, with the same customer context behind them. Over time, I want it to use what happens in the salon to notice work that needs doing, instead of always waiting to be asked.",
+  "workspace": "This is the workspace around those conversations. The owner can see what Della handled and what still needs their attention without reading through every call."
 }

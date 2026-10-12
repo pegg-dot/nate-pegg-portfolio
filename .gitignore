@@ -43,3 +43,6 @@ next-env.d.ts
 # Browser verification output
 /test-results/
 /playwright-report/
+
+# Generated browser verification artifacts
+/qa/

@@ -150,3 +150,16 @@ The writing-note iteration did not change VialGrade. Its subsequent redesign is 
 - [x] Inspect the rendered states and preserve reviewed visual baselines.
 
 The remaining site-wide launch-hardening items above are not marked complete by this route-specific work.
+
+
+## Della reader-first hardening - October 11, 2026
+
+- [x] Rewrite the narrative from Nate's existing explanations at his request, retaining the underlying facts and current-versus-planned distinction.
+- [x] Replace duplicate booking panels with a complete illustrated call and calendar, visible before interacting.
+- [x] Make replay optional, pausable and reduced-motion aware; preserve failed-booking and receipt guards.
+- [x] Turn the memory example back into a personal story and show the owner's editable draft inline.
+- [x] Preserve the actual workspace imagery with an earlier-screen label.
+- [x] Complete local visual review and cross-project regression checks.
+- [ ] Verify the released page after deployment.
+
+This supersedes the previous Della-only verbatim-copy lock, not the protections on other routes.

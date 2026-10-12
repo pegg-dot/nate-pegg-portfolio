@@ -23,7 +23,10 @@ test('dark native controls remain legible and retain keyboard operation', async 
   const head = page.getByLabel('Attention head', { exact: true });
   await expect(head).toHaveCSS('appearance', 'none');
   await expect(head).toHaveCSS('background-color', 'rgb(33, 56, 41)');
-  await head.focus(); await page.keyboard.press('ArrowDown');
+  await head.focus();
+  await expect(head).toBeFocused();
+  // macOS native menus use type-ahead here; an uncommitted ArrowDown is not a value change.
+  await page.keyboard.press(process.platform === 'darwin' ? '2' : 'ArrowDown');
   await expect(head).toHaveValue('1');
 });
 

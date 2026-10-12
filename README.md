@@ -34,7 +34,7 @@ npm run dev
 
 ## Della story verification
 
-The `/work/della` page preserves its original approved prose in `story-copy.json`. The frozen source fixture is `tests/fixtures/della-original-copy.json` (baseline commit `f5bc2c8`). Illustrative interactions have no connection to the Della backend or Square.
+The `/work/della` page now uses reader-first copy in `story-copy.json`, revised at Nate's explicit request after the initial design. The unchanged original fixture, `tests/fixtures/della-original-copy.json` (baseline `f5bc2c8`), is retained as provenance rather than mislabeling the rewrite as verbatim. The complete call is readable without interaction; replay and the inline draft editor never contact the Della backend or Square.
 
 ```bash
 npm run lint
@@ -58,3 +58,5 @@ Run `npx playwright test -c playwright-writing.config.ts` after a production bui
 The `/work/vialgrade` route has a project-specific document comparison, a pinned real grade projection with fictional inputs, and a non-networked referral-link explanation. Original prose is frozen in `tests/fixtures/vial-original-copy.json`.
 
 Run `npm run test:vial` after a production build. Set `VIAL_TEST_URL` to target a deployed origin. The filename glob intentionally does not match worktree directory names. See `docs/VIALGRADE_STORY_2026-10-11.md` for source provenance, scope, and test coverage.
+
+For the new cross-project hardening suite, run `npx playwright test -c playwright-della-harden.config.ts`. Set `PORTFOLIO_TEST_URL` to exercise a deployed origin. It checks Della, VialGrade, Transformer and the writing note without replacing their platform-specific screenshot baselines. See `docs/DELLA_READER_PASS_2026-10-11.md`.

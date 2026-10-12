@@ -3,7 +3,7 @@ import { defineConfig } from "@playwright/test";
 const external = process.env.DELLA_TEST_URL;
 export default defineConfig({
   testDir: "./tests",
-  testMatch: /della.*\.spec\.ts/,
+  testMatch: "**/della*.spec.ts",
   fullyParallel: true,
   forbidOnly: true,
   retries: 0,

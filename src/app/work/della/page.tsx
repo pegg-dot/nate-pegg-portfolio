@@ -1,57 +1,76 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ApprovalDemo, BookingDemo, ContextDemo, DellaMark, HeroScene, Icon, MemoryDemo } from "./DellaScenes";
+import { ApprovalDemo, BookingDemo, DellaMark, Icon } from "./DellaScenes";
 import copy from "./story-copy.json";
 import s from "./della.module.css";
 
 export const metadata: Metadata = {
   title: "Della | Nate Pegg",
-  description: "Building an AI employee for nail salons. A look at real bookings, customer memory, and the work around the model.",
+  description: "Why I'm building an AI employee for nail salons, what it does on a call, and what I've learned getting it to actually do the work.",
 };
 
 export default function DellaCase() {
-  return <main className={s.page} id="main-content" tabIndex={-1}>
-    <nav className={s.nav} aria-label="Project navigation"><Link href="/"><Icon name="back" size={15} /> Nate Pegg</Link><span>01 / Della</span><a href="https://hellodella.com" target="_blank" rel="noreferrer">Open Della <span aria-hidden="true">↗</span><span className={s.srOnly}> (opens in a new tab)</span></a></nav>
-    <section className={s.hero} aria-labelledby="della-title">
-      <div className={s.heroCopy}><span className={s.eyebrow}>An AI employee for nail salons</span><h1 id="della-title"><DellaMark /> Della<span className={s.titlePeriod}>.</span></h1><p className={s.lede}>{copy.intro}</p><div className={s.heroActions}><a href="#booking" className={s.primaryButton}>Follow a booking <Icon name="arrow" size={16} /></a><a href="#origin" className={s.textButton}>How it started</a></div><span className={s.heroDate}>Building since March 11, 2026</span></div>
-      <HeroScene />
+  return <main className={s.page} id="main-content" tabIndex={-1} data-della-edition="reader-first">
+    <nav className={s.nav} aria-label="Project navigation"><Link href="/"><Icon name="back" size={15} /> Nate Pegg</Link><span>01 / Della</span><a href="https://hellodella.com" target="_blank" rel="noreferrer">Visit Della <span aria-hidden="true">&#8599;</span><span className={s.srOnly}> (opens in a new tab)</span></a></nav>
+
+    <header className={s.hero}>
+      <div className={s.heroCopy}>
+        <p className={s.kicker}>An AI employee for nail salons</p>
+        <h1><DellaMark /> Della</h1>
+        <p className={s.lede}>{copy.intro}</p>
+        <p className={s.coverage}>{copy.coverage}</p>
+        <a className={s.storyLink} href="#why">Why I&apos;m building it <Icon name="arrow" size={16} /></a>
+        <span className={s.since}>Building since March 11, 2026</span>
+      </div>
+      <BookingDemo />
+    </header>
+
+    <section className={`${s.section} ${s.whySection}`} id="why" aria-labelledby="why-title">
+      <div className={s.sectionTitle}><h2 id="why-title">Why I started<br />with calls.</h2></div>
+      <div className={s.prose}>{copy.why.map(p => <p key={p}>{p}</p>)}</div>
     </section>
-    <nav className={s.chapterNav} aria-label="Inside this project"><span>Inside Della</span><a href="#booking">01 <b>The call</b></a><a href="#memory">02 <b>The memory</b></a><a href="#control">03 <b>Your OK</b></a><a href="#build">04 <b>Behind it</b></a></nav>
 
-    <section className={`${s.section} ${s.origin}`} id="origin" aria-labelledby="origin-title">
-      <div className={s.originAside}><span className={s.eyebrow}>Where it started</span><h2 id="origin-title">The model still<br />needs the salon.</h2><div className={s.originTimeline}><span><i />OpenOperator<small>March 11, 2026</small></span><span><i />Nail salons<small>A more focused start</small></span><span><i />Communications<small>The first part to get right</small></span></div></div>
-      <div className={s.prose}><p>{copy.originInterest}</p><p>{copy.originContext}</p><p>{copy.originPivot}</p></div>
+    <section className={`${s.section} ${s.buildSection}`} id="build" aria-labelledby="build-title">
+      <div className={s.buildStory}><h2 id="build-title">It had to actually<br />book the appointment.</h2><div className={s.prose}><p>{copy.bookingProblem}</p><p>{copy.sources}</p></div></div>
+      <div className={s.sources}>
+        <p className={s.sourcesIntro}>Where each answer comes from</p>
+        <div className={s.sourceRow}><p>What&apos;s your cancellation policy?</p><div><span className={s.sourceArrow} aria-hidden="true">&#8627;</span><span>The salon&apos;s saved policy</span></div></div>
+        <div className={s.sourceRow}><p>Is 4:30 open?</p><div><span className={s.sourceArrow} aria-hidden="true">&#8627;</span><span>The current booking calendar</span></div></div>
+        <details className={s.technicalNote}><summary>What I built around the model <span aria-hidden="true">+</span></summary><p>{copy.technical}</p></details>
+      </div>
     </section>
 
-    <section className={`${s.section} ${s.bookingSection}`} id="booking" aria-labelledby="booking-title">
-      <div className={s.bookingNarrative}><span className={s.eyebrow}>01 / The call</span><h2 id="booking-title">From a call<br />to the calendar.</h2><div className={s.prose}><p>{copy.capabilities}</p><p>{copy.bookingTruth}</p></div><div className={s.marginNote}><span className={s.smallRule} /><h3>The model saying it happened isn’t enough.</h3><p>{copy.verification}</p></div></div>
-      <div><BookingDemo /><p className={s.expansionNote}>{copy.expansion}</p></div>
+    <section className={`${s.section} ${s.memorySection}`} id="memory" aria-labelledby="memory-title">
+      <div className={s.memoryHeading}><h2 id="memory-title">It remembered<br />my chipped nail.</h2><p className={s.memoryCaption}>My own test calls, described from memory.</p></div>
+      <div className={s.memoryStory}>
+        <div className={s.memoryLine}><span>First call</span><p>{copy.memoryFirst}</p></div>
+        <div className={s.memoryLine}><span>A couple days later</span><p>{copy.memorySecond}</p></div>
+        <p className={s.memoryReflection}>{copy.memoryReflection}</p>
+      </div>
     </section>
 
-    <section className={s.memorySection} id="memory" aria-labelledby="memory-title"><div className={s.sectionInner}>
-      <div className={s.memoryHeading}><div><span className={s.eyebrow}>02 / A call I remember</span><h2 id="memory-title">It remembered<br />my chipped nail.</h2></div><p className={s.memoryReflection}>{copy.reflection}</p></div>
-      <MemoryDemo />
-      <div className={s.memoryCost}><h3>Memory has a cost too.</h3><p>{copy.memoryCost}</p></div>
-    </div></section>
-
-    <section className={`${s.section} ${s.controlSection}`} id="control" aria-labelledby="control-title">
-      <div className={s.controlHeading}><div><span className={s.eyebrow}>03 / Working with the owner</span><h2 id="control-title">Some things<br />need your OK.</h2></div><p className={s.editorialCaption}>A closer look at the review flow: a draft can be ready without being allowed to leave. Open it, inspect the proposed action, and make a decision in the demo.</p></div>
+    <section className={`${s.section} ${s.ownerSection}`} id="control" aria-labelledby="owner-title">
+      <div className={s.ownerStory}><h2 id="owner-title">The owner decides<br />what it can do.</h2><div className={s.prose}><p>{copy.control}</p><p>{copy.controlExample}</p></div></div>
       <ApprovalDemo />
     </section>
 
-    <section className={s.buildSection} id="build" aria-labelledby="build-title"><div className={s.sectionInner}>
-      <div className={s.buildGrid}><div><span className={s.eyebrow}>04 / Behind the conversation</span><h2 id="build-title">The right context.<br />From the right place.</h2><div className={s.prose}><p>{copy.context}</p></div></div><ContextDemo /></div>
-      <div className={s.latencyRow}><div><h3>Latency adds up fast.</h3><p>{copy.latency}</p></div><div className={s.latencyVisual}><div className={s.dependencyChain}><span>Context</span><Icon name="arrow" size={14} /><span>Model</span><Icon name="arrow" size={14} /><span>Tools</span><Icon name="arrow" size={14} /><span>Response</span></div><p>Illustrative dependencies, not a measured latency trace.</p></div></div>
-    </div></section>
-
-    <section className={`${s.section} ${s.workspaceSection}`} aria-labelledby="workspace-title"><div className={s.workspaceHeading}><div><span className={s.eyebrow}>The wider workspace</span><h2 id="workspace-title">And this is where<br />it comes together.</h2></div><p className={s.editorialCaption}>The full interface has room for the work, the owner&apos;s decisions, and the record of what happened. The walkthroughs above isolate one piece at a time.</p></div>
-      <figure className={s.workspaceFigure}><div className={s.captureBar}><span><DellaMark small /> The Della workspace</span><span>Earlier interface capture</span></div><Image src="/della/workspace-context.webp" alt="Earlier Della workspace showing which actions need owner approval and which can be handled within its permissions. Identifying details have been removed." width={1760} height={1250} sizes="(max-width: 720px) 100vw, 90vw" /><figcaption>Earlier workspace capture, with identifying details removed. Shown for interface context, not as evidence of customer traction or revenue.</figcaption></figure>
-      <details className={s.projectNotes}><summary>Project notes <span aria-hidden="true">+</span></summary><div>{copy.brief.map(([label, text]) => <p key={label}>{text}</p>)}</div></details>
+    <section className={`${s.section} ${s.workspaceSection}`} aria-labelledby="workspace-title">
+      <div><h2 id="workspace-title">What the owner sees.</h2><p className={s.workspaceIntro}>{copy.workspace}</p></div>
+      <figure className={s.workspaceFigure}>
+        <a href="/della/workspace-context.webp" target="_blank" rel="noreferrer" className={s.workspaceLink}>
+          <Image src="/della/workspace-controls-398a69c78f.webp" alt="Detail of Della's earlier owner controls, showing which actions need approval" width={1165} height={280} sizes="(max-width: 720px) 100vw, 1100px" />
+          <span className={s.fullScreenshot}>Open the full screenshot <span aria-hidden="true">&#8599;</span><span className={s.srOnly}> (opens in a new tab)</span></span>
+        </a>
+        <figcaption>An earlier screen, with identifying details removed. These aren&apos;t live usage numbers.</figcaption>
+      </figure>
     </section>
 
-    <section className={s.currentSection} aria-labelledby="current-title"><div className={s.currentInner}><div><span className={s.eyebrow}>Where it is now</span><h2 id="current-title">I’m getting it<br />into real salons.</h2><a className={s.lightButton} href="https://hellodella.com" target="_blank" rel="noreferrer">Open Della <span aria-hidden="true">↗</span><span className={s.srOnly}> (opens in a new tab)</span></a></div><div className={s.prose}><p>{copy.currentProof}</p><p>{copy.currentWork}</p></div></div></section>
-    <footer className={s.footer}><Link href="/"><Icon name="back" size={16} /> Back to all projects</Link><Link href="/work/vialgrade">Next: VialGrade <Icon name="arrow" size={16} /></Link></footer>
-    <noscript><style>{`[data-testid="booking-demo"] button, [data-testid="booking-demo"] fieldset, [data-testid="memory-demo"] button, [data-testid="approval-demo"] button, [data-testid="context-demo"] button { display: none !important; }`}</style><p className={s.noScript}>The story and examples are readable without JavaScript. Interactive walkthrough controls require JavaScript; open “Read the whole sequence” for the complete booking explanation.</p></noscript>
+    <section className={`${s.section} ${s.currentSection}`} id="now" aria-labelledby="current-title">
+      <div className={s.currentHeading}><h2 id="current-title">What I&apos;m<br />working on now.</h2><a href="https://hellodella.com" target="_blank" rel="noreferrer" className={s.externalLink}>Visit Della <span aria-hidden="true">&#8599;</span><span className={s.srOnly}> (opens in a new tab)</span></a></div>
+      <div className={s.prose}><p>{copy.current}</p><p>{copy.latency}</p><p>{copy.direction}</p></div>
+    </section>
+    <footer className={s.footer}><Link href="/"><Icon name="back" size={16} /> Back to my work</Link><Link href="/work/vialgrade">VialGrade <Icon name="arrow" size={16} /></Link></footer>
+    <noscript><style>{`[data-interactive="true"]{display:none!important}`}</style></noscript>
   </main>;
 }

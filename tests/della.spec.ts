@@ -1,252 +1,298 @@
-import { expect, test, type Page } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
-import original from "./fixtures/della-original-copy.json";
-import { bookingReducer, bookingVerified, initialBooking, type BookingState } from "../src/app/work/della/demo-state";
+import { test, expect, type Page } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+import copy from '../src/app/work/della/story-copy.json';
+import original from './fixtures/della-original-copy.json';
+import { callReducer, initialCall, isBooked, lastReply, type CallState } from '../src/app/work/della/demo-state';
 
 async function openStory(page: Page) {
-  await page.goto("/work/della", { waitUntil: "networkidle" });
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Della.");
-}
-async function completeBooking(page: Page) {
-  for (const name of ["Check availability", "Confirm the time", "Attempt booking", "Check the outcome"]) {
-    await page.getByRole("button", { name, exact: true }).click();
-  }
-}
-async function assertNoOverflow(page: Page) {
-  const size = await page.evaluate(() => ({ view: innerWidth, document: document.documentElement.scrollWidth }));
-  expect(size.document).toBeLessThanOrEqual(size.view + 1);
+  await page.goto('/work/della');
+  await page.evaluate(() => document.fonts.ready);
+  await expect(page.locator('[data-della-edition="reader-first"]')).toBeVisible();
 }
 
-test("state machine requires a matching receipt and clears it on back/reset/scenario changes", () => {
-  for (const scenario of ["success", "failure"] as const) {
-    let state = bookingReducer(initialBooking, { type: "scenario", scenario });
-    for (let i = 0; i < 4; i++) {
-      expect(state.step).toBe(i);
-      expect(bookingVerified(state)).toBe(false);
-      expect(state.receipt).toBeNull();
-      state = bookingReducer(state, { type: "next" });
-    }
-    expect(bookingVerified(state)).toBe(scenario === "success");
-    expect(bookingReducer(state, { type: "next" })).toEqual(state);
-    const previous = bookingReducer(state, { type: "previous" });
-    expect(previous.step).toBe(3);
-    expect(previous.receipt).toBeNull();
-    expect(bookingVerified(previous)).toBe(false);
-    expect(bookingReducer(state, { type: "reset" })).toEqual({ ...initialBooking, scenario });
-    expect(bookingReducer(state, { type: "scenario", scenario: "failure" })).toEqual({ ...initialBooking, scenario: "failure" });
+// October 11: Nate explicitly requested an editorial rewrite, not another verbatim-copy lock.
+// The original fixture remains untouched as provenance. These tests check the revised content,
+// plus the same booking-truth/no-network boundaries that the old interface had to meet.
+test('reader sees the purpose, complete booking and current limits without operating the demo', async ({ page }) => {
+  await openStory(page);
+  await expect(page.getByText(copy.intro, { exact: true })).toBeVisible();
+  await expect(page.getByText("You're booked for 4:30.", { exact: true })).toBeVisible();
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-booked', 'true');
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-playing', 'false');
+  await expect(page.getByText(copy.current, { exact: true })).toBeVisible();
+  await expect(page.getByText(copy.direction, { exact: true })).toBeVisible();
+  expect(original).toBeTruthy();
+});
+
+test('the revised first-person story stays readable, with technical detail optional', async ({ page }) => {
+  await openStory(page);
+  for (const [key, value] of Object.entries(copy)) {
+    if (key === 'technical') continue;
+    for (const text of Array.isArray(value) ? value : [value]) await expect(page.getByText(text, { exact: true })).toBeVisible();
   }
-  const forged = { ...initialBooking, step: 4, receipt: { source: "illustration", exists: true, id: "DEMO", service: "Different service", time: "16:30" } } as BookingState;
-  expect(bookingVerified(forged)).toBe(false);
+  const text = await page.locator('main').innerText();
+  for (const phrase of ['Verified in this demo', 'Proposed action', 'Permission boundary', 'A result to confirm', 'The draft stops here', 'Replay the memory']) expect(text).not.toContain(phrase);
+  expect(text.split(/\s+/).length).toBeLessThan(900);
+  await page.getByText('What I built around the model', { exact: false }).click();
+  await expect(page.getByText(copy.technical, { exact: true })).toBeVisible();
 });
 
-test("all 16 approved prose blocks and four brief facts remain verbatim", async ({ page }) => {
-  await openStory(page);
-  for (const text of [...original.prose, ...original.brief]) await expect(page.locator("main")).toContainText(text);
-  await expect(page.locator(".projectBrief, .lessonGrid")).toHaveCount(0);
-  await expect(page).toHaveTitle("Della | Nate Pegg");
-});
-
-test("successful booking moves the request and only verifies at the final check", async ({ page }) => {
-  await openStory(page);
-  const demo = page.getByTestId("booking-demo");
-  await expect(demo).toHaveAttribute("data-verified", "false");
-  await expect(demo.getByRole("button", { name: "Previous", exact: true })).toBeDisabled();
-  for (const [i, name] of ["Check availability", "Confirm the time", "Attempt booking"].entries()) {
-    await demo.getByRole("button", { name, exact: true }).click();
-    await expect(demo).toHaveAttribute("data-step", String(i + 1));
-    await expect(demo).toHaveAttribute("data-verified", "false");
-    await expect(page.getByTestId("request-ticket")).toHaveCount(1);
+test('a booking can only be confirmed with its matching receipt; replay clears it', () => {
+  expect(isBooked(initialCall)).toBe(true);
+  let state = callReducer(initialCall, { type: 'replay', automatic: true });
+  for (let phase = 0; phase < 4; phase++) {
+    expect(state.phase).toBe(phase);
+    expect(isBooked(state)).toBe(false);
+    expect(state.receipt).toBeNull();
+    state = callReducer(state, { type: 'advance' });
   }
-  await expect(demo).toContainText("An attempt is not a result.");
-  await demo.getByRole("button", { name: "Check the outcome", exact: true }).click();
-  await expect(demo).toHaveAttribute("data-verified", "true");
-  await expect(demo).toContainText("DEMO-0430");
-  await expect(demo).toContainText("The demo appointment exists.");
-  await demo.getByRole("button", { name: "Previous", exact: true }).click();
-  await expect(demo).toHaveAttribute("data-verified", "false");
-  await expect(demo).not.toContainText("DEMO-0430");
-  await demo.getByRole("button", { name: "Check the outcome", exact: true }).click();
-  await demo.getByRole("button", { name: "Replay the booking" }).click();
-  await expect(demo).toHaveAttribute("data-step", "0");
-  await expect(demo).toHaveAttribute("data-verified", "false");
+  expect(isBooked(state)).toBe(true);
+  expect(state.playing).toBe(false);
+  expect(isBooked({ ...state, receipt: { service: 'Nail repair', time: '15:30' } })).toBe(false);
+  expect(isBooked({ ...state, receipt: null })).toBe(false);
+  expect(isBooked(callReducer(state, { type: 'previous' }))).toBe(false);
+  for (const scenario of ['failure', 'success'] as const) {
+    state = callReducer(state, { type: 'scenario', scenario });
+    expect(isBooked(state)).toBe(scenario === 'success');
+    expect(state.playing).toBe(false);
+  }
 });
 
-test("failed booking never becomes a success, including after changing an already completed scenario", async ({ page }) => {
+test('a failed replay never acquires a success receipt or confirmation', () => {
+  let state: CallState = callReducer(initialCall, { type: 'scenario', scenario: 'failure' });
+  state = callReducer(state, { type: 'replay', automatic: true });
+  for (let i = 0; i < 8; i++) {
+    expect(isBooked(state)).toBe(false);
+    expect(state.receipt).toBeNull();
+    expect(lastReply(state)).not.toContain("You're booked");
+    state = callReducer(state, { type: 'advance' });
+  }
+  expect(state.phase).toBe(4);
+  expect(state.playing).toBe(false);
+});
+
+test('replay shows the conversation and calendar in order, not an early confirmation', async ({ page }) => {
   await openStory(page);
-  await completeBooking(page);
-  await page.getByLabel("Booking fails", { exact: true }).check();
-  const demo = page.getByTestId("booking-demo");
-  await expect(demo).toHaveAttribute("data-step", "0");
-  await expect(demo).toHaveAttribute("data-verified", "false");
-  await completeBooking(page);
-  await expect(demo).toHaveAttribute("data-verified", "false");
-  await expect(demo).toContainText("Not booked. No false confirmation.");
-  await expect(demo).not.toContainText("DEMO-0430");
-  await expect(demo).not.toContainText("Verified in this demo");
-  await demo.getByRole("button", { name: "Replay the booking" }).click();
-  await expect(page.getByLabel("Booking fails", { exact: true })).toBeChecked();
+  await page.clock.install();
+  const demo = page.getByTestId('booking-demo');
+  await page.getByRole('button', { name: 'Replay the example' }).click();
+  await expect(demo).toHaveAttribute('data-phase', '0');
+  await expect(demo).toHaveAttribute('data-booked', 'false');
+  await page.clock.runFor(1650);
+  await expect(demo).toHaveAttribute('data-phase', '1');
+  await expect(demo).toHaveAttribute('data-booked', 'false');
+  await page.clock.runFor(2500);
+  await expect(demo).toHaveAttribute('data-phase', '2');
+  await page.clock.runFor(1000);
+  await expect(demo).toHaveAttribute('data-phase', '3');
+  await expect(page.getByText('Just booking that for you.', { exact: true })).toBeVisible();
+  await expect(demo).toHaveAttribute('data-booked', 'false');
+  await page.clock.runFor(1700);
+  await expect(demo).toHaveAttribute('data-booked', 'true');
+  await expect(page.getByText("You're booked for 4:30.", { exact: true })).toBeVisible();
 });
 
-test("the same memory moves to the second recollection and replays", async ({ page }) => {
+test('the replay pauses, resumes and can be ended without waiting', async ({ page }) => {
   await openStory(page);
-  const demo = page.getByTestId("memory-demo");
-  await expect(demo).toHaveAttribute("data-call", "1");
-  await expect(demo).toContainText("Nate's recollection, not a verbatim transcript.");
-  await demo.getByRole("button", { name: "Carry it into the next call" }).click();
-  await expect(demo).toHaveAttribute("data-call", "2");
-  await expect(page.getByTestId("memory-token")).toHaveCount(1);
-  await expect(page.getByTestId("memory-token").locator("../..")).toContainText(original.prose[7]);
-  await demo.getByRole("button", { name: "Replay the memory" }).click();
-  await expect(demo).toHaveAttribute("data-call", "1");
-  await expect(page.getByTestId("memory-token").locator("../..")).toContainText(original.prose[6]);
+  await page.clock.install();
+  await page.getByRole('button', { name: 'Replay the example' }).click();
+  await page.getByRole('button', { name: 'Pause', exact: true }).click();
+  await page.clock.runFor(8000);
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-phase', '0');
+  await page.getByRole('button', { name: 'Continue', exact: true }).click();
+  await page.clock.runFor(1700);
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-phase', '1');
+  await page.getByRole('button', { name: 'Show the result' }).click();
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-phase', '4');
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-playing', 'false');
 });
 
-test("approval drawer traps focus, closes with Escape, restores focus, and only approves locally", async ({ page }) => {
+test('switching to failure clears a successful booking and explains it without technical language', async ({ page }) => {
   await openStory(page);
-  const review = page.getByRole("button", { name: "Review", exact: true });
-  await review.click();
-  const dialog = page.getByRole("dialog");
-  await expect(dialog).toBeVisible();
-  await expect(dialog.getByRole("button", { name: "Close review" })).toBeFocused();
-  await page.keyboard.press("Shift+Tab");
-  await expect(dialog.getByRole("button", { name: "Approve in demo" })).toBeFocused();
-  await page.keyboard.press("Tab");
-  await expect(dialog.getByRole("button", { name: "Close review" })).toBeFocused();
-  await page.keyboard.press("Escape");
-  await expect(dialog).not.toBeVisible();
-  await expect(review).toBeFocused();
-  await review.click();
-  await dialog.getByRole("button", { name: "Keep for review" }).click();
-  await expect(page.getByTestId("approval-demo")).toContainText("Waiting for your OK");
-  await review.click();
-  await dialog.getByRole("button", { name: "Approve in demo" }).click();
-  await expect(dialog.getByRole("status")).toContainText("No message was sent.");
-  await dialog.getByRole("button", { name: "Back to the story" }).click();
-  await expect(page.getByRole("button", { name: "View decision" })).toBeFocused();
-  await expect(page.getByTestId("approval-demo")).toContainText("Approved locally. No message was sent.");
-  await page.getByRole("button", { name: "Reset demo" }).click();
-  await expect(page.getByTestId("approval-demo")).toContainText("Waiting for your OK");
+  await page.getByRole('button', { name: "What if it doesn't book?" }).click();
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-scenario', 'failure');
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-booked', 'false');
+  await expect(page.getByText("That booking didn't go through. Let me get someone to help.", { exact: true })).toBeVisible();
+  await expect(page.getByText("You're booked for 4:30.", { exact: true })).toHaveCount(0);
+  await expect(page.getByTestId('appointment')).toContainText('Not booked');
+  await page.getByRole('button', { name: 'Show the successful booking' }).click();
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-booked', 'true');
 });
 
-test("demo interactions never send mutating requests or contact Della/Square", async ({ page }) => {
-  const unsafe: string[] = [];
-  page.on("request", request => {
-    if (!["GET", "HEAD"].includes(request.method()) || /hellodella|squareup|retellai|telnyx/.test(new URL(request.url()).hostname)) unsafe.push(`${request.method()} ${request.url()}`);
+test('memory is the personal test-call story, not fake dialogue or a button-controlled memory', async ({ page }) => {
+  await openStory(page);
+  const memory = page.locator('#memory');
+  await expect(memory.getByText(copy.memoryFirst, { exact: true })).toBeVisible();
+  await expect(memory.getByText(copy.memorySecond, { exact: true })).toBeVisible();
+  await expect(memory.getByText(copy.memoryReflection, { exact: true })).toBeVisible();
+  await expect(memory).toContainText('My own test calls, described from memory.');
+  await expect(memory.getByRole('button')).toHaveCount(0);
+  await expect(memory.locator('blockquote')).toHaveCount(0);
+});
+
+test('the owner sees the draft immediately, can edit it, and approval never says sent', async ({ page }) => {
+  await openStory(page);
+  const approval = page.getByTestId('approval-demo');
+  await expect(approval.getByTestId('draft-text')).toBeVisible();
+  await approval.getByRole('button', { name: 'Edit message' }).click();
+  const editor = approval.getByRole('textbox', { name: 'Edit the follow-up message' });
+  await expect(editor).toBeFocused();
+  await editor.fill('Would you like to come back next week?');
+  await approval.getByRole('button', { name: 'Done editing' }).click();
+  await expect(approval.getByTestId('draft-text')).toHaveText('Would you like to come back next week?');
+  await approval.getByRole('button', { name: 'Approve', exact: true }).click();
+  await expect(approval).toHaveAttribute('data-decision', 'approved');
+  await expect(approval).toContainText('Nothing was sent from this example.');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await approval.getByRole('button', { name: 'Edit message' }).click();
+  await expect(approval).toHaveAttribute('data-decision', 'waiting');
+});
+
+test('an empty draft cannot be approved; not now leaves it waiting', async ({ page }) => {
+  await openStory(page);
+  const approval = page.getByTestId('approval-demo');
+  await approval.getByRole('button', { name: 'Edit message' }).click();
+  await approval.getByRole('textbox').fill('   ');
+  await expect(approval.getByRole('button', { name: 'Approve', exact: true })).toBeDisabled();
+  await expect(approval).toContainText('Write a message before approving it.');
+  await approval.getByRole('textbox').fill('Would you like to book another appointment?');
+  await approval.getByRole('button', { name: 'Not now' }).click();
+  await expect(approval).toHaveAttribute('data-decision', 'later');
+  await expect(approval).toContainText('The draft is still waiting. Nothing was sent.');
+});
+
+test('all illustrative interactions stay local, without mutating requests or live product APIs', async ({ page }) => {
+  await openStory(page);
+  const bad: string[] = [];
+  page.on('request', r => {
+    if (!['GET', 'HEAD', 'OPTIONS'].includes(r.method()) || /hellodella|squareup|retell|telnyx|\/api\//i.test(r.url())) bad.push(`${r.method()} ${r.url()}`);
   });
-  await openStory(page);
-  await completeBooking(page);
-  await page.getByLabel("Booking fails", { exact: true }).check();
-  await completeBooking(page);
-  await page.getByRole("button", { name: "Review", exact: true }).click();
-  await page.getByRole("button", { name: "Approve in demo" }).click();
-  await page.getByRole("button", { name: "Back to the story" }).click();
-  await page.getByRole("button", { name: "Carry it into the next call" }).click();
-  await page.getByRole("button", { name: "Live availability", exact: true }).click();
-  expect(unsafe).toEqual([]);
+  await page.getByRole('button', { name: "What if it doesn't book?" }).click();
+  await page.getByRole('button', { name: 'Replay the example' }).click();
+  await page.getByRole('button', { name: 'Show the result' }).click();
+  await page.getByTestId('approval-demo').getByRole('button', { name: 'Edit message' }).click();
+  await page.getByRole('textbox').fill('A local preview only.');
+  await page.getByRole('button', { name: 'Approve', exact: true }).click();
+  await page.waitForTimeout(250);
+  expect(bad).toEqual([]);
 });
 
-test("context choices explain distinct sources without implying a live query", async ({ page }) => {
-  await openStory(page);
-  const demo = page.getByTestId("context-demo");
-  await expect(demo).toContainText("Confirmed salon knowledge");
-  await demo.getByRole("button", { name: "Live availability" }).click();
-  await expect(demo).toContainText("The booking system");
-  await expect(demo).toContainText("not a live lookup");
-  await expect(demo.getByRole("button", { name: "Live availability" })).toHaveAttribute("aria-pressed", "true");
-});
-
-for (const width of [360, 390, 768, 1024, 1440]) {
-  test(`responsive at ${width}px, including failure, memory and open drawer`, async ({ page }) => {
-    const errors: string[] = [];
-    page.on("pageerror", error => errors.push(error.message));
+for (const width of [320, 390, 768, 1024, 1440]) {
+  test(`story, failed booking and edited draft fit at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await openStory(page);
-    await assertNoOverflow(page);
-    await completeBooking(page);
-    await assertNoOverflow(page);
-    await page.getByLabel("Booking fails", { exact: true }).check();
-    await completeBooking(page);
-    await assertNoOverflow(page);
-    await page.getByRole("button", { name: "Carry it into the next call" }).click();
-    await assertNoOverflow(page);
-    await page.getByRole("button", { name: "Review", exact: true }).click();
-    const rect = await page.getByRole("dialog").boundingBox();
-    expect(rect).not.toBeNull();
-    expect(rect!.x).toBeGreaterThanOrEqual(-1);
-    expect(rect!.width).toBeLessThanOrEqual(width + 1);
-    await page.getByRole("button", { name: "Approve in demo" }).click();
-    await page.getByRole("button", { name: "Back to the story" }).click();
-    await expect(page.locator("body")).not.toHaveCSS("overflow", "hidden");
-    await assertNoOverflow(page);
-    expect(errors).toEqual([]);
+    await page.getByRole('button', { name: "What if it doesn't book?" }).click();
+    await page.getByRole('button', { name: 'Edit message' }).click();
+    await page.getByRole('textbox').fill('This is a longer follow-up that should stay inside the draft panel on a small phone.');
+    await page.getByText('What I built around the model', { exact: false }).click();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width + 1);
+    for (const el of await page.locator('main button:visible, main textarea:visible').all()) {
+      const r = await el.boundingBox();
+      expect(r!.x).toBeGreaterThanOrEqual(-1);
+      expect(r!.x + r!.width).toBeLessThanOrEqual(width + 1);
+      expect(r!.height).toBeGreaterThanOrEqual(43);
+    }
   });
 }
 
-test("reduced motion keeps all explanations and disables animated layout transitions", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
+test('keyboard navigation follows the reading order and can edit and approve the local draft', async ({ page, browserName }) => {
   await openStory(page);
-  for (const text of original.prose) await expect(page.locator("main")).toContainText(text);
-  await expect(page.getByTestId("booking-demo").locator("details")).toHaveAttribute("open", "");
-  await completeBooking(page);
-  await page.getByRole("button", { name: "Carry it into the next call" }).click();
-  await page.getByRole("button", { name: "Review", exact: true }).click();
-  await expect(page.getByRole("dialog")).toHaveCSS("animation-name", "none");
-  await page.keyboard.press("Escape");
-  const transforms = await page.getByTestId("memory-token").evaluate(el => getComputedStyle(el).transform);
-  expect(["none", "matrix(1, 0, 0, 1, 0, 0)"]).toContain(transforms);
+  await page.keyboard.press(browserName === 'webkit' && process.platform === 'darwin' ? 'Alt+Tab' : 'Tab');
+  await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('main')).toBeFocused();
+  const edit = page.getByRole('button', { name: 'Edit message' });
+  await edit.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('textbox')).toBeFocused();
+  await page.keyboard.type(' More context.');
+  await page.keyboard.press(browserName === 'webkit' && process.platform === 'darwin' ? 'Alt+Tab' : 'Tab');
+  await expect(page.getByRole('button', { name: 'Done editing' })).toBeFocused();
+  await page.keyboard.press('Enter');
 });
 
-test("story and a full native booking explanation work without JavaScript", async ({ browser }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false });
+test('reduced motion uses manual steps, and the completed explanation is always available', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await openStory(page);
+  await page.clock.install();
+  await page.getByRole('button', { name: 'Replay the example' }).click();
+  await page.clock.runFor(10000);
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-phase', '0');
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-playing', 'false');
+  await page.getByRole('button', { name: 'Next step', exact: true }).click();
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-phase', '1');
+  await page.getByRole('button', { name: 'Show the result' }).click();
+  await expect(page.getByText("You're booked for 4:30.", { exact: true })).toBeVisible();
+});
+
+test('without JavaScript the full story, call and approval boundary still make sense', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
   const page = await context.newPage();
-  await page.goto(`${test.info().project.use.baseURL || process.env.DELLA_TEST_URL || "http://127.0.0.1:3147"}/work/della`);
-  for (const text of original.prose) await expect(page.locator("main")).toContainText(text);
-  await page.getByText("Read the whole sequence without playing it", { exact: true }).click();
-  await expect(page.getByTestId("booking-demo").locator("details ol")).toBeVisible();
-  await expect(page.locator("noscript p")).toContainText("readable without JavaScript");
+  await page.goto(`${baseURL}/work/della`);
+  await expect(page.getByText(copy.intro, { exact: true })).toBeVisible();
+  await expect(page.getByText("You're booked for 4:30.", { exact: true })).toBeVisible();
+  await expect(page.getByText(copy.memorySecond, { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Approve', exact: true })).not.toBeVisible();
+  await page.getByText('What I built around the model', { exact: false }).click();
+  await expect(page.getByText(copy.technical, { exact: true })).toBeVisible();
   await context.close();
 });
 
-test("workspace image loads and its disclosure is visible", async ({ page }) => {
+test('a real workspace detail remains visible and links to the unchanged full redacted capture', async ({ page }) => {
   await openStory(page);
-  const image = page.getByRole("img", { name: /Earlier Della workspace/ });
-  await image.scrollIntoViewIfNeeded();
-  await expect.poll(() => image.evaluate(el => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
-  await expect(page.getByText(/Shown for interface context, not as evidence/)).toBeVisible();
+  const screenshot = page.getByRole('img', { name: /Detail of Della/ });
+  await screenshot.scrollIntoViewIfNeeded();
+  await expect(screenshot).toBeVisible();
+  await expect.poll(() => screenshot.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0)).toBe(true);
+  const ratio = await screenshot.evaluate((el: HTMLImageElement) => el.naturalWidth / el.naturalHeight);
+  expect(Math.abs(ratio - 1165 / 280)).toBeLessThan(.01);
+  await expect(page.getByRole('link', { name: /Open the full screenshot/ })).toHaveAttribute('href', '/della/workspace-context.webp');
+  await expect(page.getByText("An earlier screen, with identifying details removed. These aren't live usage numbers.")).toBeVisible();
 });
 
-test("automated accessibility check on the page and the review drawer", async ({ page }) => {
+test('accessibility checks cover both outcomes and all owner decisions, not just the opening', async ({ page }) => {
   await openStory(page);
-  const before = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
-  expect(before.violations).toEqual([]);
-  await page.getByRole("button", { name: "Review", exact: true }).click();
-  const after = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
-  expect(after.violations).toEqual([]);
+  async function check() {
+    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+    expect(results.violations).toEqual([]);
+  }
+  await check();
+  await page.getByRole('button', { name: "What if it doesn't book?" }).click();
+  await page.getByRole('button', { name: 'Edit message' }).click();
+  await check();
+  await page.getByRole('button', { name: 'Approve', exact: true }).click();
+  await page.getByRole('img', { name: /Detail of Della/ }).scrollIntoViewIfNeeded();
+  await check();
 });
 
-test("skip link and fast forward/backward scrolling retain the complete story", async ({ page, browserName }) => {
+test('fast scrolling cannot hide the story and there are no browser errors', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
   await openStory(page);
-  // WebKit on macOS uses Option+Tab for full keyboard access without changing user preferences.
-  await page.keyboard.press(browserName === "webkit" && process.platform === "darwin" ? "Alt+Tab" : "Tab");
-  await expect(page.getByRole("link", { name: "Skip to content" })).toBeFocused();
-  await page.keyboard.press("Enter");
-  await expect(page.locator("main")).toBeFocused();
-  await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "instant" }));
-  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
-  await expect(page.getByRole("heading", { level: 1 })).toBeInViewport();
-  await expect(page.getByTestId("booking-demo")).toHaveAttribute("data-step", "0");
-  await expect(page.getByTestId("memory-demo")).toHaveAttribute("data-call", "1");
+  await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' }));
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+  await expect(page.getByRole('heading', { level: 1 })).toBeInViewport();
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-phase', '4');
+  expect(errors).toEqual([]);
 });
 
 
-test("motion preference can change without reloading the story", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "no-preference" });
+test('changing to reduced motion mid-replay pauses it and never silently resumes', async ({ page }) => {
   await openStory(page);
-  const explanation = page.getByTestId("booking-demo").locator("details");
-  await expect(explanation).not.toHaveAttribute("open");
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(explanation).toHaveAttribute("open", "");
-  await expect(page.locator("html")).toHaveCSS("scroll-behavior", "auto");
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  await expect(explanation).not.toHaveAttribute("open");
+  await page.clock.install();
+  await page.getByRole('button', { name: 'Replay the example' }).click();
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-playing', 'false');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.clock.runFor(10000);
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-phase', '0');
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-playing', 'false');
+});
+
+test('leaving the example pauses playback without hiding other writing', async ({ page }) => {
+  await openStory(page);
+  await page.getByRole('button', { name: 'Replay the example' }).click();
+  await page.locator('#now').scrollIntoViewIfNeeded();
+  await expect(page.getByTestId('booking-demo')).toHaveAttribute('data-playing', 'false');
+  await expect(page.getByText(copy.direction, { exact: true })).toBeVisible();
 });
