@@ -90,7 +90,7 @@ export default function MoveMateCase() {
             <article className={styles.quietCell}>
               <span>LOW IMPORTANCE</span>
               <h3>Not worth optimizing yet.</h3>
-              <p>We didn’t want to spend time polishing things before the core behavior was real.</p>
+              <p>We didn’t want to spend time polishing things before we knew whether students would actually use it.</p>
             </article>
           </div>
           <div className={styles.axisX}>CONFIDENCE →</div>
@@ -177,7 +177,7 @@ export default function MoveMateCase() {
           </div>
           <div className="caseStack">
             <p>Right now we are trying to get the first actual requests instead of building a huge moving network before we know we need one.</p>
-            <p>If people start asking for help, we can do the early moves ourselves and bring in student helpers or volunteers as demand grows. Then we can build more of the moving workflow and marketplace around what people actually use.</p>
+            <p>If people start asking for help, we can do the early moves ourselves and bring in student helpers or volunteers as demand grows. Then we can build the rest around what people actually ask for instead of guessing what the whole operation needs in advance.</p>
             <a className={styles.liveButton} href="https://move-mate.netlify.app" target="_blank" rel="noreferrer">OPEN MOVE-MATE.NETLIFY.APP ↗</a>
           </div>
         </div>

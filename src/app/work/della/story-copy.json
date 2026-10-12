@@ -6,7 +6,7 @@
   ],
   "bookingProblem": "Early on, Della would sometimes say it had booked an appointment when it hadn't, which meant the caller could think they were booked in while the salon had nothing on its calendar, so I had to make the booking result part of the process instead of relying on what the model said had happened.",
   "sources": "A salon's cancellation policy can come from the information it has given Della, but when someone asks whether 4:30 is open, it has to check the current calendar because that answer can change between calls.",
-  "technical": "The harness is the software I'm building around the model so it can use the salon's information and booking tools, keep customer context between conversations, and check what actually happened when it tried to do something, rather than treating the model's response as proof that the work was done.",
+  "technical": "The harness is basically the software around the model that lets Della use the salon's information and booking tools, remember a customer between conversations, and check whether a booking or another action actually worked instead of just trusting whatever the model says happened.",
   "memory": [
     "During one of my test calls I told Della that I had chipped my nail, and when I called again a couple of days later it asked how my nail was doing and whether I had gone to the doctor for it.",
     "That was cool because it wasn't starting over from zero and was able to remember something from my last conversation and bring it back up on the next call."

@@ -41,7 +41,7 @@ export default function WeBuddyCase() {
           },
           {
             label: "HOW",
-            text: "Google Places, public web research, and owner answers feed one structured business record that both templates and the dashboard use.",
+            text: "Google Places and web research fill in what is already public, then the owner answers the things the internet can’t know, and all of that goes into one business record that the templates and dashboard use.",
           },
           {
             label: "WHEN",
@@ -126,7 +126,7 @@ export default function WeBuddyCase() {
           <article className={styles.mapperCard}>
             <span>SHARED MAPPER</span>
             <strong>mapSiteToProfile</strong>
-            <p>The same structured business data can feed either template and the shared site components.</p>
+            <p>Both templates read from the same salon data, so the design can change without having to rebuild all of the business information underneath it.</p>
           </article>
 
           <div className={styles.arrow}>→</div>
@@ -197,8 +197,8 @@ export default function WeBuddyCase() {
         <div className={styles.lessonGrid}>
           <article>
             <span>01</span>
-            <h3>Make the salon structured.</h3>
-            <p>The hard part was deciding what the system actually needs to know about a salon so the same record can power different templates without everything becoming generic.</p>
+            <h3>Figure out what the site actually needs to know.</h3>
+            <p>The hard part was deciding what information about a salon had to exist in the shared record so two very different templates could still come from the same data without everything becoming generic.</p>
           </article>
           <article>
             <span>02</span>
@@ -207,8 +207,8 @@ export default function WeBuddyCase() {
           </article>
           <article>
             <span>03</span>
-            <h3>Generation can’t own the page.</h3>
-            <p>I wanted the AI to fill a structured record first, not just generate one giant block of website code. That way the owner can keep editing the same underlying business instead of starting over.</p>
+            <h3>The owner still needs to be able to change it.</h3>
+            <p>I wanted the AI to fill in the salon’s data first instead of generating one giant block of website code, because then the owner can keep changing services, photos, hours, and the rest of the site without starting over.</p>
           </article>
           <article>
             <span>04</span>
@@ -237,11 +237,11 @@ export default function WeBuddyCase() {
         <div className="caseGrid two">
           <div>
             <span className="caseLabel">WHERE IT IS NOW</span>
-            <h2>THE REAL TEST IS WHETHER OWNERS CARE.</h2>
+            <h2>NOW I’M USING IT FOR OUTBOUND.</h2>
           </div>
           <div className="caseStack">
             <p>I built WeBuddy partly because I wanted a better way to get in front of salon owners. Now I’m using it for outbound instead of just adding more templates.</p>
-            <p>If I can send a salon something that already understands a lot of its business, that is a much better opening than another cold call. What I care about next is whether owners respond, what they change, and whether it actually helps me learn the market faster.</p>
+            <p>If I can send a salon a site that already has a lot of its real business information in it, that gives me a much better opening than another cold call. Now I want to see whether owners respond, what they actually change, and whether it helps me learn more about the market while I’m working on Della.</p>
           </div>
         </div>
       </section>

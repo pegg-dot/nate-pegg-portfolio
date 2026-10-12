@@ -26,7 +26,7 @@ export default function UvaSpatialCase() {
         },
         {
           label: "HOW",
-          text: "I built a source registry from UVA public GIS, turned the walkway data into a deterministic pedestrian graph, added entrance evidence and route profiles, then put a schedule and day planner on top.",
+          text: "I built a source registry from the public GIS and other data I could find from UVA, then aggregated the walkway data into paths and a deterministic pedestrian graph. I added entrance evidence and routing profiles for things like accessible, night, and low-hill routes, then put the schedule importer and day planner on top.",
         },
         {
           label: "WHEN",
@@ -42,7 +42,7 @@ export default function UvaSpatialCase() {
           </div>
           <div className="caseStack">
             <p>At first, I pictured a visual version of Grounds that could show me where to go next. I also wanted it to know the smaller paths I took between buildings and plan around the classes I had that day.</p>
-            <p>As I started building it, I realized a map could look believable and still send me to the wrong side of a building or along a path that doesn’t connect. I had to figure out what campus data I could trust before I kept working on the 3D version.</p>
+            <p>It was pretty easy to find a route between two places at UVA, but figuring out whether that route actually worked was a lot harder, because two paths can cross on a map without connecting and the center of a building doesn’t tell you which door you can actually use. That was when I started checking the campus data more carefully before I kept building the 3D version.</p>
           </div>
         </div>
       </section>
@@ -106,9 +106,9 @@ export default function UvaSpatialCase() {
             <h2>The paths had to match the real campus.</h2>
           </div>
           <div className="caseStack">
-            <p>The line on the map was the easy part. The harder part was deciding what I could actually trust. Two walkways can cross in 2D without really connecting. A building center isn’t the same thing as the door you can use. An accessible route needs actual accessible entrance evidence.</p>
-            <p>I built the graph from UVA walkway data and kept the routing rules conservative. If there isn’t enough evidence, the system blocks the route instead of filling in a gap because it looks like a path on the map.</p>
-            <p>That also meant keeping the 3D campus separate. The visual world can make the route easier to understand later, but it never gets to create a walkway or override the routing graph.</p>
+            <p>It was easy enough to draw a route across the university, but deciding what actually worked was more difficult. Two walkways can cross in 2D without really connecting, the center of a building isn’t the same thing as the entrance you can use, and an accessible route needs an actual accessible entrance.</p>
+            <p>I built the graph from UVA walkway data, but I don’t let the app assume two things connect just because they look close on the map. If the data doesn’t support the connection, it blocks the route instead of guessing.</p>
+            <p>The three-dimensional copy of Grounds can make it easier to understand where you’re going, but it can’t create a walkway or override the existing routing rules.</p>
           </div>
         </div>
 
@@ -119,7 +119,7 @@ export default function UvaSpatialCase() {
           <i>→</i>
           <div><span>03</span><b>DOOR</b><small>entrance evidence</small></div>
           <i>→</i>
-          <div><span>04</span><b>GRAPH</b><small>source-backed walkways</small></div>
+          <div><span>04</span><b>GRAPH</b><small>UVA walkway graph</small></div>
           <i>→</i>
           <div><span>05</span><b>ROUTE</b><small>fastest · accessible · night · low hill</small></div>
           <i>→</i>
@@ -135,7 +135,7 @@ export default function UvaSpatialCase() {
           </div>
           <div className="caseStack">
             <p>I added My Day so I could enter classes myself or import a day’s schedule and have it plan the walk between each class.</p>
-            <p>The schedule import can read an .ics file or structured text. It doesn’t use an LLM to guess what a location means. If a class location doesn’t match a UVA building or a reviewed name for it, the app leaves it unresolved until I correct it.</p>
+            <p>There is a schedule importer where I can import my class schedule, and it extracts the classes and tries to resolve each one to the UVA building or location it belongs to. If it doesn’t know a location well enough, it leaves it unresolved and asks me to correct it instead of guessing.</p>
             <p>For something like this, I’d rather have it tell me it’s unsure than send me to the wrong place.</p>
           </div>
         </div>
@@ -149,7 +149,7 @@ export default function UvaSpatialCase() {
             sizes="100vw"
           />
           <figcaption>
-            Deterministic schedule import. Exact reviewed locations resolve; ambiguous ones stay visible for correction.
+            The schedule importer can read an .ics file or structured text. Locations it recognizes resolve automatically, and unclear ones stay unresolved until I correct them.
           </figcaption>
         </figure>
       </section>
@@ -172,7 +172,7 @@ export default function UvaSpatialCase() {
             <h2>I haven’t checked every route in person yet.</h2>
           </div>
           <div className="caseStack">
-            <p>The local product can search UVA facilities, switch between fastest, accessible, night and low-hill routing, import a schedule, build a day, and calculate leave-by times. I’ve done a lot of testing and source checks, but I still don’t want the page to make the data look more finished than it’s.</p>
+            <p>The local product can search UVA facilities, switch between fastest, accessible, night and low-hill routing, import a schedule, build a day, and calculate leave-by times. I’ve done a lot of testing and source checks, but I still don’t want the page to make the data look more finished than it is.</p>
             <p>I still need to check more doors and route connections on Grounds before I’d trust this for getting around campus. The entrance data also needs to cover more of the ordinary buildings.</p>
             <p>I still want to build the visual version of UVA I pictured at the beginning. I want it to sit on top of routes I can trust.</p>
           </div>

@@ -13,7 +13,7 @@ export default function LotCase() {
       actions={[{ label: "VIEW CODE", href: "https://github.com/pegg-dot/real-estate-platform", external: true }]}
     >
       <ProjectBrief items={[
-        { label: "WHAT", text: "A Charlottesville-first map and research workspace that ranks properties against my own real-estate thesis." },
+        { label: "WHAT", text: "A real-estate workspace for finding, underwriting, and tracking houses around Charlottesville based on the way I’m actually looking at deals." },
         { label: "WHY", text: "My uncle said he could help me learn real estate, so I built a tool to help me." },
         { label: "HOW", text: "It combines parcel, zoning, assessment, ownership, flood, market, and underwriting data, then scores each property against an explicit thesis and financing rules." },
         { label: "WHEN", text: "Built in 2026 at UVA. It’s useful now, but still unfinished and something I’m building mainly for myself and my uncle." },
@@ -46,8 +46,8 @@ export default function LotCase() {
           <div><span className="caseLabel">WHAT IT ACTUALLY DOES</span><h2>THE MAP IS BUILT AROUND MY THESIS.</h2></div>
           <div className="caseStack">
             <p>LOT pulls together public parcel data, zoning, assessments, ownership, flood information, market context, and underwriting. Then it grades properties based on the strategy I’m actually looking for.</p>
-            <p>The financing side can compare traditional structures with things like seller financing, subject-to, and hybrids. The math stays deterministic, while the AI is there to help organize the reasoning and explain the tradeoffs.</p>
-            <p>The point isn’t a universal &ldquo;good deal&rdquo; score. A property can be good for one thesis and useless for another, so I wanted the ranking to always be tied back to what I’m actually trying to do.</p>
+            <p>The financing side can compare traditional structures with things like seller financing, subject-to, and hybrids. I kept the financing math deterministic instead of asking the AI to do it, while the AI helps organize the property research and explain the tradeoffs between different structures.</p>
+            <p>I didn’t want one generic &ldquo;good deal&rdquo; score, because a property that makes sense for one strategy could make no sense for another, so I wanted the ranking to stay tied to the way I’m actually trying to invest.</p>
           </div>
         </div>
       </section>
@@ -57,7 +57,7 @@ export default function LotCase() {
           <div><span className="caseLabel">WHAT GOT HARD</span><h2>AI CAN SOUND CERTAIN WHEN THE DATA ISN&apos;T.</h2></div>
           <div className="caseStack">
             <p>The hard part was pulling a lot of different kinds of data together without making the result look more certain than it really was.</p>
-            <p>A county assessment is a sourced fact. An estimated rent, mortgage balance, seller motivation, or financing scenario is a model. I wanted those to look different because an AI can give you a very confident answer even when the assumptions underneath it are weak.</p>
+            <p>I also had to separate what I actually know from what the tool is estimating. A county assessment comes from a source, while rent, mortgage balance, seller motivation, or a financing scenario can be estimates, and I wanted those to look different because an AI can sound very confident even when the assumptions underneath it are weak.</p>
             <p>The other hard part was the interface. There are so many ways I could have shown the data that it was easy to make something powerful but impossible to understand. I spent a lot of time trying to make the map and property view feel clean instead of like a giant spreadsheet.</p>
           </div>
         </div>

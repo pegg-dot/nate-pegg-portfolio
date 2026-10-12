@@ -68,7 +68,7 @@ test('the revised story is personal and concise, without the rejected money line
     for (const text of Array.isArray(value) ? value : [value]) await expect(page.getByText(text, { exact: true })).toBeVisible();
   }
   const prose = await page.locator('main').innerText();
-  expect(prose).toContain('wanted a better way to compare');
+  expect(prose).toContain('aggregates public data from batches, COAs, lab reports, test results');
   expect(prose).not.toContain('not making money');
   expect(prose).not.toContain('no live affiliate deals');
   expect(prose).not.toContain('The fields match. The scope matters.');
@@ -158,8 +158,8 @@ test('the safety limit is beside both the comparison and the grades', async ({ p
 test('the referral explanation is readable without opening a URL and never implies a purchase', async ({ page }) => {
   await openStory(page);
   const handoff = page.getByTestId('handoff-demo');
-  await expect(handoff).toContainText('The outbound click can be recorded.');
-  await expect(handoff).toContainText("The link alone doesn't tell me.");
+  await expect(handoff).toContainText('The outbound click to a website can be recorded');
+  await expect(handoff).toContainText("a purchase can't because the link alone doesn't tell me whether someone actually bought anything");
   await handoff.locator('summary').click();
   await expect(handoff.locator('details code')).toHaveText(exampleTaggedUrl);
   for (const part of linkParts) await expect(handoff).toContainText(part.meaning);

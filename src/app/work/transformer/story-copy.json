@@ -1,5 +1,5 @@
 {
-  "intro": "I built a small GPT-style transformer in PyTorch, trained it on Tiny Shakespeare, and then made a visualizer so I could see what was happening inside it.",
+  "intro": "I coded a small GPT-style transformer from scratch in PyTorch, trained it on Tiny Shakespeare, and then built a visualizer around it so I could see what the model was actually doing.",
   "orientation": "This came out of the studying I was doing on my own. I could kind of explain the steps, but there were parts I still couldn't really picture.",
   "origin": [
     "Residual connections were one of them. I knew where they went in the diagram, but I didn't have a good intuition for what they were doing. I had the same problem on the training side with backpropagation, gradient descent and Adam.",
@@ -12,7 +12,7 @@
   ],
   "training": "I also made a training view because I wanted to understand how updating the weights changes the model. That screen is a teaching illustration of gradient descent, rather than the actual shape of this model's loss surface.",
   "takeaway": [
-    "Building it helped me connect things I'd been learning separately. I can follow a character through the model now and see how it becomes a set of probabilities for what comes next.",
-    "I still find the interpretation part difficult. Being able to trace every calculation doesn't mean I can explain why the model learned a particular representation. That became more obvious as I spent time looking at the values."
+    "Building it helped me connect things I'd been learning separately so I could understand the whole thing more intuitively. I can follow a character through the model now, see how the input gets transformed into different values at each step, and then see how those values turn into a probability distribution for what comes next.",
+    "It also made the generative part click more for me, because the model isn't choosing from a fixed response; it keeps producing a distribution for the next character and then decoding from that one step at a time. The part I still find harder is interpretation, because even if I can trace the calculations, that doesn't mean I always know why the model learned a particular representation."
   ]
 }

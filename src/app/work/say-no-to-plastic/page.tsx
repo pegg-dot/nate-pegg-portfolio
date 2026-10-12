@@ -26,7 +26,7 @@ export default function PlasticCase() {
         },
         {
           label: "HOW",
-          text: "I built the site, the interactive body experience, newsletter flow, book and media pages, admin tools, Spanish content, and the source and validation work behind the science pages.",
+          text: "I built the site, the interactive body experience, newsletter flow, book and media pages, admin tools, Spanish content, and the research and source checks behind the science pages.",
         },
         {
           label: "WHEN",
@@ -80,7 +80,7 @@ export default function PlasticCase() {
           <div className="caseStack">
             <p>The anatomy became one of the biggest parts of the site. I didn’t want it to just be a 3D body with some generic microplastic image beside it. I wanted the particles to actually exist inside and around the body so what you were looking at felt connected to the science.</p>
             <p>I also kept changing the particles because having every one of them show up as the same little colored dot looked fake. I wanted fibers, flakes, shards, different sizes and colors, and enough variation that it actually felt like the material we were talking about.</p>
-            <p>At the same time, I had to be careful not to make the science seem more certain than it was. A 3D body can look very authoritative, so I wanted the study, what it found, and its limitations to stay connected to the visual instead of making claims the research didn’t actually make.</p>
+            <p>At the same time, I had to be careful because a 3D body can make the science look way more certain than it actually is. I wanted the study, what it found, and its limitations right next to the visual so the animation couldn’t imply something the research never showed.</p>
           </div>
         </div>
       </section>

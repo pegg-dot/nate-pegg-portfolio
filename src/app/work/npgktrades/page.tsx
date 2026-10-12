@@ -13,9 +13,9 @@ export default function NpgkCase() {
       actions={[{ label: "VIEW CODE", href: "https://github.com/pegg-dot/NPGKTrades", external: true }]}
     >
       <ProjectBrief items={[
-        { label: "WHAT", text: "A Polymarket copy-trading system that watches one public wallet, groups new fills, scales the position to my bankroll, checks price and risk, and tracks the mirrored position." },
+        { label: "WHAT", text: "A Polymarket copy-trading system that watches one public wallet, combines related fills, sizes each copy based on my bankroll, and blocks trades when price movement, slippage, or exposure goes past rules I set." },
         { label: "WHY", text: "I knew the trader and thought it would be an interesting challenge to mirror his allocation. His account was much larger than mine, so blindly copying the dollar amounts made no sense." },
-        { label: "HOW", text: "Public wallet activity goes through fill aggregation, bankroll-relative sizing, slippage and exposure checks, then either a dry-run fill or an explicitly enabled live execution path." },
+        { label: "HOW", text: "When a new fill appears, the bot groups related fills, scales the size to my bankroll, checks the current price and risk limits, and either records a dry-run trade or sends a live order only when live trading has been explicitly turned on." },
         { label: "WHEN", text: "Built in 2026 as a personal project. Most of my testing has been in dry-run mode." },
       ]} />
 
@@ -66,11 +66,11 @@ export default function NpgkCase() {
 
       <section className="caseBand caseBandDark">
         <div className="caseGrid two">
-          <div><span className="caseLabel">RISK</span><h2>I KEPT THE EXECUTION PATH DETERMINISTIC.</h2></div>
+          <div><span className="caseLabel">RISK</span><h2>I DIDN’T WANT AN LLM DECIDING WHETHER MONEY MOVES.</h2></div>
           <div className="caseStack">
             <p>I had already been experimenting with agents in other projects, but I didn’t want an LLM deciding whether money should move here.</p>
-            <p>The execution gate is ordinary code. It checks session exposure, exposure to one market, price movement, minimum trade size, and a kill switch before a buy can go through. When the source trader sells, the mirror can reduce the position too.</p>
-            <p>There’s a separate learner that stores public trading behavior for pattern analysis, but that sits outside the path that decides whether a trade is allowed.</p>
+            <p>I didn’t want an LLM deciding whether a trade should go through, so that part is deterministic code. It checks things like session exposure, exposure to one market, how far the price has moved, minimum trade size, and a kill switch before a buy can go through, and when the source trader sells the mirror can reduce the position too.</p>
+            <p>I do have a separate learner that stores the public trading behavior so I can look for patterns later, but it doesn’t get to decide whether money moves.</p>
           </div>
         </div>
       </section>
