@@ -7,7 +7,7 @@ import copy from '../src/app/work/transformer/story-copy.json';
 async function openStory(page: Page) {
   await page.goto('/work/transformer');
   await page.evaluate(() => document.fonts.ready);
-  await expect(page.locator('[data-transformer-edition="reader-first"]')).toBeVisible();
+  await expect(page.locator('[data-transformer-edition="authored"]')).toBeVisible();
 }
 
 test('the reader gets a complete prediction without first opening the model explorer', async ({ page }) => {
@@ -15,7 +15,8 @@ test('the reader gets a complete prediction without first opening the model expl
   await expect(page.getByTestId('preview-prefix')).toHaveText('RO');
   await expect(page.getByTestId('prediction-preview')).toContainText('51.1%');
   await expect(page.getByTestId('preview-explanation')).toContainText('M is the most likely');
-  await expect(page.getByTestId('preview-explanation')).toBeInViewport();
+  await expect(page.getByTestId('transformer-artifact').getByRole('img')).toBeInViewport();
+  await expect(page.getByTestId('preview-explanation')).toBeVisible();
   await expect(page.getByTestId('model-explorer-disclosure')).not.toHaveAttribute('open');
   await expect(page.getByTestId('transformer-lab')).not.toBeVisible();
   await expect(page.getByTestId('preview-draw')).toHaveCount(0);
@@ -160,7 +161,7 @@ test('mobile headings keep their words separated when desktop line breaks disapp
   await page.setViewportSize({ width: 390, height: 844 });
   await openStory(page);
   const headings = (await page.locator('main h2').allInnerTexts()).map(text => text.replace(/\s+/g, ' ').trim());
-  expect(headings).toEqual(['Why I wanted to build it.', 'What happens to the text.', "One part I couldn't quite picture.", 'Then I built the visualizer.', 'A closer look at the numbers.', 'What started making sense.']);
+  expect(headings).toEqual(['A residual connection', 'A prediction from the model']);
 });
 
 test('reduced-motion changes affect the preview without automatically opening the advanced controls', async ({ page }) => {
@@ -193,6 +194,7 @@ test('no inference service, model download or mutating request is involved', asy
 test('both original images remain visible and keep their correct aspect ratio', async ({ page }) => {
   await openStory(page);
   for (const name of [/query, key and value/, /teaching illustration/]) {
+    if (String(name).includes('teaching')) await page.getByTestId('transformer-artifact').getByRole('button', { name: 'Training', exact: true }).click();
     const image = page.getByRole('img', { name });
     await image.scrollIntoViewIfNeeded();
     await image.evaluate((el: HTMLImageElement) => el.decode());

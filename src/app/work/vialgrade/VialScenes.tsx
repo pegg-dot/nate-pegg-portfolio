@@ -14,13 +14,13 @@ function subscribeMotion(notify: () => void) {
 const preference = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const serverPreference = () => false;
 
-export function EvidenceComparison() {
+export function EvidenceComparison({ inArticle = false }: { inArticle?: boolean }) {
   const [example, setExample] = useState<EvidenceCase>('match');
   const reduced = useSyncExternalStore(subscribeMotion, preference, serverPreference);
   const id = useId();
   const { record, status, disagreements, finding } = readingComparison(example);
 
-  return <div className={s.comparisonWrap} id="evidence">
+  return <div className={`${s.comparisonWrap} ${inArticle ? s.inArticle : ""}`} id="evidence">
     <div className={s.comparison} data-testid="evidence-demo" data-case={example} data-result={status} data-reduced={reduced}>
       <div className={s.comparisonHeader}><span className={s.fileIcon} aria-hidden="true">V</span><span>Checking a vendor&apos;s claim</span><span className={s.exampleLabel}>Fictional example</span></div>
       <div className={s.claimLine}><span>The claim</span><p>&ldquo;Third-party tested.&rdquo;</p></div>

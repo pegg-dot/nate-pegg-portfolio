@@ -66,3 +66,7 @@ The VialGrade reader-first pass is documented in `docs/VIALGRADE_READER_PASS_202
 ## Transformer reader-first story
 
 The Transformer page now starts with a readable next-character prediction using the actual captured logits. The full computation explorer remains optional. Original capture data and math are unchanged; the prose is revised at Nate's request. See `docs/TRANSFORMER_READER_PASS_2026-10-11.md`. Run `npx playwright test -c playwright-transformer.config.ts` for behavior and numerical checks, and `npx playwright test -c playwright-model-reading-visual.config.ts` for reviewed macOS screenshots. Set `TRANSFORMER_TEST_URL` for deployed verification.
+
+## Authored project-page revision
+
+Della, VialGrade and Transformer now have distinct compositions led by their actual work rather than a common demo-first case-study layout. Current design reasoning and scope: `docs/AUTHORED_PROJECTS_2026-10-12.md`. The earlier reader-first documents record preceding versions. Use `npx playwright test -c playwright-authored.config.ts` for all behavioral/numerical checks and `npx playwright test -c playwright-authored-visual.config.ts` for reviewed macOS snapshots. Both accept `PORTFOLIO_TEST_URL` for deployed verification. The protected source and artifact manifest is `docs/verification/authored-preserved-files.json`.

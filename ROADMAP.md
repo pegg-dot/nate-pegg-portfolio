@@ -186,3 +186,14 @@ The prior VialGrade prose fixture remains an archive; this requested rewrite sup
 - [x] Preserve both visualizer images and the full advanced computation explorer.
 - [x] Keep source data, math and original prose archive unchanged.
 - [x] Complete browser review and deployed verification: 82 Transformer checks, six visual tests and the 198-check cross-project suite on its final rerun. One initial homepage network timeout is recorded in the release note.
+
+
+## Authored project compositions - October 12, 2026
+
+- [x] Review the three rendered pages together and document the repeated visual and writing mechanism.
+- [x] Lead Della with its real owner workspace and move the illustration after the booking problem.
+- [x] Compose VialGrade as a research account, with the real no-grade branch of the code.
+- [x] Lead Transformer with the actual visualizer and show residual addition in its real source.
+- [x] Preserve homepage, original artifacts, model/grading logic and illustrative-action safety boundaries.
+- [x] Complete joint desktop/mobile visual review and local checks (254 behavioral checks and 16 visual tests).
+- [ ] Verify the released pages after deployment.

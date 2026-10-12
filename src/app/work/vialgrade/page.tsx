@@ -1,52 +1,25 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import type { Metadata } from 'next';
+import { ProjectNav, ProjectFooter } from '../_authored/ProjectChrome';
 import { EvidenceComparison } from './VialScenes';
 import GradeExamples from './GradeExamples';
 import { exampleTaggedUrl, linkParts } from './evidence-model';
 import copy from './story-copy.json';
-import s from './vial.module.css';
+import s from '../_authored/authored.module.css';
 
-export const metadata: Metadata = {
-  title: 'VialGrade | Nate Pegg',
-  description: "Why I built VialGrade to compare peptide vendors, what I could check, and what I learned about missing evidence.",
-};
-
+export const metadata: Metadata = { title: 'VialGrade | Nate Pegg', description: 'A research site I built to compare peptide vendors and follow their claims back to evidence.' };
 export default function VialGradeCase() {
-  return <main className={s.page} id="main-content" tabIndex={-1} data-vial-edition="reader-first">
-    <nav className={s.nav} aria-label="Project navigation"><Link href="/">&#8592; Nate Pegg</Link><span>02 / VialGrade</span><a href="https://vialgrade.com" target="_blank" rel="noreferrer">Visit VialGrade <span aria-hidden="true">&#8599;</span><span className={s.srOnly}> (opens in a new tab)</span></a></nav>
-    <header className={s.hero}>
-      <div className={s.heroCopy}><p className={s.kicker}>Comparing the evidence behind peptide vendors</p><h1>VialGrade<span aria-hidden="true">.</span></h1><p className={s.lede}>{copy.intro}</p><p className={s.orientation}>{copy.orientation}</p><a className={s.storyLink} href="#origin">Why I built it <span aria-hidden="true">&#8594;</span></a><span className={s.year}>Built in 2026</span></div>
-      <EvidenceComparison />
-    </header>
-
-    <section className={`${s.section} ${s.origin}`} id="origin" aria-labelledby="origin-title">
-      <h2 id="origin-title">They all said<br /> they were verified.</h2><div className={s.prose}>{copy.origin.map(p => <p key={p}>{p}</p>)}</div>
-    </section>
-
-    <section className={`${s.section} ${s.gradesSection}`} id="grades" aria-labelledby="grades-title">
-      <div className={s.gradeStory}><h2 id="grades-title">I didn&apos;t want<br /> to force a grade.</h2><div className={s.prose}><p>{copy.unknown}</p><p>{copy.grading}</p></div></div><GradeExamples />
-    </section>
-
-    <section className={`${s.section} ${s.handoffSection}`} id="handoff" aria-labelledby="handoff-title">
-      <div><h2 id="handoff-title">Tracking what<br /> happened next.</h2><div className={s.prose}><p>{copy.handoff}</p><p>{copy.attribution}</p></div></div>
-      <div className={s.handoff} data-testid="handoff-demo">
-        <p className={s.handoffLabel}>When someone follows a vendor link</p>
-        <div className={s.linkJourney}>
-          <div><span className={s.journeyDot} aria-hidden="true" /><strong>Leaves VialGrade</strong><p>The outbound click can be recorded.</p></div>
-          <div><span className={s.journeyDot} aria-hidden="true" /><strong>Arrives at the vendor</strong><p>The link identifies VialGrade as the source.</p></div>
-          <div><span className={`${s.journeyDot} ${s.unknownDot}`} aria-hidden="true" /><strong>Buys something?</strong><p>The link alone doesn&apos;t tell me.</p></div>
-        </div>
-        <details className={s.linkDetails}><summary>See an example link <span aria-hidden="true">+</span></summary><p className={s.linkDisclosure}>An illustrative address, not a working vendor link. Opening this explanation records nothing.</p><code className={s.exampleUrl}>{exampleTaggedUrl}</code><dl>{linkParts.map(part => <div key={part.key}><dt>{part.key}</dt><dd>{part.meaning}</dd></div>)}</dl></details>
-      </div>
-    </section>
-
-    <section className={`${s.section} ${s.launchedSection}`} aria-labelledby="launched-title">
-      <div className={s.launchedStory}><h2 id="launched-title">People started<br /> finding it.</h2><div className={s.prose}><p>{copy.earlyUse}</p></div><p className={s.historical}>Earlier reported figures, not live analytics.</p><a className={s.productLink} href="https://vialgrade.com" target="_blank" rel="noreferrer">Visit VialGrade <span aria-hidden="true">&#8599;</span><span className={s.srOnly}> (opens in a new tab)</span></a></div>
-      <figure className={s.productCapture}><a href="/vialgrade/home.jpg" target="_blank" rel="noreferrer"><Image src="/vialgrade/research-home.webp" alt="Earlier VialGrade homepage, with its vendor search and record-based comparisons" width={1440} height={1000} sizes="(max-width: 760px) 100vw, 650px" /><span className={s.fullScreenshot}>Open the full screenshot <span aria-hidden="true">&#8599;</span><span className={s.srOnly}> (opens in a new tab)</span></span></a><figcaption>An earlier interface. The numbers in this image aren&apos;t current activity.</figcaption></figure>
-    </section>
-    <section className={`${s.section} ${s.takeawaySection}`} aria-labelledby="takeaway-title"><h2 id="takeaway-title">What I took<br /> from it.</h2><p className={s.takeaway}>{copy.takeaway}</p></section>
-    <footer className={s.footer}><Link href="/">&#8592; Back to my work</Link><Link href="/work/transformer">Transformer &#8594;</Link></footer>
+  return <main className={s.vial} id="main-content" tabIndex={-1} data-vial-edition="authored">
+    <ProjectNav active="vialgrade" />
+    <header className={s.vialOpening}><div className={s.meta}><span>Research / software</span><span>Built in 2026</span></div><div><h1>VialGrade</h1><p className={s.lead}>{copy.intro}</p><a className={s.textLink} href="https://vialgrade.com" target="_blank" rel="noreferrer">Visit the site <span aria-hidden="true">&#8599;</span><span className={s.srOnly}> (opens in a new tab)</span></a></div></header>
+    <article className={s.vialArticle} id="origin"><aside className={s.marginNote}><p>Where the idea came from</p></aside><div className={s.reading}><p>{copy.orientation}</p>{copy.origin.map(p => <p key={p}>{p}</p>)}</div></article>
+    <div className={s.evidenceSpread}><p className={s.caption}>One example of the comparison. The names and records here are fictional.</p><EvidenceComparison inArticle /></div>
+    <article className={s.vialArticle} id="grades"><aside className={s.marginNote}><p>Missing information</p></aside><div className={s.reading}><p>{copy.unknown}</p><figure className={s.codeFigure} data-testid="grade-source-excerpt"><figcaption><span>From the grade function</span><a href="https://github.com/pegg-dot/vial/blob/5a08f288a136d2af232e224770e07408902878bd/src/server/verify/grade.ts" target="_blank" rel="noreferrer">Source <span aria-hidden="true">&#8599;</span><span className={s.srOnly}> (opens in a new tab)</span></a></figcaption><pre><code>{'case "unproven":\ncase "info": {\n    return {\n        ...base,\n        '}<mark>{'letter: null,'}</mark>{'\n        band: "insufficient",'}</code></pre><p className={s.codeCaption}>An excerpt; the return continues. The grade is deliberately left empty here.</p></figure><p>{copy.grading}</p></div></article>
+    <div className={s.gradeFootnote}><details className={s.details} data-testid="grade-details"><summary>The letter grades, with example inputs</summary><GradeExamples /></details></div>
+    <article className={s.vialArticle} id="handoff"><aside className={s.marginNote}><p>After the visitor leaves</p></aside><div className={s.reading}><p>{copy.handoff}</p><p>{copy.attribution}</p><div className={s.linkInline} data-testid="handoff-demo"><p><code>utm_source=vialgrade</code></p><p>The outbound click can be recorded.</p><p>A purchase? The link alone doesn&apos;t tell me.</p><details><summary>See an example link</summary><p>An illustrative address, not a working vendor link. Opening this explanation records nothing.</p><code>{exampleTaggedUrl}</code><dl>{linkParts.map(part => <div key={part.key}><dt>{part.key}</dt><dd>{part.meaning}</dd></div>)}</dl></details></div></div></article>
+    <div className={s.vialFoot}><figure className={s.siteFigure}><a href="/vialgrade/home.jpg" target="_blank" rel="noreferrer"><Image src="/vialgrade/research-home.webp" width={1440} height={1000} alt="Earlier VialGrade homepage with its search and record-based comparisons" sizes="(max-width: 800px) 100vw, 680px" /><span className={s.srOnly}>Open the full screenshot (opens in a new tab)</span></a><figcaption><span className={s.fullSizeLabel}>The site I built. Click to see the full screenshot.</span>An earlier interface. The displayed numbers are not current activity, and the headline is not a product-safety finding.</figcaption></figure><div className={s.reading}><p>{copy.earlyUse}</p><p className={s.caption}>Earlier reported figures, not live analytics.</p></div></div>
+    <p className={`${s.vialLast} ${s.reading}`}>{copy.takeaway}</p>
+    <ProjectFooter next="transformer" name="Transformer" />
     <noscript><style>{`[data-interactive="true"]{display:none!important}`}</style></noscript>
   </main>;
 }

@@ -1,76 +1,28 @@
-import Image from "next/image";
-import Link from "next/link";
-import type { Metadata } from "next";
-import { ApprovalDemo, BookingDemo, DellaMark, Icon } from "./DellaScenes";
-import copy from "./story-copy.json";
-import s from "./della.module.css";
+import type { Metadata } from 'next';
+import { BookingDemo, ApprovalDemo, DellaMark } from './DellaScenes';
+import { ProjectNav, ProjectFooter } from '../_authored/ProjectChrome';
+import ArtifactViewer from '../_authored/ArtifactViewer';
+import copy from './story-copy.json';
+import s from '../_authored/authored.module.css';
 
-export const metadata: Metadata = {
-  title: "Della | Nate Pegg",
-  description: "Why I'm building an AI employee for nail salons, what it does on a call, and what I've learned getting it to actually do the work.",
-};
-
+export const metadata: Metadata = { title: 'Della | Nate Pegg', description: "Building an AI employee for nail salons, from the first calls to the owner's workspace." };
 export default function DellaCase() {
-  return <main className={s.page} id="main-content" tabIndex={-1} data-della-edition="reader-first">
-    <nav className={s.nav} aria-label="Project navigation"><Link href="/"><Icon name="back" size={15} /> Nate Pegg</Link><span>01 / Della</span><a href="https://hellodella.com" target="_blank" rel="noreferrer">Visit Della <span aria-hidden="true">&#8599;</span><span className={s.srOnly}> (opens in a new tab)</span></a></nav>
-
-    <header className={s.hero}>
-      <div className={s.heroCopy}>
-        <p className={s.kicker}>An AI employee for nail salons</p>
-        <h1><DellaMark /> Della</h1>
-        <p className={s.lede}>{copy.intro}</p>
-        <p className={s.coverage}>{copy.coverage}</p>
-        <a className={s.storyLink} href="#why">Why I&apos;m building it <Icon name="arrow" size={16} /></a>
-        <span className={s.since}>Building since March 11, 2026</span>
-      </div>
-      <BookingDemo />
-    </header>
-
-    <section className={`${s.section} ${s.whySection}`} id="why" aria-labelledby="why-title">
-      <div className={s.sectionTitle}><h2 id="why-title">Why I started<br />with calls.</h2></div>
-      <div className={s.prose}>{copy.why.map(p => <p key={p}>{p}</p>)}</div>
-    </section>
-
-    <section className={`${s.section} ${s.buildSection}`} id="build" aria-labelledby="build-title">
-      <div className={s.buildStory}><h2 id="build-title">It had to actually<br />book the appointment.</h2><div className={s.prose}><p>{copy.bookingProblem}</p><p>{copy.sources}</p></div></div>
-      <div className={s.sources}>
-        <p className={s.sourcesIntro}>Where each answer comes from</p>
-        <div className={s.sourceRow}><p>What&apos;s your cancellation policy?</p><div><span className={s.sourceArrow} aria-hidden="true">&#8627;</span><span>The salon&apos;s saved policy</span></div></div>
-        <div className={s.sourceRow}><p>Is 4:30 open?</p><div><span className={s.sourceArrow} aria-hidden="true">&#8627;</span><span>The current booking calendar</span></div></div>
-        <details className={s.technicalNote}><summary>What I built around the model <span aria-hidden="true">+</span></summary><p>{copy.technical}</p></details>
-      </div>
-    </section>
-
-    <section className={`${s.section} ${s.memorySection}`} id="memory" aria-labelledby="memory-title">
-      <div className={s.memoryHeading}><h2 id="memory-title">It remembered<br />my chipped nail.</h2><p className={s.memoryCaption}>My own test calls, described from memory.</p></div>
-      <div className={s.memoryStory}>
-        <div className={s.memoryLine}><span>First call</span><p>{copy.memoryFirst}</p></div>
-        <div className={s.memoryLine}><span>A couple days later</span><p>{copy.memorySecond}</p></div>
-        <p className={s.memoryReflection}>{copy.memoryReflection}</p>
-      </div>
-    </section>
-
-    <section className={`${s.section} ${s.ownerSection}`} id="control" aria-labelledby="owner-title">
-      <div className={s.ownerStory}><h2 id="owner-title">The owner decides<br />what it can do.</h2><div className={s.prose}><p>{copy.control}</p><p>{copy.controlExample}</p></div></div>
-      <ApprovalDemo />
-    </section>
-
-    <section className={`${s.section} ${s.workspaceSection}`} aria-labelledby="workspace-title">
-      <div><h2 id="workspace-title">What the owner sees.</h2><p className={s.workspaceIntro}>{copy.workspace}</p></div>
-      <figure className={s.workspaceFigure}>
-        <a href="/della/workspace-context.webp" target="_blank" rel="noreferrer" className={s.workspaceLink}>
-          <Image src="/della/workspace-controls-398a69c78f.webp" alt="Detail of Della's earlier owner controls, showing which actions need approval" width={1165} height={280} sizes="(max-width: 720px) 100vw, 1100px" />
-          <span className={s.fullScreenshot}>Open the full screenshot <span aria-hidden="true">&#8599;</span><span className={s.srOnly}> (opens in a new tab)</span></span>
-        </a>
-        <figcaption>An earlier screen, with identifying details removed. These aren&apos;t live usage numbers.</figcaption>
-      </figure>
-    </section>
-
-    <section className={`${s.section} ${s.currentSection}`} id="now" aria-labelledby="current-title">
-      <div className={s.currentHeading}><h2 id="current-title">What I&apos;m<br />working on now.</h2><a href="https://hellodella.com" target="_blank" rel="noreferrer" className={s.externalLink}>Visit Della <span aria-hidden="true">&#8599;</span><span className={s.srOnly}> (opens in a new tab)</span></a></div>
-      <div className={s.prose}><p>{copy.current}</p><p>{copy.latency}</p><p>{copy.direction}</p></div>
-    </section>
-    <footer className={s.footer}><Link href="/"><Icon name="back" size={16} /> Back to my work</Link><Link href="/work/vialgrade">VialGrade <Icon name="arrow" size={16} /></Link></footer>
+  return <main className={s.della} id="main-content" tabIndex={-1} data-della-edition="authored">
+    <ProjectNav active="della" />
+    <header className={s.dellaMasthead}><h1 className={s.dellaTitle}><span><DellaMark /></span>Della</h1><div className={s.meta}><span>An AI employee for nail salons</span><span>Started March 11, 2026</span></div></header>
+    <div className={s.dellaCover}>
+      <ArtifactViewer testId="della-artifact" images={[
+        { label: 'Owner controls', src: '/della/workspace-owner-1bca0154fd.webp', width: 1160, height: 720, alt: "Detail of Della's earlier owner controls, showing actions that need approval", caption: "An earlier workspace capture, with identifying details removed. The displayed counts are not current usage." },
+        { label: 'Full workspace', src: '/della/workspace-context.webp', width: 1760, height: 1250, alt: 'The full earlier Della workspace with identifying details removed', caption: 'The same capture, including navigation and the surrounding workspace. This is an image, not the live application.' },
+      ]} />
+      <div className={s.dellaIntro}><p>{copy.intro}</p><p className={s.caption}>{copy.workspace}</p><p className={s.caption}>{copy.coverage}</p><a className={s.textLink} href="https://hellodella.com" target="_blank" rel="noreferrer">Visit Della <span aria-hidden="true">&#8599;</span><span className={s.srOnly}> (opens in a new tab)</span></a></div>
+    </div>
+    <article className={s.dellaManuscript} id="why"><aside className={s.marginNote}><p>OpenOperator was the first version.</p><p>The focus moved from medspas to nail salons.</p></aside><div className={s.reading}>{copy.why.map(p => <p key={p}>{p}</p>)}<h2 id="build">Getting the booking to work</h2><p>{copy.bookingProblem}</p><p>{copy.sources}</p><details className={s.details}><summary>What I built around the model</summary><p>{copy.technical}</p></details></div></article>
+    <div className={s.bookingInsert}><p className={s.caption}>A simplified call to show where that check happens.</p><BookingDemo inStory /></div>
+    <aside className={s.memoryAside} id="memory" aria-label="A call I remember"><p className={s.caption}>My own test calls,<br /> described from memory.</p><div className={s.memoryText}><p>{copy.memoryFirst}</p><p>{copy.memorySecond}</p><p>{copy.memoryReflection}</p></div></aside>
+    <section className={s.ownerInsert} id="control" aria-labelledby="owner-title"><div><h2 id="owner-title">Working with the owner</h2><p>{copy.control}</p><p>{copy.controlExample}</p></div><ApprovalDemo inStory /></section>
+    <div className={`${s.dellaEnd} ${s.reading}`} id="now"><p>{copy.latency}</p><p>{copy.current}</p><p>{copy.direction}</p></div>
+    <ProjectFooter next="vialgrade" name="VialGrade" />
     <noscript><style>{`[data-interactive="true"]{display:none!important}`}</style></noscript>
   </main>;
 }

@@ -12,7 +12,7 @@ import { readingComparison, readingCases, findings } from '../src/app/work/vialg
 async function openStory(page: Page) {
   await page.goto('/work/vialgrade');
   await page.evaluate(() => document.fonts.ready);
-  await expect(page.locator('[data-vial-edition="reader-first"]')).toBeVisible();
+  await expect(page.locator('[data-vial-edition="authored"]')).toBeVisible();
 }
 
 // Nate requested the same editorial pass as Della. The original-copy fixture stays
@@ -52,7 +52,8 @@ test('the whole comparison makes sense on arrival without choosing a field', asy
   const demo = page.getByTestId('evidence-demo');
   await expect(demo).toHaveAttribute('data-result', 'match');
   await expect(page.getByTestId('evidence-finding')).toContainText('These details match.');
-  await expect(page.getByTestId('evidence-finding')).toBeInViewport();
+  await page.getByTestId('evidence-demo').scrollIntoViewIfNeeded();
+  await expect(page.getByTestId('evidence-finding')).toBeVisible();
   for (const { key } of fields) {
     await expect(page.getByTestId(`claim-${key}`)).toHaveText(claim[key]);
     await expect(page.getByTestId(`record-${key}`)).toHaveText(claim[key]);
@@ -73,7 +74,7 @@ test('the revised story is personal and concise, without the rejected money line
   expect(prose).not.toContain('The fields match. The scope matters.');
   expect(prose).not.toContain('Unknown has to stay unknown');
   expect(prose.split(/\s+/).length).toBeLessThan(850);
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('VialGrade.');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('VialGrade');
 });
 
 test('reading copy uses the real local matcher for all prepared cases', () => {
@@ -108,8 +109,9 @@ test('the conflicting maker remains explicit even though the batch and compound 
   await expect(page.locator('tr[data-disagrees="true"]')).toHaveCount(0);
 });
 
-test('all three grade examples are already visible and come from the unchanged projection', async ({ page }) => {
+test('all three grade examples can be opened together and use the unchanged projection', async ({ page }) => {
   await openStory(page);
+  await page.getByTestId('grade-details').locator(':scope > summary').click();
   for (const key of ['unknown', 'supported', 'concern'] as const) {
     const grade = page.getByTestId(`grade-${key}`);
     await expect(grade).toBeVisible();
@@ -122,6 +124,7 @@ test('all three grade examples are already visible and come from the unchanged p
 
 test('changing a document case never silently rates that document or changes the independent grade examples', async ({ page }) => {
   await openStory(page);
+  await page.getByTestId('grade-details').locator(':scope > summary').click();
   const before = await page.getByTestId('grade-demo').innerText();
   for (const item of readingCases) {
     await page.getByRole('radio', { name: item.label, exact: true }).check();
@@ -131,6 +134,7 @@ test('changing a document case never silently rates that document or changes the
 
 test('optional grade detail explains the supplied inputs rather than running an upstream verdict engine', async ({ page }) => {
   await openStory(page);
+  await page.getByTestId('grade-details').locator(':scope > summary').click();
   const detail = page.getByTestId('grade-demo').locator('details');
   await expect(detail).not.toHaveAttribute('open');
   await detail.locator('summary').click();
@@ -142,6 +146,7 @@ test('optional grade detail explains the supplied inputs rather than running an 
 
 test('the safety limit is beside both the comparison and the grades', async ({ page }) => {
   await openStory(page);
+  await page.getByTestId('grade-details').locator(':scope > summary').click();
   await expect(page.getByTestId('evidence-demo')).toContainText("doesn't establish what's in a vial or whether it's safe for human use");
   await expect(page.getByTestId('grade-demo')).toContainText('evidence, not product safety');
   for (const item of readingCases) {
@@ -156,7 +161,7 @@ test('the referral explanation is readable without opening a URL and never impli
   await expect(handoff).toContainText('The outbound click can be recorded.');
   await expect(handoff).toContainText("The link alone doesn't tell me.");
   await handoff.locator('summary').click();
-  await expect(handoff.locator('code')).toHaveText(exampleTaggedUrl);
+  await expect(handoff.locator('details code')).toHaveText(exampleTaggedUrl);
   for (const part of linkParts) await expect(handoff).toContainText(part.meaning);
   await expect(handoff.getByRole('link')).toHaveCount(0);
   expect(new URL(exampleTaggedUrl).hostname).toBe('vendor.example');
@@ -207,6 +212,9 @@ test('keyboard operation reaches the content, changes the radio choice and opens
   await expect(page.getByRole('radio', { name: 'No record', exact: true })).toBeChecked();
   await page.keyboard.press('ArrowRight');
   await expect(page.getByRole('radio', { name: 'Different maker', exact: true })).toBeChecked();
+  const outer = page.getByTestId('grade-details').locator(':scope > summary');
+  await outer.focus();
+  await page.keyboard.press('Enter');
   const summary = page.getByTestId('grade-demo').locator('summary');
   await summary.focus();
   await page.keyboard.press('Enter');
@@ -234,13 +242,14 @@ test('without JavaScript every outcome, grade and explanation is still readable'
     await expect(page.getByRole('radio', { name: 'Details match', exact: true })).not.toBeVisible();
     await page.getByText('Read the other outcomes', { exact: true }).click();
     await expect(page.getByText(findings.missing.text, { exact: false })).toBeVisible();
+    await page.getByTestId('grade-details').locator(':scope > summary').click();
     await expect(page.getByTestId('grade-unknown')).toBeVisible();
     await expect(page.getByTestId('grade-supported')).toBeVisible();
     await expect(page.getByTestId('grade-concern')).toBeVisible();
     await page.getByTestId('grade-demo').locator('summary').click();
     await expect(page.getByTestId('grade-demo')).toContainText('Assessment: trusted');
     await page.getByTestId('handoff-demo').locator('summary').click();
-    await expect(page.getByTestId('handoff-demo').locator('code')).toHaveText(exampleTaggedUrl);
+    await expect(page.getByTestId('handoff-demo').locator('details code')).toHaveText(exampleTaggedUrl);
   } finally { await context.close(); }
 });
 
@@ -294,10 +303,10 @@ test('the changed record is highlighted without moving or hiding its paired valu
   await expect(page.getByTestId('claim-manufacturer')).toHaveText('Example Research A');
 });
 
-test('mobile headings keep spaces when desktop line breaks disappear', async ({ page }) => {
+test('the essay has one title rather than the previous repeated chapter headlines', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openStory(page);
-  const expected = ["They all said they were verified.", "I didn't want to force a grade.", "Tracking what happened next.", "People started finding it.", "What I took from it."];
-  const headings = await page.locator('main h2').allInnerTexts();
-  expect(headings.map(text => text.replace(/\s+/g, ' ').trim())).toEqual(expected);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('VialGrade');
+  await expect(page.locator('main h2:visible')).toHaveCount(0);
+  await expect(page.getByTestId('grade-source-excerpt')).toContainText('letter: null');
 });

@@ -27,7 +27,7 @@ export function Icon({ name, size = 18 }: { name: "arrow" | "back" | "check" | "
   return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={paths[name]} /></svg>;
 }
 
-export function BookingDemo() {
+export function BookingDemo({ inStory = false }: { inStory?: boolean }) {
   const [state, dispatch] = useReducer(callReducer, initialCall);
   const reduced = useSyncExternalStore(subscribe, preference, serverPreference);
   const root = useRef<HTMLDivElement>(null);
@@ -61,7 +61,7 @@ export function BookingDemo() {
   );
   const status = booked ? "Appointment created" : failed ? "Booking not completed" : state.phase === 3 ? "Booking in progress" : state.phase > 0 ? "4:30 is available" : "Checking the time";
 
-  return <div className={s.exampleWrap} ref={root} id="booking">
+  return <div className={`${s.exampleWrap} ${inStory ? s.inStory : ""}`} ref={root} id="booking">
     <div className={s.callExample} data-testid="booking-demo" data-phase={state.phase} data-scenario={state.scenario} data-booked={booked} data-playing={state.playing && !reduced}>
       <div className={s.exampleHeader}><span><Icon name="phone" size={16} /> A customer calls to book</span><span className={s.exampleLabel}>Example call</span></div>
       <div className={s.callAndCalendar}>
@@ -105,7 +105,7 @@ export function BookingDemo() {
 }
 
 const initialDraft = "Hi! Would you like to find a time for your next appointment?";
-export function ApprovalDemo() {
+export function ApprovalDemo({ inStory = false }: { inStory?: boolean }) {
   const [draft, setDraft] = useState(initialDraft);
   const [editing, setEditing] = useState(false);
   const [decision, setDecision] = useState<"waiting" | "approved" | "later">("waiting");
@@ -114,7 +114,7 @@ export function ApprovalDemo() {
   const editButton = useRef<HTMLButtonElement>(null);
   useEffect(() => { if (editing) editor.current?.focus(); }, [editing]);
 
-  return <div className={s.approvalExample} data-testid="approval-demo" data-decision={decision}>
+  return <div className={`${s.approvalExample} ${inStory ? s.inStory : ""}`} data-testid="approval-demo" data-decision={decision}>
     <div className={s.approvalHeader}><span><DellaMark small /> Della needs your OK</span><span className={s.exampleLabel}>Example follow-up</span></div>
     <div className={s.draftBody}>
       <div className={s.draftHeading}><span>To a returning customer</span><span className={s.draftStatus}>{decision === "approved" ? "Approved" : decision === "later" ? "Left for later" : "Waiting for approval"}</span></div>

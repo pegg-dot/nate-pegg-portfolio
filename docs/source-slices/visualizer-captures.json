@@ -1,0 +1,24 @@
+{
+  "capturedAt": "2026-10-12T12:51:20.762091+00:00",
+  "method": "Screenshots of the live visualizer at 1600 x 876 CSS pixels and 2x device scale. The intro Play control and scene menu were used normally. No source page modifications or model outputs were generated for the portfolio.",
+  "images": [
+    {
+      "name": "attention",
+      "scene": "One vector. Three roles.",
+      "filename": "attention-capture-e3466fef42.webp",
+      "width": 3200,
+      "height": 1752,
+      "bytes": 152180,
+      "url": "https://transformer-viz-eight.vercel.app/"
+    },
+    {
+      "name": "training",
+      "scene": "Roll down the loss hill.",
+      "filename": "training-capture-71862ab2bc.webp",
+      "width": 3200,
+      "height": 1752,
+      "bytes": 194450,
+      "url": "https://transformer-viz-eight.vercel.app/"
+    }
+  ]
+}

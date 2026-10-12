@@ -1,18 +1,18 @@
 {
-  "intro": "I built a small transformer in PyTorch and trained it on Shakespeare because I wanted to understand what was happening inside a language model, not just be able to repeat the steps.",
-  "orientation": "Then I built a visualizer around it, using the model's actual values to make those steps easier to follow.",
+  "intro": "I built a small GPT-style transformer in PyTorch, trained it on Tiny Shakespeare, and then made a visualizer so I could see what was happening inside it.",
+  "orientation": "This came out of the studying I was doing on my own. I could kind of explain the steps, but there were parts I still couldn't really picture.",
   "origin": [
-    "I'd been studying transformers and could kind of explain how tokens went through attention and eventually became an output. But knowing the order wasn't the same as understanding it. Residual connections were hard for me to picture, and I had the same problem with backpropagation and optimizers on the training side.",
-    "Karpathy's videos and 3Blue1Brown helped a lot. I followed the small GPT architecture Karpathy teaches, implemented it in PyTorch, and trained it on Tiny Shakespeare. I wasn't trying to build a better language model. I wanted something small enough that I could follow the computation myself."
+    "Residual connections were one of them. I knew where they went in the diagram, but I didn't have a good intuition for what they were doing. I had the same problem on the training side with backpropagation, gradient descent and Adam.",
+    "Karpathy's longer videos and 3Blue1Brown gave me a much better foundation. I followed the small GPT architecture Karpathy teaches and implemented it in PyTorch. Training it on Tiny Shakespeare kept the project small enough that I could follow the whole thing, which was what I wanted out of it."
   ],
-  "residual": "Residual connections were one of the things that started making more sense when I built it. Instead of replacing the existing values, a part of the model calculates an update and adds it back. Seeing the original values and the update together made that much easier for me to picture.",
+  "residual": "These are the lines that do the residual updates in my model. The existing values stay in x, and the attention and feed-forward parts each add an update. Once I could look at both sides of that addition, it was much easier for me to see what was happening.",
   "visualizer": [
-    "Getting the model working was one thing. Figuring out how to show it was another. I had to break the computation into steps and make them flow into each other, including in 3D, without making the explanation wrong.",
-    "The model doesn't literally look like those animations. I had to choose a way to show it, but I didn't want to make up numbers just because they looked good. The core scenes use values captured from the model I actually trained."
+    "Then I had to figure out how to show the model. I wanted someone to be able to follow the values from a character all the way to the next prediction, including the parts I'd had trouble understanding myself.",
+    "None of this literally looks like the animations. I had to come up with a way to show the computation in 2D and 3D, and I wanted the scenes to use values from the model I'd trained rather than numbers I'd made up to fit the picture."
   ],
-  "training": "The training side was part of it too. I wanted to understand how changing the weights changes the predictions, rather than treat training as something that just happens before you use the model.",
+  "training": "I also made a training view because I wanted to understand how updating the weights changes the model. That screen is a teaching illustration of gradient descent, rather than the actual shape of this model's loss surface.",
   "takeaway": [
-    "The biggest thing that clicked was the path from an input all the way to the probabilities for what comes next. Concepts that had felt separate started fitting together once I could follow the values through them.",
-    "That still isn't the same as being able to explain everything the model does. I can trace the computation, but understanding why it learned a particular representation is much harder. Building it made that distinction a lot clearer to me."
+    "Building it helped me connect things I'd been learning separately. I can follow a character through the model now and see how it becomes a set of probabilities for what comes next.",
+    "I still find the interpretation part difficult. Being able to trace every calculation doesn't mean I can explain why the model learned a particular representation. That became more obvious as I spent time looking at the values."
   ]
 }

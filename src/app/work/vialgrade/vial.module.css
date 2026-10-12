@@ -231,3 +231,28 @@
 @media (prefers-reduced-motion: reduce) {
   .page *, .page *::before, .page *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* A comparison printed into the article; keep the actual findings and controls. */
+.inArticle .comparison { box-shadow: none; border-inline: 0; background: #fcfcf8; border-color: #bbbcae; }
+.inArticle .comparisonHeader { background: transparent; padding-left: 22px; }
+.inArticle .fileIcon { display: none; }
+.inArticle .claimLine { padding: 24px 22px 20px; }
+.inArticle .claimLine p { font-size: 36px; }
+.inArticle .records { font-size: 16px; }
+.inArticle .records th { font-size: 13px; }
+.inArticle .records tbody tr:first-child td { font-size: 14px; }
+.inArticle .records td { padding-block: 22px; }
+.inArticle .records td span { font-size: 15px; }
+.inArticle .finding { min-height: 0; padding-block: 22px; }
+.inArticle .finding p { font-size: 14px; max-width: 680px; }
+.inArticle .finding strong { font-size: 16px; }
+.inArticle .caseOptions label { font-size: 12px; }
+.inArticle .documentLimit { background: #f1f0e9; }
+@media (max-width:600px) {
+ .inArticle .claimLine p { font-size: 28px; }
+ .inArticle .records th { font-size: 11px; }
+ .inArticle .records td span { font-size: 12px; }
+ .inArticle .finding p { font-size: 12px; }
+ .inArticle .finding strong { font-size: 14px; }
+ .inArticle .caseOptions label { font-size: 11px; }
+}

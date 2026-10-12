@@ -50,7 +50,7 @@ jobs:
         if: github.ref_name == 'main'
         run: |
           node - <<'JS'
-          (async()=>{ for(let i=0;i<30;i++){const r=await fetch('https://nate-pegg-portfolio.vercel.app/work/transformer');const t=await r.text();if(t.includes('data-transformer-edition="reader-first"'))process.exit(0);await new Promise(r=>setTimeout(r,5000));}process.exit(1);})()
+          (async()=>{ for(let i=0;i<30;i++){const r=await fetch('https://nate-pegg-portfolio.vercel.app/work/transformer');const t=await r.text();if(t.includes('data-transformer-edition="authored"'))process.exit(0);await new Promise(r=>setTimeout(r,5000));}process.exit(1);})()
           JS
           TRANSFORMER_TEST_URL=https://nate-pegg-portfolio.vercel.app npx playwright test -c playwright-transformer.config.ts
           TRANSFORMER_TEST_URL=https://nate-pegg-portfolio.vercel.app npx playwright test -c playwright-preserved.config.ts

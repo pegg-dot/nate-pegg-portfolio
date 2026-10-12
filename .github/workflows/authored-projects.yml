@@ -1,0 +1,55 @@
+name: Authored portfolio pages
+on:
+  push:
+    branches: [design/authored-projects-20261012, main]
+    paths:
+      - 'src/app/work/_authored/**'
+      - 'src/app/work/della/**'
+      - 'src/app/work/vialgrade/**'
+      - 'src/app/work/transformer/**'
+      - 'tests/authored.spec.ts'
+      - 'playwright-authored.config.ts'
+      - '.github/workflows/authored-projects.yml'
+  workflow_dispatch:
+concurrency:
+  group: authored-projects-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Preserve established behavior and original artifacts
+        run: |
+          python3 - <<'PYTHON'
+          import hashlib, json
+          from pathlib import Path
+          manifest = json.loads(Path('docs/verification/authored-preserved-files.json').read_text())
+          for item in manifest['files']:
+              digest = hashlib.sha256(Path(item['path']).read_bytes()).hexdigest()
+              assert digest == item['sha256'], item['path']
+          print('Verified', len(manifest['files']), 'protected files')
+          PYTHON
+      - run: npm ci --no-audit --no-fund
+      - name: Lint and production build
+        run: npm run lint && npm run build
+      - name: Browser runtimes
+        run: npx playwright install --with-deps chromium webkit
+      - name: Artifact, interaction and numerical checks
+        run: npx playwright test -c playwright-authored.config.ts
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: authored-projects-review
+          path: |
+            qa/authored/
+            qa/authored-results.json
+            test-results/
+          retention-days: 7

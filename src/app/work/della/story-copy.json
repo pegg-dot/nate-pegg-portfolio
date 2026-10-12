@@ -1,20 +1,20 @@
 {
-  "intro": "Della is an AI employee I'm building for nail salons, starting with calls and bookings. It can check the salon's schedule and make the appointment while the customer is still on the phone.",
-  "coverage": "The owner decides when it picks up, including after hours or when nobody answers.",
+  "intro": "Della is an AI employee I'm building for nail salons. I started with answering calls and booking appointments, and I'm building the rest around the salon's existing software and what Della learns about the business.",
+  "coverage": "The salon can have it answer every call, only after hours, or when nobody picks up.",
   "why": [
-    "I got really interested in agents after seeing what people were doing with OpenClaw. I think models will eventually be better than us at a lot of work on a computer, but they still need to know how a particular business works and have a way to act on that information.",
-    "That's the part I wanted to build. I started on March 11, 2026 as OpenOperator, originally for medspas. The compliance risk pushed me toward nail salons, and calls gave me something specific to get right: could Della answer someone and actually book them in?"
+    "I started this on March 11, 2026 as OpenOperator. I was spending a lot of time with agentic AI, especially around OpenClaw, and I kept thinking about what happens when these models get really good at work on a computer. They still need to know how the business works and have access to its actual systems.",
+    "I was looking at medspas first, but the compliance risk pushed me toward nail salons. Calls were a place to start because there was something specific I could test: someone asks for an appointment, Della checks the calendar, and the appointment ends up in the salon's booking system."
   ],
-  "bookingProblem": "Early on, Della would sometimes say it had booked an appointment when it hadn't. The caller could think they were booked in while the salon had nothing on its calendar. I had to add checks around what actually happened, rather than trust what the model said happened.",
-  "sources": "That also changed how I handled information. A cancellation policy can come from the salon's saved information, but an open time needs a fresh check. Remembering that 4:30 was free yesterday doesn't tell you whether it's free now.",
+  "bookingProblem": "Early on, Della would sometimes say it had booked an appointment when it hadn't. So the caller thinks they're booked in, but there's nothing on the salon's calendar. I had to put checks around the action itself and make sure an appointment actually existed in Square before Della confirmed it.",
+  "sources": "The information has to come from the right place too. A cancellation policy can come from what the salon has told Della, but availability has to come from the current calendar. A time that was free on the last call might already be taken.",
   "technical": "The harness is the software I'm building around the model. It gives Della access to the salon's information and booking tools, keeps customer context between calls, and checks whether an action succeeded. I'm building around existing models, not training a new one. On calls, that also lets it answer service questions, cancel a booking or hand the caller to someone at the salon.",
   "memoryFirst": "I told Della I had chipped my nail.",
   "memorySecond": "When I called again a couple of days later, it asked how my chipped nail was doing and whether I had gone to the doctor for it.",
   "memoryReflection": "That was cool because it wasn't starting over from zero. It remembered something from the last conversation and brought it back up on the next call.",
-  "control": "I don't want the owner to have to approve every normal booking, but I also don't want Della making decisions they never agreed to. The owner chooses what it can handle on its own and what it has to ask about.",
-  "controlExample": "A follow-up is one example. Della can draft the message, but when that action needs approval, it waits for the owner to review it.",
-  "latency": "A voice call makes every delay obvious. Looking up the calendar or finding context from an old conversation takes time, so I'm working on keeping those checks fast without skipping them. Some of the delay comes from the model itself, which I don't control.",
-  "current": "I've had real calls go through the system and create appointments in Square. I'm working on getting it into salons now, while tightening the parts that have to hold up when someone else is relying on it.",
+  "control": "The owner chooses what Della can do on its own. A normal booking might be fine, while an exception to a price or a schedule needs someone to look at it. I don't want them approving every little thing, but they still need to be able to see what happened and change what Della is allowed to do.",
+  "controlExample": "For something like a follow-up that needs approval, Della can write the message and leave it for the owner to review.",
+  "latency": "All of those lookups take time, which matters a lot when someone is waiting on the phone. I'm working on the database and memory side so the checks don't make the call feel slow. Some of that delay still comes from the model, which I don't control.",
+  "current": "I've had real calls go through the system and create appointments in Square. I'm working on getting it into salons now and tightening the parts that have to work when someone else is relying on it.",
   "direction": "Calls are where I started, but I don't want Della to just be a receptionist. I'm expanding into messages and follow-up, with the same customer context behind them. Over time, I want it to use what happens in the salon to notice work that needs doing, instead of always waiting to be asked.",
-  "workspace": "This is the workspace around those conversations. The owner can see what Della handled and what still needs their attention without reading through every call."
+  "workspace": "The owner needs to see what Della handled and what still needs a decision. This is an earlier version of that workspace."
 }

@@ -1,0 +1,9 @@
+{
+  "repository": "pegg-dot/Transformer",
+  "commit": "f6ba652589871a0b95f71a41b9910269ec7cf8db",
+  "path": "model/gpt.py",
+  "startLine": 87,
+  "endLine": 89,
+  "sourceSha256": "4252f9473ba4c9acd629e0dcc5d57dfb5e478b1765e18142cde9c2d39841c83c",
+  "excerpt": "        x = x + self.attn(self.ln1(x))\n        x = x + self.ffn(self.ln2(x))\n        return x"
+}

@@ -14,7 +14,7 @@ const subscribe = (notify: () => void) => {
 const getPreference = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const serverPreference = () => false;
 
-export default function PredictionPreview() {
+export default function PredictionPreview({ inArticle = false }: { inArticle?: boolean }) {
   const [position, setPosition] = useState(1);
   const [draw, setDraw] = useState<number | null>(null);
   const reduced = useSyncExternalStore(subscribe, getPreference, serverPreference);
@@ -22,7 +22,7 @@ export default function PredictionPreview() {
   const prediction = previewPrediction(position);
   const sample = draw === null ? null : drawPreview(position, draw);
   const highest = prediction.top[0];
-  return <div className={s.previewWrap}>
+  return <div className={`${s.previewWrap} ${inArticle ? s.inArticle : ""}`}>
     <div className={s.preview} data-testid="prediction-preview" data-position={position} data-reduced={reduced}>
       <div className={s.previewHeader}><span>Predicting the next character</span><span>My trained model</span></div>
       <div className={s.promptLine}><div><span>Text so far</span><code data-testid="preview-prefix">{prediction.prefix}</code></div><p>Each character is one token in this model.</p></div>

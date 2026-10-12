@@ -262,3 +262,14 @@
 .workspaceFigure figcaption { font: 400 11px / 1.6 Arial, sans-serif; color: #596477; padding: 12px 20px; border-top: 1px solid #e6ebf1; background: #fafbf9; }
 @media (max-width: 620px) { .fullScreenshot { justify-content: flex-start; padding-left: 15px; } .workspaceFigure figcaption { padding: 12px 15px; } }
 .sectionTitle, .buildStory, .memoryHeading, .currentHeading { min-width: 0; }
+
+/* The illustration belongs to the paragraph above, not a second product landing page. */
+.inStory .callExample { border-radius: 0; box-shadow: none; border-color: #c8cdd2; }
+.inStory .exampleHeader { background: #f3f5f7; padding: 14px 20px; }
+.inStory .conversation { padding: 22px 26px; }
+.inStory .calendar { background: #f4f6fa; }
+.inStory .exampleCaption { margin-left: 0; }
+.approvalExample.inStory { border-radius: 0; box-shadow: none; }
+.inStory .approvalHeader { padding: 17px 20px; }
+.inStory .draftText { border-radius: 0; }
+.inStory .approveButton { border-radius: 2px; }

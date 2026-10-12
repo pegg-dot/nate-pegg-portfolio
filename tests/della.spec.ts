@@ -7,7 +7,7 @@ import { callReducer, initialCall, isBooked, lastReply, type CallState } from '.
 async function openStory(page: Page) {
   await page.goto('/work/della');
   await page.evaluate(() => document.fonts.ready);
-  await expect(page.locator('[data-della-edition="reader-first"]')).toBeVisible();
+  await expect(page.locator('[data-della-edition="authored"]')).toBeVisible();
 }
 
 // October 11: Nate explicitly requested an editorial rewrite, not another verbatim-copy lock.
@@ -238,16 +238,17 @@ test('without JavaScript the full story, call and approval boundary still make s
   await context.close();
 });
 
-test('a real workspace detail remains visible and links to the unchanged full redacted capture', async ({ page }) => {
+test('the real workspace leads the page and the full redacted source remains available', async ({ page }) => {
   await openStory(page);
-  const screenshot = page.getByRole('img', { name: /Detail of Della/ });
-  await screenshot.scrollIntoViewIfNeeded();
-  await expect(screenshot).toBeVisible();
-  await expect.poll(() => screenshot.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0)).toBe(true);
-  const ratio = await screenshot.evaluate((el: HTMLImageElement) => el.naturalWidth / el.naturalHeight);
-  expect(Math.abs(ratio - 1165 / 280)).toBeLessThan(.01);
-  await expect(page.getByRole('link', { name: /Open the full screenshot/ })).toHaveAttribute('href', '/della/workspace-context.webp');
-  await expect(page.getByText("An earlier screen, with identifying details removed. These aren't live usage numbers.")).toBeVisible();
+  const image = page.getByRole('img', { name: /Detail of Della/ });
+  await expect(image).toBeInViewport();
+  await image.evaluate((el: HTMLImageElement) => el.decode());
+  expect(await image.evaluate((el: HTMLImageElement) => el.naturalWidth / el.naturalHeight)).toBeCloseTo(1160 / 720, 2);
+  const viewer = page.getByTestId('della-artifact');
+  await viewer.getByRole('button', { name: 'Full workspace', exact: true }).click();
+  await expect(viewer.getByRole('img')).toHaveAttribute('src', /workspace-context/);
+  await expect(viewer.getByRole('link', { name: /Full size/ })).toHaveAttribute('href', '/della/workspace-context.webp');
+  await expect(viewer).toContainText('This is an image, not the live application.');
 });
 
 test('accessibility checks cover both outcomes and all owner decisions, not just the opening', async ({ page }) => {
