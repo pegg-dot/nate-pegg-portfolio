@@ -48,18 +48,55 @@ export default function UvaSpatialCase() {
       </section>
 
       <section className={`caseBand ${styles.previewBand}`}>
-        <figure className={styles.previewFrame}>
-          <Image
-            src="/uva-spatial/route-home.png"
-            alt="Grounds Guide local student route preview"
-            width={1440}
-            height={1000}
-            sizes="100vw"
-          />
-          <figcaption>
-            The local student preview. The route engine stays separate from the visual layer, and the product is still explicitly marked as not production-validated.
-          </figcaption>
-        </figure>
+        <div className={styles.previewIntro}>
+          <span className="caseLabel">THE PRODUCT</span>
+          <h2>This is what Grounds looks like now.</h2>
+          <p>These are real screenshots from the local build. The 2D view is what I use for the normal campus map, and the 3D view is the part I kept coming back to because I wanted Grounds to feel like UVA, not just another directions app.</p>
+        </div>
+
+        <div className={styles.previewGallery}>
+          <figure className={`${styles.previewFrame} ${styles.previewWide}`}>
+            <Image
+              src="/uva-spatial/grounds-2d-overview.png"
+              alt="Grounds Guide 2D campus overview with the schedule import panel"
+              width={1648}
+              height={928}
+              sizes="100vw"
+              priority
+            />
+            <figcaption>
+              The 2D campus view. The schedule import lives right on top of the map because the point is to connect where I need to be with how I actually get there.
+            </figcaption>
+          </figure>
+
+          <figure className={styles.previewFrame}>
+            <Image
+              src="/uva-spatial/grounds-3d-overview.png"
+              alt="Grounds Guide 3D campus model showing UVA buildings across Grounds"
+              width={1648}
+              height={928}
+              sizes="(max-width: 820px) 100vw, 50vw"
+              loading="eager"
+            />
+            <figcaption>
+              The same campus in 3D. I wanted the buildings and the Lawn to be recognizable enough that the map feels like a place I actually know.
+            </figcaption>
+          </figure>
+
+          <figure className={styles.previewFrame}>
+            <Image
+              src="/uva-spatial/grounds-rotunda-close.png"
+              alt="Grounds Guide close 3D view of the Rotunda, Lawn rooms, and nearby buildings"
+              width={1648}
+              height={928}
+              sizes="(max-width: 820px) 100vw, 50vw"
+              loading="eager"
+            />
+            <figcaption>
+              A closer look at the Rotunda and the Lawn. This is the level of detail I was trying to get to before layering directions on top of it.
+            </figcaption>
+          </figure>
+        </div>
       </section>
 
       <section className="caseBand caseBandDark">
