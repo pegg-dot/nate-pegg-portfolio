@@ -1,5 +1,7 @@
 # VialGrade portfolio story
 
+This document records the initial design. The later reader-first rewrite and its current behavior are documented in `VIALGRADE_READER_PASS_2026-10-11.md`.
+
 ## Scope
 
 Replace only `/work/vialgrade`'s generic case-study template with a source-inspection narrative. The homepage, Della, shared CaseShell, rowing, signature, and After Abundance writing note remain unchanged.

@@ -1,30 +1,22 @@
-import { test, expect, type Page } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
-import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
-import ts from "typescript";
-import original from "./fixtures/vial-original-copy.json";
-import pinned from "./fixtures/vial-grade-source.json";
-import {
-  claim, fields, compareDocuments, recordFor, exampleGrade, gradeExamples, linkParts, exampleTaggedUrl,
-} from "../src/app/work/vialgrade/evidence-model";
-import { gradeFromVerdict } from "../src/app/work/vialgrade/grade-projection";
+import { test, expect, type Page } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import ts from 'typescript';
+import pinned from './fixtures/vial-grade-source.json';
+import copy from '../src/app/work/vialgrade/story-copy.json';
+import { claim, fields, compareDocuments, recordFor, exampleGrade, gradeExamples, exampleTaggedUrl, linkParts } from '../src/app/work/vialgrade/evidence-model';
+import { gradeFromVerdict } from '../src/app/work/vialgrade/grade-projection';
+import { readingComparison, readingCases, findings } from '../src/app/work/vialgrade/reading-model';
 
 async function openStory(page: Page) {
-  await page.goto("/work/vialgrade");
-  await expect(page.getByTestId("claim-batch")).toBeEnabled();
+  await page.goto('/work/vialgrade');
   await page.evaluate(() => document.fonts.ready);
+  await expect(page.locator('[data-vial-edition="reader-first"]')).toBeVisible();
 }
 
-test("preserves the original introduction, 12 prose blocks and all four brief facts", async ({ page }) => {
-  await openStory(page);
-  await expect(page.locator("main")).toContainText(original.subtitle);
-  for (const text of original.prose) await expect(page.locator("main")).toContainText(text);
-  await page.getByText("Project notes", { exact: true }).click();
-  for (const item of original.brief) await expect(page.locator("main")).toContainText(item.text);
-  await expect(page.getByText("Preserved from the original case study. These are earlier reported figures, not live metrics.")).toBeVisible();
-});
-
+// Nate requested the same editorial pass as Della. The original-copy fixture stays
+// unchanged as provenance, not a false claim that this requested rewrite is verbatim.
 test("grade runtime is byte-identical to the pinned source after TypeScript transpilation", () => {
   const source = readFileSync("src/app/work/vialgrade/grade-projection.ts", "utf8");
   const runtime = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2017, module: ts.ModuleKind.CommonJS, removeComments: true } }).outputText;
@@ -55,220 +47,257 @@ test("real grade rules preserve uncertainty, testing thresholds and verified adv
   expect(gradeFromVerdict({ ...gradeExamples.concern.verdict, verdict: "avoid" }, { ...input, listingCount: 0 }).letter).toBe("F");
 });
 
-test("selecting either document highlights the same field in both and aligns desktop rows", async ({ page }) => {
+test('the whole comparison makes sense on arrival without choosing a field', async ({ page }) => {
   await openStory(page);
-  const demo = page.getByTestId("evidence-demo");
-  await expect(demo).toHaveAttribute("data-result", "match");
-  for (const { key, label } of fields) {
-    await page.getByTestId(`claim-${key}`).click();
-    await expect(page.getByTestId(`record-${key}`)).toHaveAttribute("aria-pressed", "true");
-    await expect(page.getByTestId("selected-comparison")).toContainText(`Claim: ${label}`);
-    await expect(page.getByTestId("selected-comparison")).toContainText("This field matches");
-    const left = await page.getByTestId(`claim-${key}`).boundingBox();
-    const right = await page.getByTestId(`record-${key}`).boundingBox();
-    expect(Math.abs(left!.y - right!.y)).toBeLessThanOrEqual(1);
+  const demo = page.getByTestId('evidence-demo');
+  await expect(demo).toHaveAttribute('data-result', 'match');
+  await expect(page.getByTestId('evidence-finding')).toContainText('These details match.');
+  await expect(page.getByTestId('evidence-finding')).toBeInViewport();
+  for (const { key } of fields) {
+    await expect(page.getByTestId(`claim-${key}`)).toHaveText(claim[key]);
+    await expect(page.getByTestId(`record-${key}`)).toHaveText(claim[key]);
   }
-  await page.getByTestId("record-batch").click();
-  await expect(page.getByTestId("claim-batch")).toHaveAttribute("aria-pressed", "true");
-  await expect(demo.getByRole("button", { pressed: true })).toHaveCount(3);
-  await expect(page.getByTestId("evidence-finding")).toContainText("not a safety certification");
+  await expect(demo.getByRole('button')).toHaveCount(0);
+  await expect(demo.getByRole('table')).toHaveCount(1);
 });
 
-test("a missing record stays unresolved and is not turned into a matching or adverse finding", async ({ page }) => {
+test('the revised story is personal and concise, without the rejected money line', async ({ page }) => {
   await openStory(page);
-  await page.getByRole("radio", { name: "No matching record", exact: true }).check();
-  await expect(page.getByTestId("evidence-demo")).toHaveAttribute("data-result", "missing");
-  await expect(page.getByTestId("record-batch")).toHaveCount(0);
-  await expect(page.getByTestId("evidence-finding")).toContainText("Unbacked here. Not proven false.");
-  await expect(page.getByTestId("selected-comparison")).toContainText("Not on file");
-  await page.getByRole("group", { name: "Choose a field to compare" }).getByRole("button", { name: "Manufacturer", exact: true }).click();
-  await expect(page.getByTestId("selected-comparison")).toContainText("No source to compare");
-  await expect(page.getByTestId("evidence-finding")).toContainText("not evidence of wrongdoing");
+  for (const value of Object.values(copy)) {
+    for (const text of Array.isArray(value) ? value : [value]) await expect(page.getByText(text, { exact: true })).toBeVisible();
+  }
+  const prose = await page.locator('main').innerText();
+  expect(prose).toContain('wanted a better way to compare');
+  expect(prose).not.toContain('not making money');
+  expect(prose).not.toContain('no live affiliate deals');
+  expect(prose).not.toContain('The fields match. The scope matters.');
+  expect(prose).not.toContain('Unknown has to stay unknown');
+  expect(prose.split(/\s+/).length).toBeLessThan(850);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('VialGrade.');
 });
 
-test("conflicting fields remain explicit even when inspecting a matching batch; reset clears them", async ({ page }) => {
+test('reading copy uses the real local matcher for all prepared cases', () => {
+  for (const item of readingCases) {
+    const view = readingComparison(item.key);
+    expect(view.status).toBe(compareDocuments(claim, recordFor(item.key)).status);
+    expect(view.finding).toEqual(findings[view.status]);
+  }
+});
+
+test('a missing source is visibly missing, not a fake match or an accusation', async ({ page }) => {
   await openStory(page);
-  await page.getByRole("radio", { name: "Conflicting record", exact: true }).check();
-  await expect(page.getByTestId("evidence-demo")).toHaveAttribute("data-result", "mismatch");
-  await expect(page.getByTestId("claim-manufacturer")).toHaveAttribute("aria-pressed", "true");
-  await expect(page.getByTestId("selected-comparison")).toContainText("Example Research B");
-  await expect(page.getByTestId("selected-comparison")).toContainText("This field disagrees");
-  await page.getByTestId("claim-batch").click();
-  await expect(page.getByTestId("selected-comparison")).toContainText("This field matches");
-  await expect(page.getByTestId("evidence-finding")).toContainText("Different manufacturer");
-  await page.getByRole("radio", { name: "Matching record", exact: true }).check();
-  await expect(page.getByTestId("evidence-demo")).toHaveAttribute("data-result", "match");
-  await expect(page.getByTestId("record-manufacturer")).toContainText("Example Research A");
+  await page.getByRole('radio', { name: 'No record', exact: true }).check();
+  await expect(page.getByTestId('evidence-demo')).toHaveAttribute('data-result', 'missing');
+  for (const { key } of fields) await expect(page.getByTestId(`record-${key}`)).toHaveText('Not on file');
+  await expect(page.getByTestId('evidence-finding')).toContainText("doesn't prove the vendor did something wrong");
+  await expect(page.locator('tr[data-disagrees="true"]')).toHaveCount(0);
 });
 
-test("grade cases display their actual projection and retain the scope of the prepared inputs", async ({ page }) => {
+test('the conflicting maker remains explicit even though the batch and compound match', async ({ page }) => {
   await openStory(page);
-  const demo = page.getByTestId("grade-demo");
-  await expect(demo).toHaveAttribute("data-letter", "none");
-  await demo.getByRole("radio", { name: "Supported record", exact: true }).check();
-  await expect(demo).toHaveAttribute("data-letter", "A-");
-  await expect(page.getByTestId("grade-rule")).toContainText("Three tests alone do not establish that verdict.");
-  await demo.getByRole("radio", { name: "Verified concern", exact: true }).check();
-  await expect(demo).toHaveAttribute("data-letter", "C-");
-  await demo.locator('details[data-state="adverse"] summary').click();
-  await expect(demo.locator('details[data-state="adverse"]')).toContainText("COA integrity");
-  await demo.getByText("What this example does and does not run", { exact: true }).click();
-  await expect(demo).toContainText("does not rate the document example above");
-  await expect(demo.getByRole("link", { name: /Inspect the source rule/ })).toHaveAttribute("href", new RegExp(pinned.commit));
-  await demo.getByRole("radio", { name: "Missing evidence", exact: true }).check();
-  await expect(demo).toHaveAttribute("data-letter", "none");
-  await expect(demo.locator('details[data-state="adverse"]')).toHaveCount(0);
+  await page.getByRole('radio', { name: 'Different maker', exact: true }).check();
+  await expect(page.getByTestId('evidence-demo')).toHaveAttribute('data-result', 'mismatch');
+  await expect(page.getByTestId('record-manufacturer')).toContainText('Example Research B');
+  await expect(page.getByTestId('claim-manufacturer')).toHaveText('Example Research A');
+  await expect(page.getByTestId('record-manufacturer')).toContainText("Doesn't match");
+  await expect(page.locator('tr[data-disagrees="true"]')).toHaveCount(1);
+  await expect(page.getByTestId('evidence-finding')).toContainText('A matching batch code alone is not enough.');
+  await expect(page.getByTestId('record-batch')).toHaveText(claim.batch);
+  await page.getByRole('radio', { name: 'Details match', exact: true }).check();
+  await expect(page.getByTestId('record-manufacturer')).toHaveText('Example Research A');
+  await expect(page.locator('tr[data-disagrees="true"]')).toHaveCount(0);
 });
 
-test("referral tags are inspectable without a tracking call or a claim that a purchase happened", async ({ page }) => {
+test('all three grade examples are already visible and come from the unchanged projection', async ({ page }) => {
   await openStory(page);
-  const demo = page.getByTestId("handoff-demo");
-  await demo.locator("summary").click();
-  for (const part of linkParts) await expect(demo).toContainText(part.key);
-  await expect(demo.locator("code").nth(1)).toHaveText(exampleTaggedUrl);
-  await expect(demo.locator("a")).toHaveCount(0);
-  await expect(demo).toContainText("A completed purchase.");
-  await expect(demo).toContainText("Expanding it sends nothing and records no referral.");
+  for (const key of ['unknown', 'supported', 'concern'] as const) {
+    const grade = page.getByTestId(`grade-${key}`);
+    await expect(grade).toBeVisible();
+    await expect(grade).toHaveAttribute('data-letter', exampleGrade(key).letter ?? 'none');
+  }
+  await expect(page.getByTestId('grade-demo')).toContainText("The test count alone doesn't earn the grade.");
+  await expect(page.getByTestId('grade-demo')).toContainText('not ratings of the records above');
+  await expect(page.getByTestId('grade-demo').getByRole('radio')).toHaveCount(0);
 });
 
-test("all demonstrations remain local and never send writes or contact vendors, labs or the live product", async ({ page, baseURL }) => {
-  const forbidden: string[] = [];
-  await page.route("**/*", async route => {
-    const req = route.request();
-    if (!["GET", "HEAD"].includes(req.method()) || new URL(req.url()).origin !== new URL(baseURL!).origin) {
-      forbidden.push(`${req.method()} ${req.url()}`); await route.abort();
-    } else await route.continue();
+test('changing a document case never silently rates that document or changes the independent grade examples', async ({ page }) => {
+  await openStory(page);
+  const before = await page.getByTestId('grade-demo').innerText();
+  for (const item of readingCases) {
+    await page.getByRole('radio', { name: item.label, exact: true }).check();
+    expect(await page.getByTestId('grade-demo').innerText()).toBe(before);
+  }
+});
+
+test('optional grade detail explains the supplied inputs rather than running an upstream verdict engine', async ({ page }) => {
+  await openStory(page);
+  const detail = page.getByTestId('grade-demo').locator('details');
+  await expect(detail).not.toHaveAttribute('open');
+  await detail.locator('summary').click();
+  await expect(detail).toContainText('Assessment: unproven. Independent tests: 0. Grade: none.');
+  await expect(detail).toContainText('Assessment: trusted. Independent tests: 3. Grade: A-.');
+  await expect(detail).toContainText('Assessment: caution. Independent tests: 3. Grade: C-.');
+  await expect(detail).toContainText("this page doesn't collect evidence");
+});
+
+test('the safety limit is beside both the comparison and the grades', async ({ page }) => {
+  await openStory(page);
+  await expect(page.getByTestId('evidence-demo')).toContainText("doesn't establish what's in a vial or whether it's safe for human use");
+  await expect(page.getByTestId('grade-demo')).toContainText('evidence, not product safety');
+  for (const item of readingCases) {
+    await page.getByRole('radio', { name: item.label, exact: true }).check();
+    await expect(page.getByTestId('evidence-demo')).toContainText('safe for human use');
+  }
+});
+
+test('the referral explanation is readable without opening a URL and never implies a purchase', async ({ page }) => {
+  await openStory(page);
+  const handoff = page.getByTestId('handoff-demo');
+  await expect(handoff).toContainText('The outbound click can be recorded.');
+  await expect(handoff).toContainText("The link alone doesn't tell me.");
+  await handoff.locator('summary').click();
+  await expect(handoff.locator('code')).toHaveText(exampleTaggedUrl);
+  for (const part of linkParts) await expect(handoff).toContainText(part.meaning);
+  await expect(handoff.getByRole('link')).toHaveCount(0);
+  expect(new URL(exampleTaggedUrl).hostname).toBe('vendor.example');
+});
+
+test('all new interactions stay local and never contact a vendor, lab or production API', async ({ page }) => {
+  await openStory(page);
+  const unexpected: string[] = [];
+  page.on('request', r => {
+    const u = new URL(r.url());
+    if (!['GET', 'HEAD', 'OPTIONS'].includes(r.method()) || /vendor\.example|vialgrade\.com|\/api\//.test(r.url()) || !['localhost', '127.0.0.1', 'nate-pegg-portfolio.vercel.app'].includes(u.hostname)) unexpected.push(`${r.method()} ${r.url()}`);
   });
-  await openStory(page);
-  for (const name of ["No matching record", "Conflicting record", "Matching record", "Supported record", "Verified concern", "Missing evidence"]) await page.getByRole("radio", { name, exact: true }).check();
-  await page.getByTestId("claim-compound").click();
-  await page.getByTestId("handoff-demo").locator("summary").click();
-  expect(forbidden).toEqual([]);
+  for (const item of readingCases) await page.getByRole('radio', { name: item.label, exact: true }).check();
+  for (const summary of await page.locator('main summary').all()) await summary.click();
+  await page.waitForTimeout(250);
+  expect(unexpected).toEqual([]);
 });
 
 for (const width of [320, 390, 768, 1024, 1440]) {
-  test(`fits at ${width}px with readable selected pairs and every expanded disclosure`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 900 });
+  test(`paired values and all expanded explanations fit at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 1000 });
     await openStory(page);
-    await page.getByRole("radio", { name: "Conflicting record", exact: true }).check();
-    await page.getByRole("radio", { name: "Verified concern", exact: true }).check();
-    await page.evaluate(() => document.querySelectorAll("details").forEach(d => d.open = true));
-    for (const selector of ["main", '[data-testid="evidence-demo"]', '[data-testid="selected-comparison"]', '[data-testid="grade-demo"]', '[data-testid="handoff-demo"]']) {
-      const box = await page.locator(selector).boundingBox();
-      expect(box!.x).toBeGreaterThanOrEqual(-1);
-      expect(box!.x + box!.width).toBeLessThanOrEqual(width + 1);
+    for (const item of readingCases) {
+      await page.getByRole('radio', { name: item.label, exact: true }).check();
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width + 1);
+      for (const { key } of fields) {
+        const claimBox = await page.getByTestId(`claim-${key}`).boundingBox();
+        const recordBox = await page.getByTestId(`record-${key}`).boundingBox();
+        expect(Math.abs(claimBox!.y - recordBox!.y)).toBeLessThan(1);
+        expect(recordBox!.x + recordBox!.width).toBeLessThanOrEqual(width + 1);
+        expect(claimBox!.x).toBeGreaterThanOrEqual(0);
+      }
     }
-    const overflowing = await page.locator("main").evaluate(el => Array.from(el.querySelectorAll("p, h1, h2, h3, code, dd, button, input")).filter(node => {
-      const e = node as HTMLElement; const r = e.getBoundingClientRect();
-      return r.width > 0 && r.height > 0 && (r.x < -1 || r.right > innerWidth + 1 || e.scrollWidth > e.clientWidth + 2 && !["CODE"].includes(e.tagName));
-    }).map(n => n.outerHTML.slice(0, 250)));
-    expect(overflowing).toEqual([]);
-    await expect(page.getByTestId("selected-comparison")).toContainText("Example Research A");
-    await expect(page.getByTestId("selected-comparison")).toContainText("Example Research B");
+    for (const summary of await page.locator('main summary').all()) await summary.click();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width + 1);
+    for (const label of await page.getByTestId('evidence-demo').locator('label').all()) expect((await label.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   });
 }
 
-test("keyboard navigation reaches the content and all comparison controls", async ({ page, browserName }) => {
+test('keyboard operation reaches the content, changes the radio choice and opens the methodology', async ({ page, browserName }) => {
   await openStory(page);
-  await page.keyboard.press(browserName === "webkit" ? "Alt+Tab" : "Tab");
-  await expect(page.getByRole("link", { name: "Skip to content" })).toBeFocused();
-  await page.keyboard.press("Enter");
-  await expect(page.locator("main")).toBeFocused();
-  const radio = page.getByRole("radio", { name: "Matching record", exact: true });
-  await radio.focus(); await page.keyboard.press("ArrowRight");
-  await expect(page.getByTestId("evidence-demo")).toHaveAttribute("data-case", "missing");
-  await page.keyboard.press("ArrowRight");
-  await expect(page.getByTestId("evidence-demo")).toHaveAttribute("data-case", "mismatch");
-  const button = page.getByRole("group", { name: "Choose a field to compare" }).getByRole("button", { name: "Compound", exact: true });
-  await button.focus(); await page.keyboard.press("Enter");
-  await expect(page.getByTestId("claim-compound")).toHaveAttribute("aria-pressed", "true");
-  await page.getByTestId("handoff-demo").locator("summary").focus(); await page.keyboard.press("Space");
-  await expect(page.getByTestId("handoff-demo").locator("details")).toHaveAttribute("open", "");
+  await page.keyboard.press(browserName === 'webkit' && process.platform === 'darwin' ? 'Alt+Tab' : 'Tab');
+  await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('main')).toBeFocused();
+  await page.getByRole('radio', { name: 'Details match', exact: true }).focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.getByRole('radio', { name: 'No record', exact: true })).toBeChecked();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.getByRole('radio', { name: 'Different maker', exact: true })).toBeChecked();
+  const summary = page.getByTestId('grade-demo').locator('summary');
+  await summary.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.getByTestId('grade-demo').locator('details')).toHaveAttribute('open', '');
 });
 
-test("reduced-motion changes work without reloading, with static explanations still available", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
+test('reduced motion responds to runtime changes and never hides a conclusion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await openStory(page);
-  await expect(page.getByTestId("evidence-demo")).toHaveAttribute("data-reduced", "true");
-  await expect(page.getByTestId("evidence-demo").locator("details")).toHaveAttribute("open", "");
-  await expect(page.getByTestId("grade-demo").locator("details").last()).toHaveAttribute("open", "");
-  await page.getByTestId("claim-manufacturer").click();
-  await expect(page.getByTestId("record-manufacturer")).toHaveAttribute("aria-pressed", "true");
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  await expect(page.getByTestId("evidence-demo")).toHaveAttribute("data-reduced", "false");
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(page.getByTestId("evidence-demo")).toHaveAttribute("data-reduced", "true");
+  await expect(page.getByTestId('evidence-demo')).toHaveAttribute('data-reduced', 'true');
+  await page.getByRole('radio', { name: 'Different maker', exact: true }).check();
+  await expect(page.getByTestId('record-manufacturer')).toHaveCSS('background-color', 'rgb(248, 233, 226)');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await expect(page.getByTestId('evidence-demo')).toHaveAttribute('data-reduced', 'false');
+  await expect(page.getByTestId('evidence-finding')).toContainText("The manufacturer doesn't match.");
 });
 
-test("full prose, static outcomes and link explanations remain usable without JavaScript", async ({ browser, baseURL }) => {
+test('without JavaScript every outcome, grade and explanation is still readable', async ({ browser, baseURL }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
-  const page = await context.newPage();
-  await page.goto(`${baseURL}/work/vialgrade`);
-  for (const text of original.prose) await expect(page.locator("main")).toContainText(text);
-  await page.getByText("Read all three outcomes without switching records", { exact: true }).click();
-  await expect(page.getByTestId("evidence-demo").locator("details")).toContainText("Missing evidence is a gap");
-  await page.getByText("What this example does and does not run", { exact: true }).click();
-  await expect(page.getByTestId("grade-demo")).toContainText("All prepared outcomes");
-  await expect(page.getByTestId("claim-batch")).toBeDisabled();
-  await page.getByTestId("handoff-demo").locator("summary").click();
-  await expect(page.getByTestId("handoff-demo").locator("dl")).toBeVisible();
-  await context.close();
+  try {
+    const page = await context.newPage();
+    await page.goto(`${baseURL}/work/vialgrade`);
+    await expect(page.getByText(copy.intro, { exact: true })).toBeVisible();
+    await expect(page.getByTestId('evidence-finding')).toContainText('These details match.');
+    await expect(page.getByRole('radio', { name: 'Details match', exact: true })).not.toBeVisible();
+    await page.getByText('Read the other outcomes', { exact: true }).click();
+    await expect(page.getByText(findings.missing.text, { exact: false })).toBeVisible();
+    await expect(page.getByTestId('grade-unknown')).toBeVisible();
+    await expect(page.getByTestId('grade-supported')).toBeVisible();
+    await expect(page.getByTestId('grade-concern')).toBeVisible();
+    await page.getByTestId('grade-demo').locator('summary').click();
+    await expect(page.getByTestId('grade-demo')).toContainText('Assessment: trusted');
+    await page.getByTestId('handoff-demo').locator('summary').click();
+    await expect(page.getByTestId('handoff-demo').locator('code')).toHaveText(exampleTaggedUrl);
+  } finally { await context.close(); }
 });
 
-test("automated accessibility checks pass for missing, matching, conflicting and expanded grade states", async ({ page }) => {
+test('the actual product image and historical figures remain clearly labeled', async ({ page }) => {
   await openStory(page);
-  for (const [record, grade] of [["Matching record", "Missing evidence"], ["No matching record", "Supported record"], ["Conflicting record", "Verified concern"]]) {
-    await page.getByRole("radio", { name: record, exact: true }).check();
-    await page.getByRole("radio", { name: grade, exact: true }).check();
-    await page.evaluate(() => document.querySelectorAll("details").forEach(d => d.open = true));
-    const result = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
-    expect(result.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => ({ target: n.target, summary: n.failureSummary })) }))).toEqual([]);
-  }
-});
-
-test("screenshot loads with its actual aspect ratio and its historical label", async ({ page }) => {
-  await openStory(page);
-  const image = page.getByAltText("Earlier VialGrade homepage with its verification search and source-focused layout");
+  const image = page.getByRole('img', { name: /Earlier VialGrade homepage/ });
   await image.scrollIntoViewIfNeeded();
-  await expect.poll(() => image.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
-  const aspect = await image.evaluate((img: HTMLImageElement) => ({ rendered: img.width / img.height, source: img.naturalWidth / img.naturalHeight }));
-  expect(Math.abs(aspect.rendered - aspect.source)).toBeLessThan(.01);
-  await expect(page.locator("figcaption")).toContainText("not a statement of current activity or product safety");
+  await expect.poll(() => image.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0)).toBe(true);
+  const ratio = await image.evaluate((el: HTMLImageElement) => el.naturalWidth / el.naturalHeight);
+  expect(Math.abs(ratio - 1.44)).toBeLessThan(.01);
+  await expect(page.getByRole('link', { name: /Open the full screenshot/ })).toHaveAttribute('href', '/vialgrade/home.jpg');
+  await expect(page.getByText('Earlier reported figures, not live analytics.')).toBeVisible();
+  await expect(page.getByText(copy.earlyUse, { exact: true })).toContainText('eight signups over a month');
 });
 
-test("fast scrolling and backward navigation never leave the story hidden or the page broken", async ({ page }) => {
-  const errors: string[] = []; page.on("pageerror", e => errors.push(e.message));
+test('accessibility checks cover every record and all expanded details', async ({ page }) => {
   await openStory(page);
-  for (const y of [8000, 0, 3000, 7000, 0]) await page.evaluate(y => window.scrollTo({ top: y, behavior: "instant" }), y);
-  await page.getByRole("link", { name: /Inspect a claim/ }).click();
-  await expect(page).toHaveURL(/#evidence$/);
-  await page.goBack();
-  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  const skipBottom = await page.getByRole("link", { name: "Skip to content" }).evaluate(el => el.getBoundingClientRect().bottom);
-  expect(skipBottom).toBeLessThanOrEqual(0);
+  for (const item of readingCases) {
+    await page.getByRole('radio', { name: item.label, exact: true }).check();
+    await page.waitForTimeout(300);
+    const r = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+    expect(r.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.failureSummary) }))).toEqual([]);
+  }
+  for (const summary of await page.locator('main summary').all()) await summary.click();
+  const r = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(r.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.failureSummary) }))).toEqual([]);
+});
+
+test('fast scrolling and returning to the top leave the complete example readable without errors', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', e => errors.push(e.message));
+  await openStory(page);
+  await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' }));
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+  await expect(page.getByRole('heading', { level: 1 })).toBeInViewport();
+  await expect(page.getByTestId('evidence-demo')).toHaveAttribute('data-result', 'match');
   expect(errors).toEqual([]);
 });
 
-test("both highlights visibly travel between fields and settle on the same row", async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 1300 });
-  await page.emulateMedia({ reducedMotion: "no-preference" });
+test('the changed record is highlighted without moving or hiding its paired values', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
   await openStory(page);
-  await page.getByTestId("evidence-demo").scrollIntoViewIfNeeded();
-  const motion = await page.evaluate(async () => {
-    const position = (side: string) => document.querySelector(`[data-testid="${side}-highlight"]`)!.getBoundingClientRect().y;
-    const start = { left: position("claim"), right: position("record") };
-    (document.querySelector('[data-testid="claim-manufacturer"]') as HTMLButtonElement).click();
-    const samples: Array<{ left: number; right: number }> = [];
-    for (let i = 0; i < 32; i++) {
-      await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
-      samples.push({ left: position("claim"), right: position("record") });
-    }
-    return { start, samples };
-  });
-  const end = motion.samples.at(-1)!;
-  expect(end.left - motion.start.left).toBeGreaterThan(100);
-  expect(end.right - motion.start.right).toBeGreaterThan(100);
-  expect(motion.samples.some(s => s.left > motion.start.left + 2 && s.left < end.left - 2)).toBe(true);
-  expect(motion.samples.some(s => s.right > motion.start.right + 2 && s.right < end.right - 2)).toBe(true);
-  expect(Math.abs(end.left - end.right)).toBeLessThan(1);
+  const cell = page.getByTestId('record-manufacturer');
+  const before = await cell.evaluate(el => getComputedStyle(el).backgroundColor);
+  await page.getByRole('radio', { name: 'Different maker', exact: true }).check();
+  const samples: string[] = [];
+  for (let i = 0; i < 7; i++) { samples.push(await cell.evaluate(el => getComputedStyle(el).backgroundColor)); await page.waitForTimeout(40); }
+  await expect(cell).toHaveCSS('background-color', 'rgb(248, 233, 226)');
+  expect(samples.some(color => color !== before && color !== 'rgb(248, 233, 226)')).toBe(true);
+  await expect(cell).toContainText('Example Research B');
+  await expect(page.getByTestId('claim-manufacturer')).toHaveText('Example Research A');
+});
+
+test('mobile headings keep spaces when desktop line breaks disappear', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openStory(page);
+  const expected = ["They all said they were verified.", "I didn't want to force a grade.", "Tracking what happened next.", "People started finding it.", "What I took from it."];
+  const headings = await page.locator('main h2').allInnerTexts();
+  expect(headings.map(text => text.replace(/\s+/g, ' ').trim())).toEqual(expected);
 });

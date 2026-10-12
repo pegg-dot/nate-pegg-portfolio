@@ -1,33 +1,14 @@
 {
-  "intro": "VialGrade is a research site I built after a friend who follows peptide research told me how many students were buying from vendors that all claimed to be verified but were hard to trust. I wanted to see what could actually be checked.",
-  "originFriend": "A friend of mine is really into biomedicine and peptide research. He told me a lot of people around him wanted to buy peptides, but that a lot of the market felt sketchy.",
-  "originClaims": "When I started looking, that was basically my reaction too. Every site had verified COAs, third-party testing, purity numbers, and a “research use only” disclaimer. It was hard to tell what any of it actually proved.",
-  "originGoal": "So I thought, why can't I use AI and software to cross-check the claims? I didn’t want to build a site telling people what to take. I wanted to build something that makes the evidence easier to inspect.",
-  "gradingAreas": "The grading engine looks across four areas: independent testing, regulatory and operator signals, reputation, and business signals. It cross-checks COAs, batches, lab records, and the other evidence I can actually trace.",
-  "gradingUnknown": "I learned pretty quickly that missing evidence can’t automatically count against somebody, and a clean-looking website can’t count as proof either. If there isn’t enough evidence, the site can return no grade at all.",
-  "gradingStrong": "For vendors with a strong record, independent lab testing is what separates the higher grades. Verified negative evidence can pull a grade down or cap it. The point is that the letter has to come from something I can show.",
-  "checkout": "I originally wanted a native checkout, but I couldn’t make that work. So VialGrade links to the original vendor page instead.",
-  "handoff": "That meant my analytics stopped once somebody left the site. I wanted a way to measure whether those outbound links were actually being used and make the source of the traffic visible on the other side.",
-  "attribution": "I ended up building referral attribution into the links. They carry normal UTM tags plus a short VialGrade click reference, so I can measure the handoff and the destination can identify VialGrade as the source. There are no live affiliate deals or native checkout.",
-  "earlyUse": "That honestly surprised me. In the past month it has gotten about 2,000 Google impressions, around 600 clicks into the site, and eight people have signed up. It’s still small, but that made the idea feel a lot more real.",
-  "boundary": "VialGrade doesn’t sell peptides, tell people what to take, or claim that a product is safe, sterile, correctly dosed, or fit for human use.",
-  "purpose": "The thing I’m trying to make better is the evidence layer: what a vendor claims, what records actually exist, where they came from, and what is still unknown.",
-  "brief": [
-    {
-      "label": "WHAT",
-      "text": "A research site that compares vendor claims against lab records, COAs, batch data, public enforcement, and other evidence."
-    },
-    {
-      "label": "WHY",
-      "text": "Every storefront seemed to say verified COAs, third-party testing, and research use only. I wanted one place where those claims could actually be cross-checked."
-    },
-    {
-      "label": "HOW",
-      "text": "I collect records, match certificates and batches, and grade the evidence across testing, regulatory, reputation, and business signals. If there isn’t enough evidence, VialGrade leaves it ungraded."
-    },
-    {
-      "label": "WHEN",
-      "text": "Built in 2026 and still changing. The current version is live at vialgrade.com."
-    }
-  ]
+  "intro": "VialGrade is a research site that brings together lab records and other evidence about peptide vendors. I built it because I wanted a better way to compare them than just taking a website's word for it.",
+  "orientation": "The site cross-checks lab records and batch information, then shows what it can support and what it still doesn't know.",
+  "origin": [
+    "A friend of mine is really into biomedicine and peptide research. He told me a lot of people around him wanted to buy peptides, but the vendors seemed sketchy. When I started looking, that was basically my reaction too. Every site seemed to have third-party testing and purity numbers, but it was hard to tell what any of that actually proved.",
+    "So I thought, why can't I use AI and software to cross-check the claims? A certificate of analysis, or COA, is a lab report. I wanted to check whether its details matched the batch and company being named, rather than just see that a vendor had uploaded a document."
+  ],
+  "unknown": "One thing I had to be careful with was how to handle missing information. Not finding a lab record isn't the same as finding something wrong with a vendor. I didn't want a lack of data to turn into a bad grade, so VialGrade can leave a vendor ungraded when there isn't enough to go on.",
+  "grading": "The grade also looks beyond a single certificate. It considers independent testing alongside regulatory records and information about the business. A documented problem still matters even when other records look good, and a high grade doesn't tell you that a product is safe to use.",
+  "handoff": "I originally wanted checkout on VialGrade, but I couldn't make that work, so the site links to the vendor's page instead. That created another problem: once someone left, I couldn't see what happened next.",
+  "attribution": "I added tracking tags and a short VialGrade click reference to the links. That lets me track clicks out of the site and identify where the traffic came from, but a click still doesn't tell me that someone bought anything.",
+  "earlyUse": "In an early update, I'd recorded about 2,000 Google impressions, around 600 clicks into the site, and eight signups over a month. That honestly surprised me. It was still small, but people finding something I'd built made it feel a lot more real.",
+  "takeaway": "The hardest part wasn't putting a letter next to a vendor. It was deciding when the evidence actually justified one. I wanted the site to make that difference easy to see, including when I didn't have enough information yet."
 }

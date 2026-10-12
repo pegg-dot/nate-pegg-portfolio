@@ -1,40 +1,45 @@
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type Page } from '@playwright/test';
+import { mkdirSync } from 'node:fs';
 
 async function openStory(page: Page) {
-  await page.goto("/work/vialgrade");
-  await expect(page.getByTestId("claim-batch")).toBeEnabled();
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/work/vialgrade');
   await page.evaluate(() => document.fonts.ready);
+  await expect(page.getByTestId('evidence-demo')).toHaveAttribute('data-reduced', 'true');
+  await page.locator('body').click({ position: { x: 2, y: 2 } });
 }
 
-// Candidate images must be inspected before accepting new baselines.
-// No production records or external services are used in these interactions.
-test("desktop opening and document-comparison composition", async ({ page }) => {
+// New baselines correspond to the requested editorial redesign. The original
+// case-study fixture and the unchanged numerical projection stay in the repository.
+test('reader-first opening and all document outcomes', async ({ page }, info) => {
   await openStory(page);
-  await expect(page).toHaveScreenshot("desktop-opening.png", { animations: "disabled" });
-  await page.setViewportSize({ width: 1440, height: 1400 });
-  await expect(page.getByTestId("evidence-demo")).toHaveScreenshot("document-match.png", { animations: "disabled" });
-  await page.getByRole("radio", { name: "Conflicting record", exact: true }).check();
-  await expect(page.getByTestId("claim-manufacturer")).toHaveAttribute("aria-pressed", "true");
-  await expect(page.getByTestId("evidence-demo")).toHaveScreenshot("document-conflict.png", { animations: "disabled" });
-});
-
-test("missing-source state and actual grade examples remain visually distinct", async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 1400 });
-  await openStory(page);
-  await page.getByRole("radio", { name: "No matching record", exact: true }).check();
-  await expect(page.getByTestId("evidence-demo")).toHaveScreenshot("document-missing.png", { animations: "disabled" });
-  for (const [name, file] of [["Missing evidence", "grade-unknown"], ["Supported record", "grade-supported"], ["Verified concern", "grade-concern"]]) {
-    await page.getByRole("radio", { name, exact: true }).check();
-    await expect(page.getByTestId("grade-demo")).toHaveScreenshot(`${file}.png`, { animations: "disabled" });
+  await expect(page).toHaveScreenshot('reader-first-opening.png', { animations: 'disabled' });
+  for (const [label, name] of [['Details match', 'match'], ['No record', 'missing'], ['Different maker', 'conflict']]) {
+    await page.getByRole('radio', { name: label, exact: true }).check();
+    await expect(page.getByTestId('evidence-demo')).toHaveScreenshot(`reader-first-${name}.png`, { animations: 'disabled' });
   }
+  mkdirSync('qa/vial-reader', { recursive: true });
+  await page.screenshot({ path: `qa/vial-reader/desktop-${info.project.name}.png`, fullPage: true, animations: 'disabled' });
 });
 
-test("phone opening and paired values are readable without chasing the documents", async ({ page }) => {
+test('all grades can be read together and actual product imagery is preserved', async ({ page }) => {
+  await openStory(page);
+  await expect(page.getByTestId('grade-demo')).toHaveScreenshot('reader-first-grades.png', { animations: 'disabled' });
+  await expect(page.getByTestId('handoff-demo')).toHaveScreenshot('reader-first-handoff.png', { animations: 'disabled' });
+  const image = page.getByRole('img', { name: /Earlier VialGrade homepage/ });
+  await image.scrollIntoViewIfNeeded();
+  await image.evaluate((el: HTMLImageElement) => el.decode());
+  await expect(image.locator('xpath=ancestor::figure')).toHaveScreenshot('reader-first-product.png', { animations: 'disabled' });
+});
+
+test('phone comparisons keep matching values beside one another', async ({ page }, info) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openStory(page);
-  await expect(page).toHaveScreenshot("phone-opening.png", { animations: "disabled" });
-  await page.getByRole("radio", { name: "Conflicting record", exact: true }).check();
-  await expect(page.getByTestId("selected-comparison")).toHaveScreenshot("phone-selected-comparison.png", { animations: "disabled" });
-  await page.getByRole("radio", { name: "Verified concern", exact: true }).check();
-  await expect(page.getByTestId("grade-demo")).toHaveScreenshot("phone-grade-concern.png", { animations: "disabled" });
+  await expect(page).toHaveScreenshot('reader-first-phone.png', { animations: 'disabled' });
+  await page.getByRole('radio', { name: 'Different maker', exact: true }).check();
+  await expect(page.getByTestId('evidence-demo')).toHaveScreenshot('reader-first-phone-conflict.png', { animations: 'disabled' });
+  await expect(page.getByTestId('grade-demo')).toHaveScreenshot('reader-first-phone-grades.png', { animations: 'disabled' });
+  await page.setViewportSize({ width: 320, height: 844 });
+  mkdirSync('qa/vial-reader', { recursive: true });
+  await page.getByTestId('evidence-demo').screenshot({ path: `qa/vial-reader/narrow-${info.project.name}.png`, animations: 'disabled' });
 });

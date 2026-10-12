@@ -55,8 +55,10 @@ Run `npx playwright test -c playwright-writing.config.ts` after a production bui
 
 ## VialGrade story verification
 
-The `/work/vialgrade` route has a project-specific document comparison, a pinned real grade projection with fictional inputs, and a non-networked referral-link explanation. Original prose is frozen in `tests/fixtures/vial-original-copy.json`.
+The `/work/vialgrade` route now puts one complete claim/record comparison beside the opening, with all three prepared grade outcomes visible and optional referral details. Nate requested a reader-first rewrite after the first design; `tests/fixtures/vial-original-copy.json` is preserved as original-copy provenance, not as a claim that the rewrite is verbatim. The matcher and pinned grade projection remain unchanged.
 
 Run `npm run test:vial` after a production build. Set `VIAL_TEST_URL` to target a deployed origin. The filename glob intentionally does not match worktree directory names. See `docs/VIALGRADE_STORY_2026-10-11.md` for source provenance, scope, and test coverage.
 
 For the new cross-project hardening suite, run `npx playwright test -c playwright-della-harden.config.ts`. Set `PORTFOLIO_TEST_URL` to exercise a deployed origin. It checks Della, VialGrade, Transformer and the writing note without replacing their platform-specific screenshot baselines. See `docs/DELLA_READER_PASS_2026-10-11.md`.
+
+The VialGrade reader-first pass is documented in `docs/VIALGRADE_READER_PASS_2026-10-11.md`. `npm run test:vial` includes reviewed, platform-specific screenshot baselines. Use the cross-project configuration described above for CI behavioral coverage without replacing those macOS baselines.

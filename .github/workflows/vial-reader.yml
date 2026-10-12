@@ -1,0 +1,39 @@
+name: VialGrade reader-first checks
+on:
+  push:
+    branches: [design/vial-refine-20261011, main]
+    paths:
+      - 'src/app/work/vialgrade/**'
+      - 'tests/vial*'
+      - '.github/workflows/vial-reader.yml'
+  workflow_dispatch:
+concurrency:
+  group: vial-reader-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Lint and production build
+        run: npm run lint && npm run build
+      - name: Browser runtimes
+        run: npx playwright install --with-deps chromium webkit
+      - name: VialGrade and unchanged project regression tests
+        run: npx playwright test -c playwright-della-harden.config.ts
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: vial-reader-qa
+          path: |
+            qa/della-harden-results.json
+            test-results/
+          retention-days: 7

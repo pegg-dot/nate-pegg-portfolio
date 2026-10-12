@@ -163,3 +163,16 @@ The remaining site-wide launch-hardening items above are not marked complete by 
 - [x] Verify the released page after deployment (150 cross-project checks and the 52-check Della suite, including screenshot comparisons).
 
 This supersedes the previous Della-only verbatim-copy lock, not the protections on other routes.
+
+
+## VialGrade reader-first hardening - October 11, 2026
+
+- [x] Rewrite the explanation from Nate's stated reasons, with the requested better-way-to-compare framing.
+- [x] Show the complete claim/record comparison immediately, with paired rows on phones.
+- [x] Show missing, supported and adverse grade examples together, separately from document matching.
+- [x] Keep the original numerical rules, fictional-input boundaries and historical usage labels.
+- [x] Simplify referral attribution and preserve the real interface screenshot.
+- [x] Complete local cross-project checks and visual review.
+- [ ] Verify the released VialGrade page after deployment.
+
+The prior VialGrade prose fixture remains an archive; this requested rewrite supersedes its verbatim presentation rule.
