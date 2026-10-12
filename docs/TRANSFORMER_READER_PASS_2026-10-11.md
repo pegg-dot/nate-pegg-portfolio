@@ -30,3 +30,11 @@ Run lint, the production build and `playwright-transformer.config.ts` for the ex
 Screenshot baselines must be visually reviewed, not updated to silence a regression. Passing tests do not certify taste or complete accessibility. No independent agent review is claimed.
 
 Test selection uses filename globs rather than a greedy pattern that can accidentally match the worktree directory name. The cross-project suite still exercises every intended behavioral case; platform-specific visual baselines run separately.
+
+## Released and verified
+
+Application commit `7f5eaeb53beb66f9a1102ecec5d920af134408c7` is live. The 82-check Transformer suite and six visual tests (16 reviewed image comparisons) passed against the deployed portfolio. The 198-check cross-project suite also passed on its complete final rerun. These suites overlap and are not additive counts of distinct checks. Browser checks targeted production in Chromium and WebKit; numerical/source checks still ran in the test runner.
+
+The first production cross-project run had one network navigation timeout (`net::ERR_TIMED_OUT`) on the unchanged homepage during a 360px footer check. Its other 197 checks passed. The same full suite was rerun, without changing assertions or retry settings, and all 198 passed. This is recorded rather than described as an entirely failure-free release history. The final reports have zero failed, skipped or flaky results. Structured results are in `verification/transformer-reader-2026-10-11.json`.
+
+The latest deployed whole-page and narrow-phone captures were inspected. The original capture, math, advanced explorer source and both image files are byte-identical to the pre-pass version. Della and VialGrade application sources, the homepage animations and the writing note are unchanged. Their 52- and 60-check local suites, including existing visual baselines, also passed before release.

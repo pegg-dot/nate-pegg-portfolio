@@ -1,0 +1,44 @@
+{
+  "applicationCommit": "7f5eaeb53beb66f9a1102ecec5d920af134408c7",
+  "origin": "https://nate-pegg-portfolio.vercel.app",
+  "checkedAt": "2026-10-12T03:28:50.226614+00:00",
+  "reports": {
+    "transformer": {
+      "startTime": "2026-10-12T03:25:19.510Z",
+      "duration": 33070.121999999996,
+      "expected": 82,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "visual": {
+      "startTime": "2026-10-12T03:25:53.132Z",
+      "duration": 4465.169,
+      "expected": 6,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "crossProject": {
+      "startTime": "2026-10-12T03:27:20.277Z",
+      "duration": 44746.614,
+      "expected": 198,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "visualImageComparisons": 16,
+  "initialCrossProjectRun": {
+    "stats": {
+      "startTime": "2026-10-12T03:25:58.030Z",
+      "duration": 55253.468,
+      "expected": 197,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "note": "One net::ERR_TIMED_OUT while navigating to the unchanged homepage for the 360px footer check. The entire same suite was rerun without changing assertions or retry settings and all 198 checks passed."
+  },
+  "scope": "Browser checks targeted production; numerical and source checks ran in the test runner. Suites overlap and must not be summed as distinct checks."
+}

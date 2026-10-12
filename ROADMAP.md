@@ -185,4 +185,4 @@ The prior VialGrade prose fixture remains an archive; this requested rewrite sup
 - [x] Explain a residual update using one actual captured coordinate.
 - [x] Preserve both visualizer images and the full advanced computation explorer.
 - [x] Keep source data, math and original prose archive unchanged.
-- [ ] Complete browser review, cross-project checks and deployed verification.
+- [x] Complete browser review and deployed verification: 82 Transformer checks, six visual tests and the 198-check cross-project suite on its final rerun. One initial homepage network timeout is recorded in the release note.
