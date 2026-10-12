@@ -173,6 +173,6 @@ This supersedes the previous Della-only verbatim-copy lock, not the protections 
 - [x] Keep the original numerical rules, fictional-input boundaries and historical usage labels.
 - [x] Simplify referral attribution and preserve the real interface screenshot.
 - [x] Complete local cross-project checks and visual review.
-- [ ] Verify the released VialGrade page after deployment.
+- [x] Verify the released VialGrade page after deployment (60 VialGrade checks, including screenshots, and the 160-check cross-project suite).
 
 The prior VialGrade prose fixture remains an archive; this requested rewrite supersedes its verbatim presentation rule.

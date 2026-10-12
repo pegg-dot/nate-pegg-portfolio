@@ -34,3 +34,9 @@ No independent subagent review or complete accessibility certification is claime
 ## Local release gate
 
 Lint and the production build passed. The 160-check cross-project behavior suite, 60-check VialGrade suite (including reviewed screenshot comparisons), and unchanged 52-check Della suite passed on the candidate. The mobile heading check also guards against joined words when desktop line breaks are hidden. These suites overlap and are not summed as distinct tests. Deployment verification is still to follow.
+
+## Released and checked
+
+Application commit `2fce69b387aed0dddd0e2e56335b8a65603336e9` is deployed at the public portfolio. The 60-check VialGrade suite and the 160-check cross-project suite both passed after deployment, with browser checks targeting the live site in Chromium and WebKit. Both reports show zero failed, skipped or flaky tests. The suites overlap and are not 220 distinct checks. Numerical/source checks still run locally.
+
+The VialGrade suite includes the inspected desktop and phone screenshot comparisons, with no baseline updates during the deployed run. The latest narrow-phone screenshot was inspected as well. The changed record highlight, all three outcomes, supplied-grade boundaries, actual image dimensions, native disclosures, keyboard use and no-JavaScript reading were exercised. The existing matcher, grade projection, original copy fixture, screenshot bytes and other project application sources are unchanged.
