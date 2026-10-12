@@ -1,0 +1,36 @@
+{
+  "applicationCommit": "b8925fbd7cb8fb35a65add85f16d4a74cabf7730",
+  "deployedOrigin": "https://nate-pegg-portfolio.vercel.app",
+  "checkedAt": "2026-10-12T13:07:39.302755+00:00",
+  "productionTargetedRuns": {
+    "behavior": {
+      "startTime": "2026-10-12T13:02:52.920Z",
+      "duration": 61006.925,
+      "expected": 254,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "visual": {
+      "startTime": "2026-10-12T13:03:54.507Z",
+      "duration": 7353.849,
+      "expected": 16,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "reviewedImageComparisons": 50,
+  "preservedBaselineFiles": 21,
+  "githubMainRun": {
+    "id": 38252929084,
+    "conclusion": "success",
+    "testsPassed": 254,
+    "environment": "Linux Chromium and WebKit"
+  },
+  "initialBranchRun": {
+    "id": 38252138952,
+    "note": "Delayed while installing browser dependencies. Deployment followed the completed Mac tests and reviewed screenshots; the same 254 checks subsequently passed in the main-branch Linux run. The redundant branch job was then cancelled."
+  },
+  "scope": "The browser checks target production. Unit/numerical/source assertions execute in the test runner. Visual baselines were not updated during the production run. Test counts are not a measurement of design quality."
+}

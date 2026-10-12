@@ -61,3 +61,11 @@ The first visual review exposed that the original 900px Transformer captures bec
 Lint and the production build passed. All 254 behavioral, numerical, accessibility and artifact checks passed in Chromium and WebKit. The 16 visual tests also passed on a normal run against the 50 reviewed images, after intentional baseline creation and inspection. The original image baselines are in Git history rather than retained as active expectations for this deliberately different layout. No tests are skipped and retries remain disabled.
 
 The protected-file manifest was rechecked before release: all 21 baseline files match byte for byte. The CI job checks the same manifest before building. This covers the homepage, its animation sources, the original writing PDF, original screenshots, source fixtures, and the model/grade state that this design change must not alter.
+
+## Deployed verification
+
+Application commit `b8925fbd7cb8fb35a65add85f16d4a74cabf7730` is deployed. All three public pages report the authored edition. The 254-check behavioral/numerical suite and 16 visual tests (50 reviewed image comparisons) passed after deployment, with browser checks targeting the public pages in Chrome and WebKit. The final reports have zero failed, skipped or flaky tests. Unit and source assertions still execute in the test runner. Baselines were not updated during the deployed check. The final deployed desktop and phone captures were inspected.
+
+The initial branch CI job was delayed installing browser dependencies. The release used the completed Mac checks and reviewed images rather than claiming that job had finished. The subsequent main-branch Linux job also passed all 254 checks (`38252929084`), including the preserved-file manifest, lint and production build. After that success the redundant branch job was cancelled. Structured results and this distinction are recorded in `verification/authored-release-2026-10-12.json`.
+
+The homepage, rowing and signature sources, After Abundance PDF, original project screenshots, source fixtures and numerical/state logic in the 21-file manifest remain byte-identical to baseline. The separate product applications have not been modified.

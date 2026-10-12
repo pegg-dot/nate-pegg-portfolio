@@ -196,4 +196,4 @@ The prior VialGrade prose fixture remains an archive; this requested rewrite sup
 - [x] Lead Transformer with the actual visualizer and show residual addition in its real source.
 - [x] Preserve homepage, original artifacts, model/grading logic and illustrative-action safety boundaries.
 - [x] Complete joint desktop/mobile visual review and local checks (254 behavioral checks and 16 visual tests).
-- [ ] Verify the released pages after deployment.
+- [x] Verify the released pages: 254 behavioral/numerical checks and 50 reviewed image comparisons passed against production; the main-branch Linux suite also passed.
