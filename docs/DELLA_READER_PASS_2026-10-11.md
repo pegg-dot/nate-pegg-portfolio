@@ -37,3 +37,9 @@ The unchanged Transformer select was additionally checked on macOS. Its regressi
 The visible workspace detail uses a content-addressed filename to avoid reusing a stale optimized image after changing the crop. Its 1165 x 280 pixels are cropped at (250, 265) from the existing 1760 x 1250 redacted image.
 
 Before release, 150 cross-project checks passed and the complete 160-check macOS run passed, including reviewed Della and unchanged VialGrade image baselines. The Della-specific config now scopes by filename glob rather than accidentally matching every test in a worktree whose directory contains "della". The old Della image baseline files are retained in history.
+
+## Released and verified
+
+Code commit `8fa3c8d02081585596264dcb6825834ad0fdbe3f` is deployed. The 150-check cross-project suite and 52-check Della suite both passed after deployment, with their browser checks directed at the public portfolio in Chromium and WebKit. Unit checks still execute in the test runner. These suites overlap; they are not 202 distinct checks. Both reports show zero failed, skipped or flaky tests. The Della suite includes the inspected desktop and phone screenshot comparisons, with no baseline updates during the deployed run.
+
+The complete call and calendar are visible without clicking. Replay, failure, inline draft editing, keyboard operation, reduced motion, static reading and the actual image dimensions were checked. VialGrade, Transformer, the homepage and the writing-note application sources are unchanged.

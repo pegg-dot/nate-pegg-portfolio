@@ -160,6 +160,6 @@ The remaining site-wide launch-hardening items above are not marked complete by 
 - [x] Turn the memory example back into a personal story and show the owner's editable draft inline.
 - [x] Preserve the actual workspace imagery with an earlier-screen label.
 - [x] Complete local visual review and cross-project regression checks.
-- [ ] Verify the released page after deployment.
+- [x] Verify the released page after deployment (150 cross-project checks and the 52-check Della suite, including screenshot comparisons).
 
 This supersedes the previous Della-only verbatim-copy lock, not the protections on other routes.
