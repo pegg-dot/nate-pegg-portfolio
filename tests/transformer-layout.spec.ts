@@ -1,3 +1,4 @@
+import { openTransformerLab } from './helpers/open-transformer';
 import { test, expect } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
 
@@ -5,7 +6,7 @@ test('all character and stage controls remain inside the lab at narrow widths', 
   await page.emulateMedia({ reducedMotion: 'reduce' });
   for (const width of [320, 360, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto('/work/transformer');
+    await openTransformerLab(page);
     const lab=page.getByTestId('transformer-lab');
     await expect(lab).toHaveAttribute('data-reduced','true');
     await page.evaluate(()=>document.fonts.ready);

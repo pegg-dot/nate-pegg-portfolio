@@ -1,9 +1,10 @@
+import { openTransformerLab } from './helpers/open-transformer';
 import { test, expect } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 
 test('the attention bars visibly interpolate to the selected captured row', async ({ page }, info) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await page.goto('/work/transformer');
+  await openTransformerLab(page);
   await page.getByRole('group', { name: 'Follow the computation' }).getByRole('button', { name: /Attention/ }).click();
   const fill = page.locator('[class*="attentionReadout"] [class*="weightFill"]').first();
   const before = await fill.evaluate(el => el.getBoundingClientRect().width);
@@ -18,7 +19,7 @@ test('the attention bars visibly interpolate to the selected captured row', asyn
 });
 
 test('dark native controls remain legible and retain keyboard operation', async ({ page }) => {
-  await page.goto('/work/transformer');
+  await openTransformerLab(page);
   await page.getByRole('group', { name: 'Follow the computation' }).getByRole('button', { name: /Attention/ }).click();
   const head = page.getByLabel('Attention head', { exact: true });
   await expect(head).toHaveCSS('appearance', 'none');
@@ -32,7 +33,7 @@ test('dark native controls remain legible and retain keyboard operation', async 
 
 test('phone residual arithmetic stays legible instead of shrinking the desktop diagram', async ({ page }, info) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/work/transformer');
+  await openTransformerLab(page);
   await page.getByRole('group', { name: 'Follow the computation' }).getByRole('button', { name: /Residual/ }).click();
   await expect(page.locator('[class*="mobileResidual"]')).toBeVisible();
   await expect(page.locator('[class*="mobileResidual"]')).toContainText('Original stream');

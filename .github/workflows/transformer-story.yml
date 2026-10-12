@@ -1,12 +1,15 @@
 name: Transformer story verification
 on:
   push:
-    branches: [design/transformer-story-20261011, main]
+    branches: [design/transformer-story-20261011, design/transformer-refine-20261011, main]
     paths:
       - 'src/app/work/transformer/**'
       - 'scripts/*transformer*'
       - 'tests/transformer*'
+      - 'tests/helpers/open-transformer.ts'
+      - 'tests/model-reading-visual.spec.ts'
       - 'playwright-transformer.config.ts'
+      - 'playwright-model-reading-visual.config.ts'
       - 'playwright-preserved.config.ts'
       - '.github/workflows/transformer-story.yml'
   workflow_dispatch:
@@ -25,7 +28,7 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-      - name: Verify pinned model data and approved writing
+      - name: Verify pinned model data and the original writing archive
         run: |
           python3 scripts/prepare-transformer.py
           git diff --exit-code -- src/app/work/transformer tests/fixtures/transformer-original-copy.json
@@ -47,7 +50,7 @@ jobs:
         if: github.ref_name == 'main'
         run: |
           node - <<'JS'
-          (async()=>{ for(let i=0;i<30;i++){const r=await fetch('https://nate-pegg-portfolio.vercel.app/work/transformer');const t=await r.text();if(t.includes('data-testid="transformer-lab"'))process.exit(0);await new Promise(r=>setTimeout(r,5000));}process.exit(1);})()
+          (async()=>{ for(let i=0;i<30;i++){const r=await fetch('https://nate-pegg-portfolio.vercel.app/work/transformer');const t=await r.text();if(t.includes('data-transformer-edition="reader-first"'))process.exit(0);await new Promise(r=>setTimeout(r,5000));}process.exit(1);})()
           JS
           TRANSFORMER_TEST_URL=https://nate-pegg-portfolio.vercel.app npx playwright test -c playwright-transformer.config.ts
           TRANSFORMER_TEST_URL=https://nate-pegg-portfolio.vercel.app npx playwright test -c playwright-preserved.config.ts

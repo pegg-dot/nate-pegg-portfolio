@@ -1,5 +1,7 @@
 # Transformer portfolio story
 
+This records the initial design. The later reader-first rewrite is documented in `TRANSFORMER_READER_PASS_2026-10-11.md`.
+
 ## Scope
 
 A project-specific route at `/work/transformer`, not a rebuild of the full visualizer. The portfolio's homepage, Della, VialGrade, rowing, signature and writing note are unchanged.

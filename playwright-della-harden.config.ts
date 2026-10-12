@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: './tests',
   // Behavioral coverage for the changed route and the three previously finished areas.
   // Platform-specific reviewed image baselines run separately in their original configs.
-  testMatch: /(?:della|vial|writing|transformer.*)\.spec\.ts$/,
+  testMatch: ['**/della.spec.ts', '**/vial.spec.ts', '**/writing.spec.ts', '**/transformer*.spec.ts'],
   fullyParallel: true, forbidOnly: true, retries: 0, workers: 3, timeout: 45_000,
   expect: { timeout: 7_000 },
   reporter: [['list'], ['json', { outputFile: 'qa/della-harden-results.json' }]],

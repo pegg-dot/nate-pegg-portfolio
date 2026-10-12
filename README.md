@@ -62,3 +62,7 @@ Run `npm run test:vial` after a production build. Set `VIAL_TEST_URL` to target 
 For the new cross-project hardening suite, run `npx playwright test -c playwright-della-harden.config.ts`. Set `PORTFOLIO_TEST_URL` to exercise a deployed origin. It checks Della, VialGrade, Transformer and the writing note without replacing their platform-specific screenshot baselines. See `docs/DELLA_READER_PASS_2026-10-11.md`.
 
 The VialGrade reader-first pass is documented in `docs/VIALGRADE_READER_PASS_2026-10-11.md`. `npm run test:vial` includes reviewed, platform-specific screenshot baselines. Use the cross-project configuration described above for CI behavioral coverage without replacing those macOS baselines.
+
+## Transformer reader-first story
+
+The Transformer page now starts with a readable next-character prediction using the actual captured logits. The full computation explorer remains optional. Original capture data and math are unchanged; the prose is revised at Nate's request. See `docs/TRANSFORMER_READER_PASS_2026-10-11.md`. Run `npx playwright test -c playwright-transformer.config.ts` for behavior and numerical checks, and `npx playwright test -c playwright-model-reading-visual.config.ts` for reviewed macOS screenshots. Set `TRANSFORMER_TEST_URL` for deployed verification.

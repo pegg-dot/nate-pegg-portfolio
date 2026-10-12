@@ -49,6 +49,7 @@ text = original.decode()
 clean = lambda value: html.unescape(re.sub(r'<[^>]*>', '', value))
 copy = {'sourceCommit': PORTFOLIO_COMMIT, 'intro': clean(re.search(r'subtitle="([^"]+)"', text).group(1)), 'prose': [clean(p) for p in re.findall(r'<p>(.*?)</p>', text)], 'brief': [{'label': label, 'text': clean(value)} for label, value in re.findall(r'label: "([^"]+)", text: "([^"]+)"', text)]}
 assert len(copy['prose']) == 12 and len(copy['brief']) == 4
-store('src/app/work/transformer/story-copy.json', copy)
+# Nate requested a new editorial version. Validate the original prose archive,
+# never restore it over the current reader-facing copy.
 store('tests/fixtures/transformer-original-copy.json', copy)
 print(json.dumps({'source': data['source'], 'prefix': data['characters'], 'bytes': len(json.dumps(data)), 'proseBlocks': len(copy['prose'])}))

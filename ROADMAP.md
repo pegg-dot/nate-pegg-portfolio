@@ -176,3 +176,13 @@ This supersedes the previous Della-only verbatim-copy lock, not the protections 
 - [x] Verify the released VialGrade page after deployment (60 VialGrade checks, including screenshots, and the 160-check cross-project suite).
 
 The prior VialGrade prose fixture remains an archive; this requested rewrite supersedes its verbatim presentation rule.
+
+
+## Transformer reader-first hardening - October 11, 2026
+
+- [x] Rewrite the story from Nate's own learning process and keep Karpathy/3Blue1Brown attribution.
+- [x] Show real next-character probabilities immediately, with optional prefix selection and sampling.
+- [x] Explain a residual update using one actual captured coordinate.
+- [x] Preserve both visualizer images and the full advanced computation explorer.
+- [x] Keep source data, math and original prose archive unchanged.
+- [ ] Complete browser review, cross-project checks and deployed verification.
