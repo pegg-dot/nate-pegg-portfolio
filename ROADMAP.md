@@ -215,4 +215,4 @@ The prior VialGrade prose fixture remains an archive; this requested rewrite sup
 - [x] Identify the refused booking and manually handled draft accurately.
 - [x] Verify original-image hashes and preserve unrelated project sources.
 - [x] Complete local browser review and cross-project checks.
-- [ ] Verify the published original-screen Della page.
+- [x] Verify the published original-screen Della page: 268 cross-project checks and all 50 reviewed screenshot comparisons passed; the two original crops matched their hashes over HTTP.

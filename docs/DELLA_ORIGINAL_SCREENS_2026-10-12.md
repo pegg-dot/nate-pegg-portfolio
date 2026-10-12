@@ -31,3 +31,11 @@ Run `npx playwright test -c playwright-authored.config.ts` for the cross-project
 ## Local release checks
 
 Lint and the production build passed. All 268 cross-project checks passed after darkening the two small captions. The 16 visual tests passed on a normal comparison run, including the newly reviewed Della views and the unchanged VialGrade and Transformer baselines. Only Della baselines were replaced; the superseded versions remain in Git history. The 40 protected files still match their baseline hashes.
+
+## Deployed verification
+
+Application commit `ec1dfc6d6e240692db4c6bfd81fa2fa93dd6d537` is deployed and the public Della page reports the original-screens edition. Vercel deployment `dpl_BrHqT3JFfZHqMKcZF8vh4PQG9K3a` is READY and owns the canonical portfolio alias. The initial bounded poll expired before the deployment initialized, but the same Git deployment subsequently became ready; no duplicate build or alias/security changes were needed.
+
+All 268 cross-project behavioral/numerical checks passed after deployment, along with 16 visual tests containing 50 reviewed image comparisons across the three projects. Browser checks targeted the public site in Chrome and WebKit; unit/source checks still ran in the test runner. The final reports show zero failed, skipped or flaky results. No image baselines were changed during the deployed run. The independent GitHub branch run also completed successfully (`38274946721`).
+
+Both deployed screenshot assets were fetched over HTTP and matched their exact source-crop hashes. The 40-file protection manifest still matches the baseline, including VialGrade, Transformer, the homepage, original animation components and After Abundance. The generated alternatives and simulated booking/approval interfaces are not used on this page. The body retains the supplied origin account and joins the memory and closing thoughts into continuous paragraphs. Structured results are in `verification/della-originals-release-2026-10-12.json`.
