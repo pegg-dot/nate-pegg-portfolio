@@ -16,10 +16,9 @@ async function open(page: Page, slug: string) {
 
 test('the covers are composed around different artifacts, not a cloned demo-and-heading layout', async ({ page }) => {
   await open(page, 'della');
-  const image = await page.getByTestId('della-artifact').boundingBox();
-  const booking = await page.getByTestId('booking-demo').boundingBox();
-  expect(image!.y + image!.height).toBeLessThan(booking!.y);
-  await expect(page.getByTestId('della-artifact').getByRole('img')).toBeInViewport();
+  await expect(page.getByTestId('call-record')).toBeVisible();
+  await expect(page.getByTestId('booking-demo')).toHaveCount(0);
+  await expect(page.locator('#build')).toContainText('The appointment was not created');
   await open(page, 'vialgrade');
   const essay = await page.locator('#origin').boundingBox();
   const comparison = await page.getByTestId('evidence-demo').boundingBox();
@@ -78,8 +77,8 @@ for (const slug of slugs) {
         await page.getByTestId('transformer-artifact').getByRole('button', { name: 'Training', exact: true }).click();
         await page.getByRole('radio', { name: 'Preview after ROMEO:', exact: true }).check();
       } else {
-        await page.getByTestId('della-artifact').getByRole('button', { name: 'Full workspace', exact: true }).click();
-        await page.getByRole('button', { name: "What if it doesn't book?", exact: true }).click();
+        await page.getByTestId('call-record').scrollIntoViewIfNeeded();
+        await page.locator('main summary').click();
       }
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width + 1);
     });
@@ -92,8 +91,7 @@ for (const slug of slugs) {
     };
     await scan();
     if (slug === 'della') {
-      await page.getByRole('button', { name: 'Full workspace', exact: true }).click();
-      await page.getByRole('button', { name: 'Edit message', exact: true }).click();
+      await page.locator('main summary').click();
     } else if (slug === 'vialgrade') {
       await page.getByTestId('grade-details').locator(':scope > summary').click();
       await page.getByTestId('grade-demo').locator('summary').click();
@@ -123,10 +121,10 @@ for (const slug of slugs) {
 
 test('image switches can be operated by keyboard and do not claim a new live app state', async ({ page }) => {
   await open(page, 'della');
-  const full = page.getByTestId('della-artifact').getByRole('button', { name: 'Full workspace', exact: true });
-  await full.focus(); await page.keyboard.press('Enter');
-  await expect(full).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.getByTestId('della-artifact')).toContainText('This is an image');
+  const full = page.getByTestId('call-record').getByRole('link', { name: /Open image/ });
+  await full.focus();
+  await expect(full).toBeFocused();
+  await expect(full).toHaveAttribute('href', '/della/originals/call-record-01c73930dd.webp');
   await open(page, 'transformer');
   const training = page.getByTestId('transformer-artifact').getByRole('button', { name: 'Training', exact: true });
   await training.focus(); await page.keyboard.press('Enter');

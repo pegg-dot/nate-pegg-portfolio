@@ -1,0 +1,50 @@
+{
+  "method": "Direct crops of the original unframed user screenshots, losslessly encoded as WebP. One opaque privacy mask in the inbox; no generated or reconstructed interface. Coordinates are left,top,right,bottom with exclusive right/bottom. Filenames normalized to ordinary spaces for display.",
+  "images": [
+    {
+      "file": "call-record-01c73930dd.webp",
+      "sha256": "01c73930dd5db08ee722ed9f9ff5bc97174fdd0ca5965a1c9fdb0e37a63d3cb6",
+      "width": 414,
+      "height": 563,
+      "original": "Screenshot 2026-10-12 at 10.18.53 AM 2.png",
+      "originalSha256": "de345cbc1f1c0769e86a28257d1270cb0b769157dab242e9d7968160ecbb1dc3",
+      "crop": [
+        1496,
+        141,
+        1910,
+        704
+      ],
+      "redactions": []
+    },
+    {
+      "file": "inbox-draft-e202a3554e.webp",
+      "sha256": "e202a3554e82245d45e4c5c89f42d97db9affd71212d5e8182d5cabe1e72754f",
+      "width": 568,
+      "height": 429,
+      "original": "Screenshot 2026-10-12 at 10.19.40 AM 2.png",
+      "originalSha256": "f5c0a5fbd0b6cadc38edd2b07ab324cfc9b56b3abb45c26156b16160fcafa7a0",
+      "crop": [
+        1007,
+        408,
+        1575,
+        837
+      ],
+      "redactions": [
+        {
+          "sourceBox": [
+            1050,
+            490,
+            1110,
+            512
+          ],
+          "rgb": [
+            74,
+            80,
+            92
+          ],
+          "reason": "Customer name in the greeting"
+        }
+      ]
+    }
+  ]
+}

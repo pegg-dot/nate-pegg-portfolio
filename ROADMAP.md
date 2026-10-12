@@ -206,3 +206,13 @@ The prior VialGrade prose fixture remains an archive; this requested rewrite sup
 - [x] Rewrite the account as connected paragraphs without inventing metrics or changing the original grading logic.
 - [x] Complete cross-project regression and desktop/mobile visual review.
 - [x] Verify the deployed VialGrade product-style page: 276 behavioral/source checks and all 50 reviewed image comparisons passed after the product-native deployment became visible.
+
+
+## Della original screenshots and dictated prose - October 12, 2026
+
+- [x] Replace the portfolio simulations with the original call and inbox crops, not generated frames.
+- [x] Keep Nate's March/OpenOperator origin and connected phrasing; combine the anecdote and closing thoughts.
+- [x] Identify the refused booking and manually handled draft accurately.
+- [x] Verify original-image hashes and preserve unrelated project sources.
+- [x] Complete local browser review and cross-project checks.
+- [ ] Verify the published original-screen Della page.

@@ -1,7 +1,7 @@
 name: Authored portfolio pages
 on:
   push:
-    branches: [design/authored-projects-20261012, design/vial-product-style-20261012, main]
+    branches: [design/authored-projects-20261012, design/vial-product-style-20261012, design/della-real-screens-20261012, main]
     paths:
       - 'src/app/work/_authored/**'
       - 'src/app/work/della/**'

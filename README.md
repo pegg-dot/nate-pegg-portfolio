@@ -74,3 +74,7 @@ Della, VialGrade and Transformer now have distinct compositions led by their act
 ## VialGrade product-style correction
 
 At Nate's request, the VialGrade case study now uses the actual VialGrade product colors, typography, assets and outlined panels rather than the earlier serif essay. The other project routes are unchanged. See `docs/VIALGRADE_PRODUCT_STYLE_2026-10-12.md` for source references and scope, and `playwright-vial-product.config.ts` for style-fidelity and behavior checks.
+
+## Della original-screen correction
+
+Della now uses two verified crops of Nate's original app screenshots and a lightly edited version of his supplied origin-story wording. The portfolio replay/approval simulations have been removed from this route. See `docs/DELLA_ORIGINAL_SCREENS_2026-10-12.md` and its source-image/preserved-file manifests. The other project routes remain unchanged.
