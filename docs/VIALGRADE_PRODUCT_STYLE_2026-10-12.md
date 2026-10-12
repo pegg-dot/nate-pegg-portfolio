@@ -33,3 +33,11 @@ Commands: `npm run lint`, `npm run build`, `npx playwright test -c playwright-au
 ## Local review
 
 The rendered desktop and phone pages, the two-panel comparison, all record states and the product palette were inspected before accepting the new VialGrade baselines. The 276-check cross-project suite passed, as did all 16 visual tests, including the unchanged Della/Transformer comparisons. Those suites overlap and are not summed as distinct checks. The preserved-file manifest still matches all 37 files. Production verification follows release.
+
+## Released and verified
+
+Application commit `1b32075cb725730a0ab15651da58d025a0cd94d3` is deployed at `/work/vialgrade` with the product-native edition marker. Vercel deployment `dpl_BmdPhMYWZFRkDk6Z56ckzCzmivet` is READY and points to that exact commit. The first bounded public-marker poll expired before it appeared, but the existing Git deployment subsequently became visible; no project, alias or security settings were changed.
+
+The 276-check cross-project suite and 16 visual tests (50 reviewed image comparisons across the three pages) passed with browser checks targeting the production site in Chrome and WebKit. Unit/source checks still run in the test runner. The final reports show zero failed, skipped or flaky tests. No image baselines were updated during the deployed run, and the final deployed desktop rendering was inspected directly. The Linux GitHub pre-release run also passed (`38265725823`).
+
+The 37-file protected manifest was rechecked after release. Della, Transformer, the homepage, original screenshots and original grading/matching code remain unchanged. The product site itself was not modified. The illustrations and logo on this portfolio route come from the original product source; no generated screenshot or generated product image is used. Structured results are in `verification/vial-product-release-2026-10-12.json`.

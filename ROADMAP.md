@@ -205,4 +205,4 @@ The prior VialGrade prose fixture remains an archive; this requested rewrite sup
 - [x] Change the actual portfolio route to the product's typography, blue, borders, shadows and original vector artwork.
 - [x] Rewrite the account as connected paragraphs without inventing metrics or changing the original grading logic.
 - [x] Complete cross-project regression and desktop/mobile visual review.
-- [ ] Verify the deployed VialGrade product-style page.
+- [x] Verify the deployed VialGrade product-style page: 276 behavioral/source checks and all 50 reviewed image comparisons passed after the product-native deployment became visible.

@@ -1,0 +1,32 @@
+{
+  "applicationCommit": "1b32075cb725730a0ab15651da58d025a0cd94d3",
+  "deployedOrigin": "https://nate-pegg-portfolio.vercel.app",
+  "deploymentId": "dpl_BmdPhMYWZFRkDk6Z56ckzCzmivet",
+  "checkedAt": "2026-10-12T15:01:47.657628+00:00",
+  "productionTargetedReports": {
+    "behavior": {
+      "startTime": "2026-10-12T14:59:27.720Z",
+      "duration": 68921.02900000001,
+      "expected": 276,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "visual": {
+      "startTime": "2026-10-12T15:00:37.215Z",
+      "duration": 8248.109,
+      "expected": 16,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "reviewedImageComparisons": 50,
+  "preservedBaselineFiles": 37,
+  "githubPreReleaseRun": {
+    "id": 38265725823,
+    "conclusion": "success"
+  },
+  "deploymentNote": "The first bounded public-marker check expired before the new version was visible. Vercel later reported the existing Git deployment READY at the intended SHA, after which all production-targeted tests passed. No manual redeploy, project or domain changes were required.",
+  "scope": "Browser checks target production; numerical/source checks execute in the test runner. Baselines were not updated during the deployed run. Della and Transformer application source and screenshots were not changed. No images were generated."
+}
