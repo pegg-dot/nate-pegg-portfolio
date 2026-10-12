@@ -1,0 +1,15 @@
+{
+  "sourceRepository": "pegg-dot/vial",
+  "sourceCommit": "5a08f288a136d2af232e224770e07408902878bd",
+  "sourceFiles": ["src/app/globals.css", "src/components/home/hero.tsx", "src/components/home/manifesto.tsx", "src/components/vial-art.tsx"],
+  "background": "#f7f7f4",
+  "foreground": "#111214",
+  "muted": "#61636b",
+  "blue": "#2b31d8",
+  "mint": "#12b3a6",
+  "border": "2px solid #111214",
+  "shadow": "5px 5px 0 0 #111214",
+  "blueShadow": "5px 5px 0 0 #2b31d8",
+  "panelRadius": "22px",
+  "fontFamily": "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif"
+}

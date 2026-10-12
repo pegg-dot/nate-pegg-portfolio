@@ -70,3 +70,7 @@ The Transformer page now starts with a readable next-character prediction using 
 ## Authored project-page revision
 
 Della, VialGrade and Transformer now have distinct compositions led by their actual work rather than a common demo-first case-study layout. Current design reasoning and scope: `docs/AUTHORED_PROJECTS_2026-10-12.md`. The earlier reader-first documents record preceding versions. Use `npx playwright test -c playwright-authored.config.ts` for all behavioral/numerical checks and `npx playwright test -c playwright-authored-visual.config.ts` for reviewed macOS snapshots. Both accept `PORTFOLIO_TEST_URL` for deployed verification. The protected source and artifact manifest is `docs/verification/authored-preserved-files.json`.
+
+## VialGrade product-style correction
+
+At Nate's request, the VialGrade case study now uses the actual VialGrade product colors, typography, assets and outlined panels rather than the earlier serif essay. The other project routes are unchanged. See `docs/VIALGRADE_PRODUCT_STYLE_2026-10-12.md` for source references and scope, and `playwright-vial-product.config.ts` for style-fidelity and behavior checks.

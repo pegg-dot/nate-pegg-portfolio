@@ -12,7 +12,7 @@ import { readingComparison, readingCases, findings } from '../src/app/work/vialg
 async function openStory(page: Page) {
   await page.goto('/work/vialgrade');
   await page.evaluate(() => document.fonts.ready);
-  await expect(page.locator('[data-vial-edition="authored"]')).toBeVisible();
+  await expect(page.locator('[data-vial-edition="product-native"]')).toBeVisible();
 }
 
 // Nate requested the same editorial pass as Della. The original-copy fixture stays
@@ -59,7 +59,7 @@ test('the whole comparison makes sense on arrival without choosing a field', asy
     await expect(page.getByTestId(`record-${key}`)).toHaveText(claim[key]);
   }
   await expect(demo.getByRole('button')).toHaveCount(0);
-  await expect(demo.getByRole('table')).toHaveCount(1);
+  await expect(demo.getByRole('group', { name: 'Compare the vendor claim and lab record', exact: true })).toHaveCount(1);
 });
 
 test('the revised story is personal and concise, without the rejected money line', async ({ page }) => {
@@ -91,7 +91,7 @@ test('a missing source is visibly missing, not a fake match or an accusation', a
   await expect(page.getByTestId('evidence-demo')).toHaveAttribute('data-result', 'missing');
   for (const { key } of fields) await expect(page.getByTestId(`record-${key}`)).toHaveText('Not on file');
   await expect(page.getByTestId('evidence-finding')).toContainText("doesn't prove the vendor did something wrong");
-  await expect(page.locator('tr[data-disagrees="true"]')).toHaveCount(0);
+  await expect(page.locator('[data-disagrees="true"]')).toHaveCount(0);
 });
 
 test('the conflicting maker remains explicit even though the batch and compound match', async ({ page }) => {
@@ -101,12 +101,12 @@ test('the conflicting maker remains explicit even though the batch and compound 
   await expect(page.getByTestId('record-manufacturer')).toContainText('Example Research B');
   await expect(page.getByTestId('claim-manufacturer')).toHaveText('Example Research A');
   await expect(page.getByTestId('record-manufacturer')).toContainText("Doesn't match");
-  await expect(page.locator('tr[data-disagrees="true"]')).toHaveCount(1);
+  await expect(page.locator('[data-disagrees="true"]')).toHaveCount(1);
   await expect(page.getByTestId('evidence-finding')).toContainText('A matching batch code alone is not enough.');
   await expect(page.getByTestId('record-batch')).toHaveText(claim.batch);
   await page.getByRole('radio', { name: 'Details match', exact: true }).check();
   await expect(page.getByTestId('record-manufacturer')).toHaveText('Example Research A');
-  await expect(page.locator('tr[data-disagrees="true"]')).toHaveCount(0);
+  await expect(page.locator('[data-disagrees="true"]')).toHaveCount(0);
 });
 
 test('all three grade examples can be opened together and use the unchanged projection', async ({ page }) => {
@@ -226,7 +226,7 @@ test('reduced motion responds to runtime changes and never hides a conclusion', 
   await openStory(page);
   await expect(page.getByTestId('evidence-demo')).toHaveAttribute('data-reduced', 'true');
   await page.getByRole('radio', { name: 'Different maker', exact: true }).check();
-  await expect(page.getByTestId('record-manufacturer')).toHaveCSS('background-color', 'rgb(248, 233, 226)');
+  await expect(page.getByTestId('record-manufacturer')).toHaveCSS('background-color', 'rgb(255, 236, 234)');
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await expect(page.getByTestId('evidence-demo')).toHaveAttribute('data-reduced', 'false');
   await expect(page.getByTestId('evidence-finding')).toContainText("The manufacturer doesn't match.");
@@ -297,16 +297,17 @@ test('the changed record is highlighted without moving or hiding its paired valu
   await page.getByRole('radio', { name: 'Different maker', exact: true }).check();
   const samples: string[] = [];
   for (let i = 0; i < 7; i++) { samples.push(await cell.evaluate(el => getComputedStyle(el).backgroundColor)); await page.waitForTimeout(40); }
-  await expect(cell).toHaveCSS('background-color', 'rgb(248, 233, 226)');
-  expect(samples.some(color => color !== before && color !== 'rgb(248, 233, 226)')).toBe(true);
+  await expect(cell).toHaveCSS('background-color', 'rgb(255, 236, 234)');
+  expect(samples.some(color => color !== before && color !== 'rgb(255, 236, 234)')).toBe(true);
   await expect(cell).toContainText('Example Research B');
   await expect(page.getByTestId('claim-manufacturer')).toHaveText('Example Research A');
 });
 
-test('the essay has one title rather than the previous repeated chapter headlines', async ({ page }) => {
+test('the product-styled page has one title and correctly spaced mobile section headings', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openStory(page);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('VialGrade');
-  await expect(page.locator('main h2:visible')).toHaveCount(0);
+  const headings = await page.locator('main h2:visible').allInnerTexts();
+  expect(headings.map(text => text.replace(/\s+/g, ' ').trim())).toEqual(['Why I started looking into it.', 'Figuring out the grades.', 'After someone leaves the site.', '8 signups', 'What I built.']);
   await expect(page.getByTestId('grade-source-excerpt')).toContainText('letter: null');
 });

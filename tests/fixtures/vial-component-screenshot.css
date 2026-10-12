@@ -1,0 +1,2 @@
+/* Component-only captures exclude sticky navigation. Whole-page captures keep it. */
+header { position: relative !important; }

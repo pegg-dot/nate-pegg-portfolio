@@ -1,13 +1,14 @@
 name: Authored portfolio pages
 on:
   push:
-    branches: [design/authored-projects-20261012, main]
+    branches: [design/authored-projects-20261012, design/vial-product-style-20261012, main]
     paths:
       - 'src/app/work/_authored/**'
       - 'src/app/work/della/**'
       - 'src/app/work/vialgrade/**'
       - 'src/app/work/transformer/**'
       - 'tests/authored.spec.ts'
+      - 'tests/vial-product.spec.ts'
       - 'playwright-authored.config.ts'
       - '.github/workflows/authored-projects.yml'
   workflow_dispatch:

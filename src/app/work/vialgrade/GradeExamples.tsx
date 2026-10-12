@@ -1,6 +1,6 @@
 import { exampleGrade, gradeExamples } from './evidence-model';
 import { gradeSummaries } from './reading-model';
-import s from './vial.module.css';
+import s from './product.module.css';
 
 /** Precompute the existing pure projection; don't imply that a document match earns a grade. */
 export default function GradeExamples() {

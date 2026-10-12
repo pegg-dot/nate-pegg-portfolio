@@ -1,0 +1,22 @@
+{
+  "repository": "pegg-dot/vial",
+  "commit": "5a08f288a136d2af232e224770e07408902878bd",
+  "ProductArtSha256": "ed461cf3c8e3ab3f0faa6a5b39cffddf3dd789361038874fa78f7748b9953dac",
+  "ProductIconSha256": "d4e8e1e663f2a083b597410d4186c3ccbabe10096bba8bb08c5aff1646d8445e",
+  "liveComputed": {
+    "background": "#f7f7f4",
+    "foreground": "#111214",
+    "muted": "#61636b",
+    "fontFamily": "Inter, ui-sans-serif, system-ui, -apple-system, \"system-ui\", \"SF Pro Display\", \"Segoe UI\", sans-serif",
+    "fontWeight": "800",
+    "letterSpacing": "-7.04px",
+    "lineHeight": "107.52px",
+    "fontSize": "128px",
+    "emphasis": "rgb(43, 49, 216)",
+    "panel": {
+      "border": "2px solid rgb(17, 18, 20)",
+      "shadow": "rgb(43, 49, 216) 5px 5px 0px 0px",
+      "radius": "22px"
+    }
+  }
+}

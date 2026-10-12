@@ -1,0 +1,153 @@
+{
+  "base": "221c7d8",
+  "files": [
+    {
+      "path": "public/vialgrade/home.jpg",
+      "sha256": "b65dc7fb978730ccf7bd41bff6b8b03f1ad84d5df2b51afadbc19b70fba8bc55"
+    },
+    {
+      "path": "public/vialgrade/research-home.webp",
+      "sha256": "a49186ca87f2301758c350c6d0696101381e219e10a155ab7b49f82128b206c4"
+    },
+    {
+      "path": "public/writing/after-abundance.pdf",
+      "sha256": "3bdb1da4a89c997beda1f92650606834b7f199193533a97666d99231ea24dfb0"
+    },
+    {
+      "path": "src/app/PortfolioStory.tsx",
+      "sha256": "f2033f25b2cb340e43485c8c6359e8f5ba6617ff7dbcf334d7b23f4915e52cef"
+    },
+    {
+      "path": "src/app/components/CaseShell.tsx",
+      "sha256": "e798d6320f63ace250b7441c41aacb35519fda2bd0fee61fc5b5700973d91f25"
+    },
+    {
+      "path": "src/app/components/DrawingPencil.tsx",
+      "sha256": "f3a1dd4ffb1bb495f078b409443d1588f09e0c78a98a30a147a4ed3a269ca698"
+    },
+    {
+      "path": "src/app/components/HandwrittenName.tsx",
+      "sha256": "c7040bc068c156c5fd35d72b090a3797eb17a21d636621bd6bbc0337d88ebb3d"
+    },
+    {
+      "path": "src/app/components/PortfolioFooter.tsx",
+      "sha256": "2c0a196e6d472b8ec5c5bf7deaf7a73fb081a41e740587f79c943bf297ebb2a3"
+    },
+    {
+      "path": "src/app/components/ProjectBrief.tsx",
+      "sha256": "f0327f2e5ba0ab3d7bcf364ea663f3cabdeb79378e6d30653ab5c09b1119ea12"
+    },
+    {
+      "path": "src/app/components/RowingSketch.tsx",
+      "sha256": "12285a234540498b668949e5bcfcc68f740b9707f39a1914ad97da06ab31fc19"
+    },
+    {
+      "path": "src/app/components/ScrollTrace.tsx",
+      "sha256": "ef32f565ba277712cdc28d59824a3f79221e18770a295222a7dff57d38101c50"
+    },
+    {
+      "path": "src/app/components/TigreEgg.tsx",
+      "sha256": "41c2972cabffc47b5d7d7d487a3435a7ce88d5b8ce37acd4c0432aa797a37eb4"
+    },
+    {
+      "path": "src/app/components/portfolio-footer.module.css",
+      "sha256": "51e0692695fa01d0a3578c9835cc401e3ac006e042c4461676497b03c20b0529"
+    },
+    {
+      "path": "src/app/globals.css",
+      "sha256": "8750ad9cb529e8ba4bb9e441c1bd5150fac87658cb0fd5468762db50bf265340"
+    },
+    {
+      "path": "src/app/work/_authored/ArtifactViewer.tsx",
+      "sha256": "bb6f8b63d46c2c2b021faa1f97823e352e2508b514e0f51516770698a25a4748"
+    },
+    {
+      "path": "src/app/work/_authored/ProjectChrome.tsx",
+      "sha256": "f1bb2a2bb64dcdb3d5f9a854ecad7f507004b358ec93347c0607b1e2e34645e9"
+    },
+    {
+      "path": "src/app/work/_authored/authored.module.css",
+      "sha256": "09d84d917ac979fbdf4ddde1402a7ee3b874f26f238a7b19be55088c0cc0581d"
+    },
+    {
+      "path": "src/app/work/della/DellaScenes.tsx",
+      "sha256": "1852256ad2fbf1d4f66ac5187a507925cbb61fe139c89a65758ebfa3cd0e2211"
+    },
+    {
+      "path": "src/app/work/della/della.module.css",
+      "sha256": "b3687cc874e83741f6aa33c7f9b94a9d41aa583d8e3556b298dd4c3101938d4b"
+    },
+    {
+      "path": "src/app/work/della/demo-state.ts",
+      "sha256": "1ecde9126da9ddf01489ec59374de2147ea0908508966d3aa467409f1b94653e"
+    },
+    {
+      "path": "src/app/work/della/page.tsx",
+      "sha256": "38b0e9bb9cb188d6a23e4c6fe6a52f6efe92ab19347e6d8ddf1e5d5049c2c649"
+    },
+    {
+      "path": "src/app/work/della/story-copy.json",
+      "sha256": "cbe5c970d010f58f1ff5136c5e262f746451856af801f8b69fe29442de25baef"
+    },
+    {
+      "path": "src/app/work/transformer/PredictionPreview.tsx",
+      "sha256": "ba4e9fe18648ffbfc04f9d0e5449ae59774b1b9bb9dda116250322baa6a96060"
+    },
+    {
+      "path": "src/app/work/transformer/TransformerLab.tsx",
+      "sha256": "b1c89fbfd7e2f263e8aeb56b35c3cf1cb2157f36de9f5df23105b2149f73a2a2"
+    },
+    {
+      "path": "src/app/work/transformer/capture-model.ts",
+      "sha256": "23f1aa844d4c86ebac0541607a37c642bcd10624c74ade38243c0e6bbce3360f"
+    },
+    {
+      "path": "src/app/work/transformer/capture.json",
+      "sha256": "ba7a2c7b3bc2e131a84d1c5181d427c19127ce39aa772f9a97e68d0ec8b6f69c"
+    },
+    {
+      "path": "src/app/work/transformer/page.tsx",
+      "sha256": "7cbcd15304ad52c0da0e699cd08fcb8d0fbcff1eaca08d66c2306bc6638a919c"
+    },
+    {
+      "path": "src/app/work/transformer/reader-model.ts",
+      "sha256": "3f1b9f6b22d1452f0e9d3a498605397416068c134fec24588dc90fec30eac3d7"
+    },
+    {
+      "path": "src/app/work/transformer/reader.module.css",
+      "sha256": "c5f36764fb8b72814bef727a87b157af267bcb9f73ed4041f1524ef60f0b2498"
+    },
+    {
+      "path": "src/app/work/transformer/story-copy.json",
+      "sha256": "07887b5bb4f6d9239a9abfb10f4764c71f638f24adac6bcf224bee8dba884806"
+    },
+    {
+      "path": "src/app/work/transformer/transformer.module.css",
+      "sha256": "e5f99be422c2b4f9f703bd5074d3d0219668fbaf6f55536cac3ea62777440be1"
+    },
+    {
+      "path": "src/app/work/vialgrade/evidence-model.ts",
+      "sha256": "77b93eaec063954fe7cfc237f36cf233b1c10c6ce21edf3e402561592aad8666"
+    },
+    {
+      "path": "src/app/work/vialgrade/grade-projection.ts",
+      "sha256": "74285e98290679c7ec91b992cd671f20218511dcbb068bcbcb23c86fb447e5b6"
+    },
+    {
+      "path": "src/app/work/vialgrade/grade-types.ts",
+      "sha256": "d054f2a133d0316ad7c0b4128efc728f8cbefdd075fa2d6e50a7abcf7f3fcdda"
+    },
+    {
+      "path": "src/app/work/vialgrade/reading-model.ts",
+      "sha256": "3cf5035171d7c7d821a0118c018ae0e2f585e554e2c89f69d1160c76a4490b4c"
+    },
+    {
+      "path": "tests/fixtures/vial-grade-source.json",
+      "sha256": "a718854e99befe22bbaa2f24418556f78d8ee7a147afe8c8d48d77c961018913"
+    },
+    {
+      "path": "tests/fixtures/vial-original-copy.json",
+      "sha256": "188e848ae523aa93098321843aa340cc77258d0ff59c3b2509511a2707ff3f9e"
+    }
+  ]
+}

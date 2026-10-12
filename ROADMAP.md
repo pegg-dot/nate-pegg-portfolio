@@ -197,3 +197,12 @@ The prior VialGrade prose fixture remains an archive; this requested rewrite sup
 - [x] Preserve homepage, original artifacts, model/grading logic and illustrative-action safety boundaries.
 - [x] Complete joint desktop/mobile visual review and local checks (254 behavioral checks and 16 visual tests).
 - [x] Verify the released pages: 254 behavioral/numerical checks and 50 reviewed image comparisons passed against production; the main-branch Linux suite also passed.
+
+
+## VialGrade product identity - October 12, 2026
+
+- [x] Cross-check Nate's screenshots against the product source and rendered styles.
+- [x] Change the actual portfolio route to the product's typography, blue, borders, shadows and original vector artwork.
+- [x] Rewrite the account as connected paragraphs without inventing metrics or changing the original grading logic.
+- [x] Complete cross-project regression and desktop/mobile visual review.
+- [ ] Verify the deployed VialGrade product-style page.

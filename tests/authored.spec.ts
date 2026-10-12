@@ -51,7 +51,12 @@ for (const slug of slugs) {
     await expect(page.locator('nav a[aria-current="page"]')).toHaveAttribute('href', `/work/${slug}`);
     await expect(page.locator('main img:visible').first()).toBeVisible();
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
-    expect(await page.locator('main h2:visible').count()).toBeLessThanOrEqual(2);
+    if (slug === 'vialgrade') {
+      await expect(page.locator('[data-vial-edition="product-native"]')).toBeVisible();
+      await expect(page.getByRole('heading', { level: 2, name: /Figuring out/ })).toBeVisible();
+    } else {
+      expect(await page.locator('main h2:visible').count()).toBeLessThanOrEqual(2);
+    }
     expect(errors).toEqual([]);
   });
   for (const width of [320, 390, 768, 1024, 1440]) {
