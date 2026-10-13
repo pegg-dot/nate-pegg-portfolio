@@ -8,12 +8,12 @@ import RowingSketch from "./components/RowingSketch";
 import PortfolioFooter from "./components/PortfolioFooter";
 
 const workbench = [
-  { title: "LOT", what: "Real-estate workspace for finding, underwriting, and tracking houses around Charlottesville.", origin: "My uncle said he could help me learn real estate, so I built a tool to help me.", meta: "parcel data · underwriting · owner research", href: "/work/lot", action: "story" },
-  { title: "WeBuddy", what: "Salon website builder that starts with public business data, asks the owner for what the internet can’t know, and turns it into a site they can edit.", origin: "Getting my foot in the door with nail salons was rough. I thought if I could send something useful, like a site I’d already built from the business’s data, I’d have a better way in.", meta: "Google listing import · 96-field model · templates", href: "/work/webuddy", action: "story" },
-  { title: "NPGKTrades", what: "Polymarket copy-trading system that tails one trader, sizes each copy to my bankroll, and blocks trades when things like slippage or exposure get too high.", origin: "I knew the trader and thought it would be an interesting challenge to mirror his allocation instead of blindly copying the dollar amounts.", meta: "detect · aggregate · size · risk · execute", href: "/work/npgktrades", action: "story" },
-  { title: "Say No To Plastic", what: "Website about microplastics built around Dr. Haddad’s book, with the science, 3D anatomy, newsletters, and practical guides.", origin: "Dr. Haddad asked me to make a website for his new book, Homo Plasticus, with plans to eventually expand into newsletters, affiliates, and merchandise.", meta: "research communication · 3D anatomy · guides", href: "/work/say-no-to-plastic", action: "story" },
-  { title: "Grounds Guide", what: "Campus mapping and routing tool where entrances and pedestrian access matter more than drawing a clean-looking line between two buildings.", origin: "Starting at the University of Virginia, I didn’t know my way around Grounds. I noticed Google Maps missed shortcuts and smaller paths, so I wanted a guide specifically for UVA students that could also import your schedule and tell you when to leave.", meta: "GIS · entrances · pedestrian routing", href: "/work/grounds-guide", action: "story" },
-  { title: "MoveMate", what: "Move-in and move-out help for UVA students, with a student marketplace underneath it.", origin: "In my entrepreneurship class, we have to start something. My friends and I started a marketplace for buying and selling furniture, mapped out our top 20 assumptions, and realized moving itself was the better problem to solve first.", meta: "UVA · moving help · marketplace backbone", href: "/work/movemate", action: "story" },
+  { title: "LOT", what: "Real-estate workspace for finding, underwriting, and tracking houses around Charlottesville.", meta: "parcel data · underwriting · owner research", href: "/work/lot", action: "story" },
+  { title: "WeBuddy", what: "Salon website builder that turns a Google listing and a few owner answers into an editable site.", meta: "Google listing import · templates · owner editing", href: "/work/webuddy", action: "story" },
+  { title: "NPGKTrades", what: "Polymarket copy-trading system that sizes each copy to my bankroll and blocks trades when risk limits are hit.", meta: "detect · aggregate · size · risk · execute", href: "/work/npgktrades", action: "story" },
+  { title: "Say No To Plastic", what: "Microplastics education site with 3D anatomy, newsletters, the book, and practical guides.", meta: "research communication · 3D anatomy · guides", href: "/work/say-no-to-plastic", action: "story" },
+  { title: "Grounds Guide", what: "UVA routing tool built around real paths, entrances, class schedules, and leave-by times.", meta: "GIS · entrances · pedestrian routing", href: "/work/grounds-guide", action: "story" },
+  { title: "MoveMate", what: "Move-in and move-out help for UVA students, with a student marketplace underneath it.", meta: "UVA · moving help · marketplace backbone", href: "/work/movemate", action: "story" },
 ];
 
 export default function PortfolioStory() {
@@ -35,19 +35,19 @@ export default function PortfolioStory() {
       <section className="chapterIntro" id="work">
         <span className="microLabel">HOW I GOT INTO THIS</span>
         <h2>I&apos;ve always liked<br/>creating things.</h2>
-        <p>Growing up, I always wanted to be an entrepreneur. I tried a clothing brand, a marketplace for fitness clubs and organizations, and a bunch of other stuff I thought would be cool. Once I got really into AI, building side projects became a way to learn and be prepared for the future. Some started as problems I saw, but others were just because I wanted to understand something better, challenge myself, and see if I could build it.</p>
+        <p>I&apos;ve always liked making things. More recently, most of my side projects have come from a problem I wanted to solve or something in AI I wanted to understand by actually building it.</p>
       </section>
 
       <section className="dellaStorySection projectSpotlight">
         <div className="sectionRail"><span>01</span><span>DELLA</span><span>MAR 11 → NOW</span></div>
         <div className="projectDefinition">
           <span className="microLabel">WHAT IT IS</span>
-          <p><strong data-pencil-target="della">Della is an AI employee for nail salons.</strong> It answers calls, remembers customers across conversations, checks live schedule availability, creates and cancels real appointments in Square, and communications is the first wedge I’m going after.</p>
+          <p><strong data-pencil-target="della">Della is an AI employee for nail salons.</strong> Calls, customer memory, live schedule checks, and real Square bookings.</p>
           <div className="projectActions"><Link href="/work/della">READ THE STORY →</Link><a href="https://hellodella.com" target="_blank" rel="noreferrer">OPEN DELLA ↗</a></div>
         </div>
         <div className="spotlightGrid">
           <div className="spotlightImage"><Image src="/della/room-identity.png" alt="Della workspace showing the AI employee's permissions, activity and state" fill sizes="(max-width: 980px) 90vw, 50vw" /></div>
-          <div className="spotlightText"><span className="microLabel">WHY I STARTED</span><h2>I thought these models were going to get really good at work on a computer, but they still needed to know how the actual business worked.</h2><p>A nail salon has live appointments, missed calls, repeat customers, texts, DMs, cancellations, and a lot of information a generic model doesn’t start with. I wanted to connect Della into those systems and see if it could actually do the work, starting with communications.</p><div className="spotlightChips"><span>voice</span><span>persistent context</span><span>Square bookings</span><span>knowledge + tools</span></div></div>
+          <div className="spotlightText"><span className="microLabel">THE BUILD</span><h2>AI employee for nail salons.</h2><p>Starting with communications, then connecting into the systems the salon already uses.</p><div className="spotlightChips"><span>voice</span><span>persistent context</span><span>Square bookings</span><span>knowledge + tools</span></div></div>
         </div>
       </section>
 
@@ -55,12 +55,12 @@ export default function PortfolioStory() {
         <div className="sectionRail dark"><span>02</span><span>VIALGRADE</span><span>LIVE</span></div>
         <div className="projectDefinition">
           <span className="microLabel">WHAT IT IS</span>
-          <p><strong data-pencil-target="vial">VialGrade is a research platform for the peptide market.</strong> It aggregates public data from batches, COAs, lab reports, test results, vendor records, and other sources into one place, then grades vendors and storefronts against a rubric so you can see what the grade is based on.</p>
+          <p><strong data-pencil-target="vial">VialGrade is a peptide research platform.</strong> It pulls together COAs, lab tests, batch data, and vendor records, then grades vendors against one rubric.</p>
           <div className="projectActions"><Link href="/work/vialgrade">READ THE STORY →</Link><a href="https://vialgrade.com" target="_blank" rel="noreferrer">OPEN VIALGRADE ↗</a><a href="https://github.com/pegg-dot/vial" target="_blank" rel="noreferrer">CODE ↗</a></div>
         </div>
         <div className="spotlightGrid reverse">
           <div className="spotlightImage vialPreview"><Image src="/vialgrade/home.jpg" alt="VialGrade homepage and search interface" fill sizes="(max-width: 980px) 90vw, 50vw" /></div>
-          <div className="spotlightText"><span className="microLabel">WHY I STARTED</span><h2>A friend of mine was really into biomedicine and peptide research, and he told me a lot of people around him wanted to buy peptides but didn’t really trust the vendors.</h2><p>I thought it would be useful to have one place that compares the vendors, grades them against the same rubric, and lets you see the records behind the grade instead of just taking the storefront’s word for it.</p><div className="spotlightChips"><span>vendors</span><span>compounds</span><span>lab evidence</span><span>source history</span></div></div>
+          <div className="spotlightText"><span className="microLabel">THE BUILD</span><h2>Peptide vendor research and grading.</h2><p>Aggregate the public evidence, compare it, and make the grade traceable.</p><div className="spotlightChips"><span>vendors</span><span>compounds</span><span>lab evidence</span><span>source history</span></div></div>
         </div>
       </section>
 
@@ -68,12 +68,12 @@ export default function PortfolioStory() {
         <div className="sectionRail light"><span>03</span><span>TRANSFORMER</span><span>FROM SCRATCH</span></div>
         <div className="projectDefinition projectDefinitionDark">
           <span className="microLabel">WHAT IT IS</span>
-          <p><strong data-pencil-target="transformer">A GPT-style transformer I coded from scratch in PyTorch and trained on Tiny Shakespeare.</strong> I worked through tokenization, embeddings, attention, the forward pass, normalization, and decoding, then built an animation in the browser around what the model was actually doing so I could understand it more intuitively.</p>
+          <p><strong data-pencil-target="transformer">A GPT-style transformer I built and trained from scratch.</strong> Then I made a browser visualizer around the model&apos;s real activations.</p>
           <div className="projectActions"><Link href="/work/transformer">READ THE STORY →</Link><a href="https://transformer-viz-eight.vercel.app" target="_blank" rel="noreferrer">OPEN VISUALIZER ↗</a><a href="https://github.com/pegg-dot/Transformer" target="_blank" rel="noreferrer">CODE ↗</a></div>
         </div>
         <div className="spotlightGrid">
           <div className="spotlightImage transformerPreview"><Image src="/transformer/qkv.webp" alt="Transformer visualizer showing query, key and value projections" fill sizes="(max-width: 980px) 90vw, 50vw" /></div>
-          <div className="spotlightText spotlightTextLight"><span className="microLabel">WHY I STARTED</span><h2>I wanted to understand what was actually happening inside a transformer.</h2><p>I had been studying the concepts, but building one from scratch made them click a lot more. Then I built the visualizer because I thought it would be another challenge and a better way to see what the model was doing.</p><div className="spotlightChips"><span>10.79M params</span><span>6 blocks</span><span>6 heads</span><span>real activations</span></div></div>
+          <div className="spotlightText spotlightTextLight"><span className="microLabel">THE BUILD</span><h2>Transformer from scratch + visualizer.</h2><p>Train the model, capture what happens inside it, and make the computation easier to see.</p><div className="spotlightChips"><span>10.79M params</span><span>6 blocks</span><span>6 heads</span><span>real activations</span></div></div>
         </div>
       </section>
 
@@ -82,7 +82,7 @@ export default function PortfolioStory() {
         <div className="workbenchStoryIntro"><span className="microLabel">MORE BUILDS</span><h2>A few other things I&apos;ve built or am still working on.</h2></div>
         <div className="originList">
           {workbench.map((project, i) => {
-            const body = <><span className="originNum">0{i + 4}</span><div><h3>{project.title}</h3><p className="originWhat">{project.what}</p><p className="originWhy"><span>why:</span> {project.origin}</p><small>{project.meta}</small></div><span className="originArrow">{project.action === "story" ? "story →" : project.action === "code" ? "code ↗" : project.action === "live" ? "live ↗" : "soon"}</span></>;
+            const body = <><span className="originNum">0{i + 4}</span><div><h3>{project.title}</h3><p className="originWhat">{project.what}</p><small>{project.meta}</small></div><span className="originArrow">{project.action === "story" ? "story →" : project.action === "code" ? "code ↗" : project.action === "live" ? "live ↗" : "soon"}</span></>;
             if (!project.href) return <div key={project.title} className="originRow pending">{body}</div>;
             if (project.href.startsWith("/")) return <Link key={project.title} className="originRow" href={project.href}>{body}</Link>;
             return <a key={project.title} className="originRow" href={project.href} target="_blank" rel="noreferrer">{body}</a>;
