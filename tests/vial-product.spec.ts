@@ -95,7 +95,7 @@ test('the blue result section uses historical user-provided results, not the pro
 
 test('the body uses the revised connected paragraphs rather than the old sentence fragments', async ({ page }) => {
   await open(page);
-  for (const key of ['orientation', 'unknown', 'handoff', 'attribution', 'earlyUse'] as const) {
+  for (const key of ['orientation', 'unknown', 'researchDirection', 'traceability', 'earlyUse'] as const) {
     await expect(page.getByText(copy[key], { exact: true })).toBeVisible();
     expect(copy[key].split(/\s+/).length).toBeGreaterThan(35);
   }

@@ -55,12 +55,12 @@ export default function PortfolioStory() {
         <div className="sectionRail dark"><span>02</span><span>VIALGRADE</span><span>LIVE</span></div>
         <div className="projectDefinition">
           <span className="microLabel">WHAT IT IS</span>
-          <p><strong data-pencil-target="vial">VialGrade is a peptide research platform.</strong> It pulls together COAs, lab tests, batch data, and vendor records, then grades vendors against one rubric.</p>
+          <p><strong data-pencil-target="vial">VialGrade is becoming a research intelligence platform for peptide and biotech research.</strong> It brings together lab reports, clinical trials, regulatory records, papers, and company data, then uses AI to help compare the evidence and trace it back to the original sources.</p>
           <div className="projectActions"><Link href="/work/vialgrade">READ THE STORY →</Link><a href="https://vialgrade.com" target="_blank" rel="noreferrer">OPEN VIALGRADE ↗</a><a href="https://github.com/pegg-dot/vial" target="_blank" rel="noreferrer">CODE ↗</a></div>
         </div>
         <div className="spotlightGrid reverse">
           <div className="spotlightImage vialPreview"><Image src="/vialgrade/home.jpg" alt="VialGrade homepage and search interface" fill sizes="(max-width: 980px) 90vw, 50vw" /></div>
-          <div className="spotlightText"><span className="microLabel">THE BUILD</span><h2>Peptide vendor research and grading.</h2><p>Aggregate the public evidence, compare it, and make the grade traceable.</p><div className="spotlightChips"><span>vendors</span><span>compounds</span><span>lab evidence</span><span>source history</span></div></div>
+          <div className="spotlightText"><span className="microLabel">THE BUILD</span><h2>Research intelligence for peptide and biotech research.</h2><p>Pull the evidence together, compare sources, and keep everything traceable back to where it came from.</p><div className="spotlightChips"><span>clinical trials</span><span>papers</span><span>regulatory records</span><span>lab evidence</span></div></div>
         </div>
       </section>
 

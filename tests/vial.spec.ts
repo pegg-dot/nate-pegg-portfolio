@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import ts from 'typescript';
 import pinned from './fixtures/vial-grade-source.json';
 import copy from '../src/app/work/vialgrade/story-copy.json';
-import { claim, fields, compareDocuments, recordFor, exampleGrade, gradeExamples, exampleTaggedUrl, linkParts } from '../src/app/work/vialgrade/evidence-model';
+import { claim, fields, compareDocuments, recordFor, exampleGrade, gradeExamples } from '../src/app/work/vialgrade/evidence-model';
 import { gradeFromVerdict } from '../src/app/work/vialgrade/grade-projection';
 import { readingComparison, readingCases, findings } from '../src/app/work/vialgrade/reading-model';
 
@@ -68,7 +68,7 @@ test('the revised story is personal and concise, without the rejected money line
     for (const text of Array.isArray(value) ? value : [value]) await expect(page.getByText(text, { exact: true })).toBeVisible();
   }
   const prose = await page.locator('main').innerText();
-  expect(prose).toContain('aggregates public data from batches, COAs, lab reports, test results');
+  expect(prose).toContain('research intelligence platform for peptide and biotech research');
   expect(prose).not.toContain('not making money');
   expect(prose).not.toContain('no live affiliate deals');
   expect(prose).not.toContain('The fields match. The scope matters.');
@@ -155,16 +155,14 @@ test('the safety limit is beside both the comparison and the grades', async ({ p
   }
 });
 
-test('the referral explanation is readable without opening a URL and never implies a purchase', async ({ page }) => {
+test('the research direction keeps AI outputs tied back to source evidence', async ({ page }) => {
   await openStory(page);
-  const handoff = page.getByTestId('handoff-demo');
-  await expect(handoff).toContainText('The outbound click to a website can be recorded');
-  await expect(handoff).toContainText("a purchase can't because the link alone doesn't tell me whether someone actually bought anything");
-  await handoff.locator('summary').click();
-  await expect(handoff.locator('details code')).toHaveText(exampleTaggedUrl);
-  for (const part of linkParts) await expect(handoff).toContainText(part.meaning);
-  await expect(handoff.getByRole('link')).toHaveCount(0);
-  expect(new URL(exampleTaggedUrl).hostname).toBe('vendor.example');
+  const direction = page.getByTestId('research-direction');
+  await expect(direction).toContainText('Clinical trials, papers, FDA and other regulatory records, lab reports, and company information');
+  await expect(page.getByText(copy.researchDirection, { exact: true })).toBeVisible();
+  await expect(page.getByText(copy.traceability, { exact: true })).toBeVisible();
+  const visible = await page.locator('main').innerText();
+  expect(visible).not.toMatch(/buy peptides|purchase can|check out through VialGrade/i);
 });
 
 test('all new interactions stay local and never contact a vendor, lab or production API', async ({ page }) => {
@@ -248,8 +246,7 @@ test('without JavaScript every outcome, grade and explanation is still readable'
     await expect(page.getByTestId('grade-concern')).toBeVisible();
     await page.getByTestId('grade-demo').locator('summary').click();
     await expect(page.getByTestId('grade-demo')).toContainText('Assessment: trusted');
-    await page.getByTestId('handoff-demo').locator('summary').click();
-    await expect(page.getByTestId('handoff-demo').locator('details code')).toHaveText(exampleTaggedUrl);
+    await expect(page.getByTestId('research-direction')).toContainText('Clinical trials, papers, FDA and other regulatory records');
   } finally { await context.close(); }
 });
 
@@ -308,6 +305,6 @@ test('the product-styled page has one title and correctly spaced mobile section 
   await openStory(page);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('VialGrade');
   const headings = await page.locator('main h2:visible').allInnerTexts();
-  expect(headings.map(text => text.replace(/\s+/g, ' ').trim())).toEqual(['Why I started looking into it.', 'Figuring out the grades.', 'After someone leaves the site.', '8 signups', 'What I built.']);
+  expect(headings.map(text => text.replace(/\s+/g, ' ').trim())).toEqual(['Why I started looking into it.', 'Figuring out the grades.', 'Using AI to read the evidence.', '8 signups', 'What I built.']);
   await expect(page.getByTestId('grade-source-excerpt')).toContainText('letter: null');
 });
