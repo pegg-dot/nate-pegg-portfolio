@@ -32,7 +32,7 @@ export default function MoveMateCase() {
         },
         {
           label: "HOW",
-          text: "We worked through about 20 assumptions, built a simple MVP, put posters around Grounds, and are now partnering with a local apartment complex in Charlottesville to test MoveMate around real moves.",
+          text: "We worked through about 20 assumptions, built a simple MVP, put posters around Grounds, and are now partnering with a new local apartment complex in Charlottesville to test MoveMate around real moves.",
         },
         {
           label: "WHEN",
@@ -176,7 +176,7 @@ export default function MoveMateCase() {
             <h2>NOW WE GET TO TEST IT WITH A REAL PROPERTY.</h2>
           </div>
           <div className="caseStack">
-            <p>We are now partnering with a local apartment complex in Charlottesville, which gives us a much better place to test MoveMate than only putting posters around Grounds. We can work around real move-in and move-out needs and see what residents, the property, and student helpers actually need from the service.</p>
+            <p>We are now partnering with a new local apartment complex in Charlottesville, which gives us a much better place to test MoveMate than only putting posters around Grounds. We can work around real move-in and move-out needs and see what residents, the property, and student helpers actually need from the service.</p>
             <p>I still do not want to build a huge moving network before we know what the first moves actually require. The goal is to use this partnership to learn where the process breaks, what people are willing to pay for, and what we should build next instead of guessing from the outside.</p>
             <a className={styles.liveButton} href="https://movemate-dcy8.onrender.com" target="_blank" rel="noreferrer">OPEN MOVEMATE ↗</a>
           </div>
