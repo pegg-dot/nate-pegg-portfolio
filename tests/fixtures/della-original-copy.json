@@ -22,6 +22,6 @@
     "An AI employee for nail salons, starting with calls, messaging, customer memory, scheduling, and real bookings.",
     "Frontier models still don’t know the live operational state of a specific salon.",
     "A harness around tools, memory, evaluations, permissions, and the salon's existing software.",
-    "Started March 11, 2026 as OpenOperator. Medspas first, then nail salons, then communications first."
+    "Started April 2026 as OpenOperator. Medspas first, then nail salons, then communications first."
   ]
 }
