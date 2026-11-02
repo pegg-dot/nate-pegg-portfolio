@@ -55,7 +55,7 @@ const imageFiles = [
 test('the origin follows the supplied dictation, including the actual business systems and lost leads', async ({ page }) => {
   await openStory(page);
   await expect(page.getByText(copy.why[0], { exact: true })).toBeVisible();
-  expect(copy.why[0].startsWith('I started working on Della in March of 2026 as OpenOperator.')).toBe(true);
+  expect(copy.why[0].startsWith('I started working on Della in April of 2026 as OpenOperator.')).toBe(true);
   expect(copy.why[0]).toContain('studying the foundations of AI');
   expect(copy.why[0]).toContain('eventually, if not already');
   expect(copy.why[0]).toContain("What they wouldn't know out of the box");
