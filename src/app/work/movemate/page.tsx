@@ -113,7 +113,7 @@ export default function MoveMateCase() {
 
         <figure className={styles.posterCampaign}>
           <Image
-            src="/movemate/poster-campaign.jpg"
+            src="/movemate/poster-campaign.webp"
             alt="MoveMate and HOOS Moving poster designs used around UVA Grounds"
             width={1000}
             height={563}
