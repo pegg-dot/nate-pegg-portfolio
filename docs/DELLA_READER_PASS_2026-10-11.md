@@ -11,7 +11,7 @@ The first version repeated the booking in two different panels. Its "call" showe
 ## Editorial choices
 
 - Start with what Della does while a customer is on the phone. Introduce the broader ambition separately and as a direction, not as already-operational autonomy.
-- Keep Nate's original reasons, March 11/OpenOperator origin, medspa-to-nail-salon change, booking failure, chipped-nail recollection, live-vs-saved information distinction and ongoing reliability/latency work.
+- Keep Nate's original reasons, April 2026/OpenOperator origin, medspa-to-nail-salon change, booking failure, chipped-nail recollection, live-vs-saved information distinction and ongoing reliability/latency work.
 - Use first-person explanations and contractions. Remove report labels, placeholder success IDs and repetitive "in this demo" wording.
 - Define the harness only in optional technical detail. Do not invent a customer, a transcript, a measured response time, revenue or paid-salon traction.
 - Keep the original frozen fixture and previous design note as historical provenance. They are not silently replaced with the new copy and called original.
