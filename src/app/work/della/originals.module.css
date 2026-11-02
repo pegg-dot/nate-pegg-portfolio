@@ -21,3 +21,54 @@
 .screen figcaption a{min-height:44px}
 @media(max-width:960px){.callContent{grid-template-columns:minmax(0,1fr) 360px;gap:32px}.callHeading .prose{font-size:17px}}
 @media(max-width:760px){.callContent{grid-template-columns:1fr;gap:24px;max-width:650px}.callScreens{justify-self:center}.callHeading{padding-top:0}.sourceNote{margin-top:20px}.technical{max-width:650px}}
+
+
+/* Della's larger operating-system story: evidence first, future clearly separated from what is live. */
+.industry{border-block:1px solid var(--line);background:#fff;padding:52px 40px 48px}
+.industryHead{width:calc(100% - 80px);max-width:790px;margin:0 auto 38px}
+.industryHead h2{max-width:700px;font-size:40px}
+.industryHead .prose{font-size:18px}
+.statGrid{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid #bac5d6;border-bottom:1px solid #bac5d6}
+.stat{min-height:155px;padding:22px 22px 19px;border-right:1px solid #d7deea;display:flex;flex-direction:column}
+.stat:last-child{border-right:0}
+.stat strong{font-size:38px;line-height:1;letter-spacing:-.05em;color:#1d4ed8;font-weight:600}
+.stat span{margin-top:15px;font-size:13px;line-height:1.5;color:#344056}
+.stat small{margin-top:auto;padding-top:13px;font-size:10px;line-height:1.55;color:#748095}
+.industryNote{max-width:1120px;margin:20px auto 0;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(260px,.75fr);gap:42px;font-size:11px;line-height:1.75;color:#6a768a}
+.industryNote span:last-child{text-align:right}
+.industryNote a{text-decoration:underline;text-underline-offset:3px}
+
+.direction{border-top:1px solid var(--line);padding:56px 40px 62px;background:#fbfcfe}
+.directionIntro,.directionClose{width:calc(100% - 80px);max-width:790px;margin:0 auto}
+.directionIntro h2{font-size:40px}
+.futureExample{max-width:960px;width:calc(100% - 80px);margin:44px auto;padding:28px 32px;border:1px solid #cbd6e8;background:#f3f6fb}
+.futureExample .label{color:#40516f}
+.futureExample p{margin:0;max-width:830px;font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:1.72;color:#2e3a4e}
+.directionClose{padding-top:2px}
+.directionLine{margin:30px 0 0;padding-top:28px;border-top:1px solid #cbd6e8;font-size:31px;line-height:1.35;letter-spacing:-.03em;color:#151c29;max-width:740px}
+
+@media(max-width:900px){
+  .statGrid{grid-template-columns:1fr 1fr}
+  .stat:nth-child(2){border-right:0}
+  .stat:nth-child(-n+2){border-bottom:1px solid #d7deea}
+  .industryNote{grid-template-columns:1fr;gap:16px}
+  .industryNote span:last-child{text-align:left}
+}
+@media(max-width:650px){
+  .industry{padding:38px 22px 36px}
+  .industryHead{width:100%;margin-bottom:28px}
+  .industryHead h2{font-size:31px}
+  .industryHead .prose{font-size:17px}
+  .statGrid{grid-template-columns:1fr;margin-inline:0}
+  .stat{min-height:0;border-right:0;border-bottom:1px solid #d7deea;padding:19px 0}
+  .stat:nth-child(-n+2){border-bottom:1px solid #d7deea}
+  .stat:last-child{border-bottom:0}
+  .stat strong{font-size:34px}
+  .industryNote{margin-top:17px}
+  .direction{padding:39px 22px 45px}
+  .directionIntro,.directionClose,.futureExample{width:100%}
+  .directionIntro h2{font-size:31px}
+  .futureExample{margin-block:30px;padding:22px}
+  .futureExample p{font-size:18px;line-height:1.7}
+  .directionLine{font-size:25px}
+}
