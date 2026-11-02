@@ -6,7 +6,7 @@ Nate asked for an actual portfolio edit, not another generated product image, an
 
 ## Writing
 
-The origin begins with the supplied sentence: "I started working on Della in March of 2026 as OpenOperator." It keeps his foundations-of-AI study, the OpenClaw moment, his belief about agents doing computer tasks, and the missing business-specific systems/context. The adjacent move from medspas to nail salons and the lost-lead reason for starting with communications remain together in the following paragraph.
+The origin begins with the supplied sentence: "I started working on Della in April of 2026 as OpenOperator." It keeps his foundations-of-AI study, the OpenClaw moment, his belief about agents doing computer tasks, and the missing business-specific systems/context. The adjacent move from medspas to nail salons and the lost-lead reason for starting with communications remain together in the following paragraph.
 
 The chipped-nail anecdote and reaction are one continuous paragraph, rather than a series of short cards or one-line statements. The current work and longer-term direction are also joined. "Della" and "OpenOperator" are normalized from spoken spelling; the anecdote is a recollection, not a transcript of the screenshot. Prior testing is not described as paid-client traction.
 
