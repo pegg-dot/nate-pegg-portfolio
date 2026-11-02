@@ -864,6 +864,38 @@ section { position: relative; z-index: 4; }
   object-fit: cover;
   object-position: center top;
 }
+.dellaVideoFrame {
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+  background: #f7f2e7;
+}
+.dellaPromoVideo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #f7f2e7;
+}
+.dellaVideoFallback {
+  display: none;
+  position: absolute;
+  inset: 0;
+}
+.demoBadge {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  z-index: 3;
+  padding: 7px 9px;
+  border: 1px solid rgba(21,21,16,.55);
+  background: rgba(247,242,231,.92);
+  font: 800 9px/1 Arial, sans-serif;
+  letter-spacing: .1em;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dellaPromoVideo { display: none; }
+  .dellaVideoFallback { display: block; }
+}
 .vialPreview img {
   object-fit: cover;
   object-position: center top;

@@ -46,7 +46,7 @@ export default function PortfolioStory() {
           <div className="projectActions"><Link href="/work/della">READ THE STORY →</Link><a href="https://hellodella.com" target="_blank" rel="noreferrer">OPEN DELLA ↗</a></div>
         </div>
         <div className="spotlightGrid">
-          <div className="spotlightImage"><Image src="/della/room-identity.png" alt="Della workspace showing the AI employee's permissions, activity and state" fill sizes="(max-width: 980px) 90vw, 50vw" /></div>
+          <div className="spotlightImage dellaVideoFrame"><video className="dellaPromoVideo" src="/della/della-promo-home.mp4" autoPlay muted loop playsInline controls preload="metadata" aria-label="Della concept demo showing how the product could work" /><div className="dellaVideoFallback"><Image src="/della/room-identity.png" alt="Della workspace showing the AI employee's permissions, activity and state" fill sizes="(max-width: 980px) 90vw, 50vw" /></div><span className="demoBadge">CONCEPT DEMO</span></div>
           <div className="spotlightText"><span className="microLabel">THE BUILD</span><h2>From answering the phone to running the salon.</h2><p>I&apos;m starting with communication and booking, then connecting the systems and context Della needs to do more of the work the owner handles manually.</p><div className="spotlightChips"><span>calls</span><span>live schedule</span><span>customer context</span><span>Square bookings</span></div></div>
         </div>
       </section>
