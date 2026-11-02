@@ -18,8 +18,8 @@ export default function MoveMateCase() {
       index="09 / MOVEMATE"
       title="MOVEMATE"
       subtitle="MoveMate is a UVA project my friends and I started around move-in and move-out. We first thought the main thing would be a student marketplace for furniture, but after working through the idea we realized the more immediate problem was helping students actually move the stuff."
-      external={{ label: "LAUNCH MVP", href: "https://move-mate.netlify.app" }}
-      actions={[{ label: "OPEN LAUNCH MVP", href: "https://move-mate.netlify.app", external: true }]}
+      external={{ label: "OPEN MOVEMATE", href: "https://movemate-dcy8.onrender.com" }}
+      actions={[{ label: "OPEN MOVEMATE", href: "https://movemate-dcy8.onrender.com", external: true }]}
     >
       <ProjectBrief items={[
         {
@@ -32,7 +32,7 @@ export default function MoveMateCase() {
         },
         {
           label: "HOW",
-          text: "We worked through about 20 assumptions, built a simple MVP, put posters around Grounds, and are trying to get real requests before building a huge operation around it.",
+          text: "We worked through about 20 assumptions, built a simple MVP, put posters around Grounds, and are now partnering with a local apartment complex in Charlottesville to test MoveMate around real moves.",
         },
         {
           label: "WHEN",
@@ -173,12 +173,12 @@ export default function MoveMateCase() {
         <div className="caseGrid two">
           <div>
             <span className="caseLabel">WHERE IT IS NOW</span>
-            <h2>THE MVP IS LIVE.</h2>
+            <h2>NOW WE GET TO TEST IT WITH A REAL PROPERTY.</h2>
           </div>
           <div className="caseStack">
-            <p>Right now we are trying to get the first actual requests instead of building a huge moving network before we know we need one.</p>
-            <p>If people start asking for help, we can do the early moves ourselves and bring in student helpers or volunteers as demand grows. Then we can build the rest around what people actually ask for instead of guessing what the whole operation needs in advance.</p>
-            <a className={styles.liveButton} href="https://move-mate.netlify.app" target="_blank" rel="noreferrer">OPEN MOVE-MATE.NETLIFY.APP ↗</a>
+            <p>We are now partnering with a local apartment complex in Charlottesville, which gives us a much better place to test MoveMate than only putting posters around Grounds. We can work around real move-in and move-out needs and see what residents, the property, and student helpers actually need from the service.</p>
+            <p>I still do not want to build a huge moving network before we know what the first moves actually require. The goal is to use this partnership to learn where the process breaks, what people are willing to pay for, and what we should build next instead of guessing from the outside.</p>
+            <a className={styles.liveButton} href="https://movemate-dcy8.onrender.com" target="_blank" rel="noreferrer">OPEN MOVEMATE ↗</a>
           </div>
         </div>
       </section>

@@ -13,7 +13,7 @@ const workbench = [
   { title: "NPGKTrades", what: "Polymarket copy-trading system that sizes each copy to my bankroll and blocks trades when risk limits are hit.", meta: "detect · aggregate · size · risk · execute", href: "/work/npgktrades", action: "story" },
   { title: "Say No To Plastic", what: "Microplastics education site with 3D anatomy, newsletters, the book, and practical guides.", meta: "research communication · 3D anatomy · guides", href: "/work/say-no-to-plastic", action: "story" },
   { title: "Grounds Guide", what: "UVA routing tool built around real paths, entrances, class schedules, and leave-by times.", meta: "GIS · entrances · pedestrian routing", href: "/work/grounds-guide", action: "story" },
-  { title: "MoveMate", what: "Move-in and move-out help for UVA students, with a student marketplace underneath it.", meta: "UVA · moving help · marketplace backbone", href: "/work/movemate", action: "story" },
+  { title: "MoveMate", what: "Move-in and move-out help for UVA students. We are now partnering with a local apartment complex in Charlottesville as we test the service around real moves.", meta: "UVA · moving help · local apartment partnership", href: "/work/movemate", action: "story", liveHref: "https://movemate-dcy8.onrender.com" },
 ];
 
 export default function PortfolioStory() {
@@ -84,6 +84,7 @@ export default function PortfolioStory() {
           {workbench.map((project, i) => {
             const body = <><span className="originNum">0{i + 4}</span><div><h3>{project.title}</h3><p className="originWhat">{project.what}</p><small>{project.meta}</small></div><span className="originArrow">{project.action === "story" ? "story →" : project.action === "code" ? "code ↗" : project.action === "live" ? "live ↗" : "soon"}</span></>;
             if (!project.href) return <div key={project.title} className="originRow pending">{body}</div>;
+            if (project.liveHref) return <div key={project.title} className="originRow originRowWithLive"><span className="originNum">0{i + 4}</span><div><h3><Link href={project.href}>{project.title}</Link></h3><p className="originWhat">{project.what}</p><small>{project.meta}</small><div className="originRowActions"><Link href={project.href}>READ THE STORY →</Link><a href={project.liveHref} target="_blank" rel="noreferrer">OPEN MOVEMATE ↗</a></div></div><span className="originArrow">live ↗</span></div>;
             if (project.href.startsWith("/")) return <Link key={project.title} className="originRow" href={project.href}>{body}</Link>;
             return <a key={project.title} className="originRow" href={project.href} target="_blank" rel="noreferrer">{body}</a>;
           })}
