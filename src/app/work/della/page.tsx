@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: 'Della | Nate Pegg', description: 'Bu
 export default function DellaCase() {
   return <main id="main-content" tabIndex={-1} className={s.page} data-della-edition="original-screens">
     <nav className={s.nav} aria-label="Project navigation"><Link href="/">&#8592; Nate Pegg</Link><div><Link href="/work/della" aria-current="page">Della</Link><Link href="/work/vialgrade">VialGrade</Link><Link href="/work/transformer">Transformer</Link></div></nav>
-    <header className={s.opening}><div className={s.identity}><h1><DellaMark />Della</h1><span className={s.meta}>AI-native operating system for nail salons<br />Started March 2026</span></div><p className={s.intro}>{copy.intro}</p><a className={s.visit} href="https://hellodella.com" target="_blank" rel="noreferrer">Visit Della <span aria-hidden="true">&#8599;</span><span className={s.srOnly}> (opens in a new tab)</span></a></header>
+    <header className={s.opening}><div className={s.identity}><h1><DellaMark />Della</h1><span className={s.meta}>AI-native operating system for nail salons<br />Started April 2026</span></div><p className={s.intro}>{copy.intro}</p><a className={s.visit} href="https://hellodella.com" target="_blank" rel="noreferrer">Visit Della <span aria-hidden="true">&#8599;</span><span className={s.srOnly}> (opens in a new tab)</span></a></header>
     <article className={s.origin} id="why"><div className={s.margin}>How I started</div><div className={s.prose}>{copy.why.map(p => <p key={p}>{p}</p>)}</div></article>
     <section className={s.industry} id="problem" aria-labelledby="problem-title">
       <div className={s.industryHead}>
