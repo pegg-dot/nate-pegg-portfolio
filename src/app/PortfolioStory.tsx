@@ -42,12 +42,12 @@ export default function PortfolioStory() {
         <div className="sectionRail"><span>01</span><span>DELLA</span><span>MAR 11 → NOW</span></div>
         <div className="projectDefinition">
           <span className="microLabel">WHAT IT IS</span>
-          <p><strong data-pencil-target="della">Della is an AI employee for nail salons.</strong> Calls, customer memory, live schedule checks, and real Square bookings.</p>
+          <p><strong data-pencil-target="della">Della is an AI-native operating system I&apos;m building for nail salons.</strong> It starts with calls and bookings, but the larger goal is to connect enough of the business that agents can recognize what needs doing and eventually handle more of the operation.</p>
           <div className="projectActions"><Link href="/work/della">READ THE STORY →</Link><a href="https://hellodella.com" target="_blank" rel="noreferrer">OPEN DELLA ↗</a></div>
         </div>
         <div className="spotlightGrid">
           <div className="spotlightImage"><Image src="/della/room-identity.png" alt="Della workspace showing the AI employee's permissions, activity and state" fill sizes="(max-width: 980px) 90vw, 50vw" /></div>
-          <div className="spotlightText"><span className="microLabel">THE BUILD</span><h2>AI employee for nail salons.</h2><p>Starting with communications, then connecting into the systems the salon already uses.</p><div className="spotlightChips"><span>voice</span><span>persistent context</span><span>Square bookings</span><span>knowledge + tools</span></div></div>
+          <div className="spotlightText"><span className="microLabel">THE BUILD</span><h2>From answering the phone to running the salon.</h2><p>I&apos;m starting with communication and booking, then connecting the systems and context Della needs to do more of the work the owner handles manually.</p><div className="spotlightChips"><span>calls</span><span>live schedule</span><span>customer context</span><span>Square bookings</span></div></div>
         </div>
       </section>
 
