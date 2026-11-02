@@ -39,7 +39,7 @@ export default function PortfolioStory() {
       </section>
 
       <section className="dellaStorySection projectSpotlight">
-        <div className="sectionRail"><span>01</span><span>DELLA</span><span>MAR 11 → NOW</span></div>
+        <div className="sectionRail"><span>01</span><span>DELLA</span><span>APR 2026 → NOW</span></div>
         <div className="projectDefinition">
           <span className="microLabel">WHAT IT IS</span>
           <p><strong data-pencil-target="della">Della is an AI-native operating system I&apos;m building for nail salons.</strong> It starts with calls and bookings, but the larger goal is to connect enough of the business that agents can recognize what needs doing and eventually handle more of the operation.</p>
