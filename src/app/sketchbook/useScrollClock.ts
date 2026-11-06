@@ -21,7 +21,7 @@ export function useScrollClock(onFrame: (c: Clock) => void): void {
     let last = start;
     let cur = window.scrollY;
     const loop = (now: number) => {
-      const dt = Math.min(50, now - last);
+      const dt = Math.min(250, now - last);
       last = now;
       const target = window.scrollY;
       cur = reduced ? target : cur + (target - cur) * (1 - Math.exp(-dt / 90));

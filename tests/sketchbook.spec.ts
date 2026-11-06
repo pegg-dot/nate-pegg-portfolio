@@ -67,3 +67,18 @@ test('della reveal shows the fallback image when video is paused', async ({ page
   expect(await ownOpacity(page, '[data-page="2"] video')).toBeLessThanOrEqual(0.01);
   expect(await ownOpacity(page, '[data-page="2"] [data-fallback]')).toBeGreaterThanOrEqual(0.99);
 });
+
+for (const [index, name] of [[3, 'vialgrade'], [4, 'transformer']] as const) {
+  test(`${name} reveals its real screen`, async ({ page }) => {
+    await page.goto('/');
+    await scrollToPage(page, index, 0.95);
+    expect(await ownOpacity(page, `[data-page="${index}"] [data-media]`)).toBeGreaterThanOrEqual(0.99);
+    expect(await ownOpacity(page, `[data-page="${index}"] [data-sketch="wireframe"]`)).toBeLessThanOrEqual(0.01);
+  });
+}
+
+test('the transformer page is the only dark page', async ({ page }) => {
+  await page.goto('/');
+  expect(await page.locator('[data-dark="true"]').count()).toBe(1);
+  expect(await page.locator('[data-page="4"] [data-dark="true"]').count()).toBe(1);
+});

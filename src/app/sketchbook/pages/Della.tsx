@@ -6,6 +6,7 @@ import Ground from '../Ground';
 import { clamp, ease, lerp } from '../pages';
 import ProjectCopy from '../ProjectCopy';
 import Reveal from '../Reveal';
+import Stack from '../Stack';
 import type { FigureScript, PageProps } from '../types';
 import { DESK_PHONE, RING } from '../wireframes';
 import styles from '../sketchbook.module.css';
@@ -35,10 +36,12 @@ function DellaMedia({ progress }: { progress: number }) {
 export default function Della({ progress, active, boil, vw }: PageProps & { vw: number }) {
   return (
     <>
-      <div className={styles.split}>
-        <ProjectCopy project={HOME_COPY.projects.della} progress={progress} active={active} boil={boil} />
-        <Reveal kind="della" progress={progress} active={active} boil={boil} media={<DellaMedia progress={progress} />} />
-      </div>
+      <Stack progress={progress}>
+        <div className={styles.split}>
+          <ProjectCopy project={HOME_COPY.projects.della} progress={progress} active={active} boil={boil} />
+          <Reveal kind="della" progress={progress} active={active} boil={boil} media={<DellaMedia progress={progress} />} />
+        </div>
+      </Stack>
       <Ground objects={OBJECTS} vw={vw} progress={progress} active={active} boil={boil} />
     </>
   );

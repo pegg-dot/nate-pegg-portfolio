@@ -139,3 +139,15 @@
   .buildHeading { font-size: 22px; }
   .originCopy { margin-top: 4vh; }
 }
+
+/* inner stack and the dark page */
+.stack { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
+.stackInner { flex: 1; min-height: 0; display: flex; flex-direction: column; will-change: transform; }
+.stackInner > .split { flex: 1; }
+.stage[data-dark="true"] { background-color: #23221e; background-image: repeating-linear-gradient(-45deg, rgba(243, 239, 227, .06) 0 1px, transparent 1px 7px); }
+.stage[data-dark="true"] .rail { opacity: .8; }
+.stage[data-dark="true"] .micro { opacity: .8; }
+.figureOnDark { color: var(--paper); }
+@media (max-width: 780px) {
+  .stackInner > .split { flex: none; }
+}

@@ -15,12 +15,16 @@ import styles from './sketchbook.module.css';
 import Cover, { figureScript as coverScript } from './pages/Cover';
 import Origin, { figureScript as originScript } from './pages/Origin';
 import Della, { figureScript as dellaScript } from './pages/Della';
+import Vial, { figureScript as vialScript } from './pages/Vial';
+import Transformer, { figureScript as transformerScript } from './pages/Transformer';
 
 /** The pages, in order. Each owns its own figure script. */
 export const PAGES: PageDef[] = [
   { id: 'cover', height: '160vh', script: coverScript, render: p => <Cover {...p} /> },
   { id: 'work', height: '150vh', script: originScript, render: p => <Origin {...p} /> },
   { id: 'della', rail: HOME_COPY.projects.della.rail, script: dellaScript, render: p => <Della {...p} /> },
+  { id: 'vialgrade', rail: HOME_COPY.projects.vialgrade.rail, script: vialScript, render: p => <Vial {...p} /> },
+  { id: 'transformer', rail: HOME_COPY.projects.transformer.rail, dark: true, script: transformerScript, render: p => <Transformer {...p} /> },
 ];
 
 type Fig = FigureState & { x: number; lift: number; hidden: boolean };
@@ -117,7 +121,7 @@ export default function Sketchbook() {
         </Page>
       ))}
       <PortfolioFooter />
-      <div className={styles.figureLayer} data-zone="figure" hidden={f.fig.hidden} style={{ transform: `translate(${f.fig.x.toFixed(1)}px, ${f.fig.lift.toFixed(1)}px)`, opacity: f.fig.drawn > 0 ? 1 : 0 }}>
+      <div className={[styles.figureLayer, PAGES[f.ai]?.dark ? styles.figureOnDark : ''].join(' ')} data-zone="figure" hidden={f.fig.hidden} style={{ transform: `translate(${f.fig.x.toFixed(1)}px, ${f.fig.lift.toFixed(1)}px)`, opacity: f.fig.drawn > 0 ? 1 : 0 }}>
         <Figure state={f.fig} className={styles.figure} />
       </div>
       <Bubble shown={bubbleShown} x={bubbleX} y={bubbleY} />

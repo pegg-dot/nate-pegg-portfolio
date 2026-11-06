@@ -3,7 +3,7 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import rough from 'roughjs';
 import styles from './sketchbook.module.css';
 
-const INK = '#2a2924';
+const INK = 'currentColor';
 
 /** A hand-boxed outline drawn behind its siblings. The parent must be position: relative. */
 export function RoughBox({ seed, fill, children }: { seed: number; fill?: string; children?: ReactNode }) {
