@@ -87,3 +87,25 @@
 @media (prefers-reduced-motion: reduce) {
   .copy, .figure path { transition: none; }
 }
+
+/* cover */
+.nameWrap { width: min(84vw, 640px, calc(100vh - var(--binding) - var(--strip) - 170px)); margin: 0 auto; }
+.name { width: 100%; height: auto; display: block; overflow: visible; }
+.name path[data-stroke] { fill: none; stroke: var(--ink); stroke-width: 5.2; stroke-linecap: round; stroke-linejoin: round; }
+.intro { margin-top: auto; display: flex; justify-content: space-between; gap: 24px; align-items: flex-end; flex-wrap: wrap; }
+.intro p { margin: 0; font-size: clamp(18px, 1.9vw, 24px); max-width: 26em; }
+.chrome { position: absolute; left: var(--gutter); top: calc(var(--binding) + 14px); font: 700 13px/1 var(--hand); letter-spacing: .14em; opacity: .72; }
+.rightNowInline { display: none; font: 700 13px/1.6 var(--hand); letter-spacing: .1em; text-transform: uppercase; }
+.rightNowInline a { text-decoration: underline; text-underline-offset: 3px; }
+.bubble { position: fixed; z-index: 30; width: 330px; height: 120px; pointer-events: none; opacity: 0; transition: opacity .5s; }
+.bubbleOn { opacity: 1; pointer-events: auto; }
+.bubble svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.bubbleText { position: absolute; left: 46px; right: 18px; top: 14px; bottom: 14px; display: flex; align-items: center; justify-content: center; text-align: center; font: 700 13px/1.5 var(--hand); letter-spacing: .1em; text-transform: uppercase; }
+.bubbleText a { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+@media (max-width: 780px) {
+  .bubble { display: none; }
+  .rightNowInline { display: block; margin: 0; }
+  .intro { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .chrome { left: 16px; }
+  .nameWrap { width: min(92vw, 420px, calc(100vh - var(--binding) - var(--strip) - 210px)); }
+}
