@@ -1,0 +1,114 @@
+# Pencil Test — portfolio home redesign (design)
+
+Date: 2026-11-05. Status: draft for Nate's approval. Repo: `pegg-dot/nate-pegg-portfolio`, branch `design/sketchbook-20261105`.
+
+"Pencil test" is the animation term for the rough, frame-by-frame line animation shot on paper before clean-up or color. That is the whole aesthetic and the whole idea: the site is Nate's sketchbook being drawn in front of you, one imperfect frame at a time.
+
+## 1. Intent and why
+
+The current home page is a clean scroll of sections with one good trick (the pencil writing the name). It says what Nate built but not who he is. Nate's own words for the goal: make it "absolutely cracked," "say a lot about me," keep every sentence his, and convey all the work.
+
+Who Nate is, from the site and his words: he has drawn since preschool (photoreal graphite portraits, dog commissions through Instagram, a full-color Miami collage on a spiral pad), he builds things to understand them (a transformer from scratch, Della, VialGrade), he rowed for Team USA, he grew up in Miami, he is a first-year at UVA, and at four he wore the same striped alien shirt every day. The medium that is unmistakably his is pencil on paper. The reference he sent is a beginner's guide to animating on paper (flipbook, line boil, drawn on twos). The advice he got from the Anthropic person was that who you are is everything and the site should carry it. For that person it was a math thing. For Nate it is a drawing thing.
+
+The one-sentence thesis: **"I draw it, then I build it."** Every project on the page is first sketched by the pencil and then the sketch becomes the real thing. The drawings section runs the same move in reverse: a real photo becomes his graphite. That transition is the signature of the site, and it is literally what he does.
+
+## 2. Goals
+
+1. A reader who gives the page ninety seconds understands the person first (draws, builds, rows, Miami, UVA) and can find every project in one click.
+2. The page feels drawn on paper, frame by frame, imperfect on purpose: pencil grain, line boil, page corners, onion-skin ghosts, hand-numbered pages.
+3. A small drawn character ("little Nate", a stick figure in the striped alien shirt) walks through the sketchbook as you scroll and reacts to each project. He is the personality. He never blocks the content.
+4. Every first-person sentence stays exactly as it is on the live site today. Structure changes; the autobiography does not (VOICE_PASS.md).
+5. All eleven subjects remain reachable from the home page: Della, VialGrade, Transformer, LOT, WeBuddy, NPGKTrades, Say No To Plastic, Grounds Guide, MoveMate, Drawings, Rowing, plus About, the footer writing note, GitHub and email.
+6. Works with reduced motion, without JavaScript, on a phone, and faster than the current page above the fold.
+
+## 3. Non-goals
+
+- No rewriting, adding, or "improving" Nate's copy. No new first-person sentences. New text is limited to labels already in use ("story →", "live ↗", "code ↗", page numbers).
+- No changes to the deep pages under `/work/*` beyond re-skinning the shared chrome (`CaseShell` nav and footer) to match the paper. Those pages carry verified copy and tests.
+- No 3D, WebGL, or shader post-processing. 2D SVG and canvas only.
+- No game: no collision, no score, no fail state, no required input beyond scrolling.
+- No sound.
+- No CMS or admin; content stays in code.
+
+## 4. Anti-goals (what would make this a failure even if it works)
+
+- Looks like a "sketchy theme": rough.js on every box, wobble on everything, Comic-Sans energy. Boil belongs on pencil marks, never on paragraphs.
+- An intro you cannot skip, or a reviewer trapped in a side-scroller looking for the work.
+- Slower on a phone than today, or jank while scrolling on a 2020 MacBook Air.
+- Any sentence Nate would read and think "I would never say that."
+- Decoration without meaning. Pivot 3 in ROADMAP.md stands: the pencil only marks what it has something to say about.
+
+## 5. The experience, page by page
+
+The home page is a spiral-bound sketchbook, binding along the top edge like Nate's Miami pad. Each section is a page. Scrolling is the flipbook thumb: as you move between pages the bottom-right corner curls, the previous page ghosts through at low opacity for a beat (onion skin, the animator's tool), and the new page's elements draw themselves in. Page numbers are hand-written in the corner. Nothing on a page is pre-rendered chrome; frames, rules, labels and headings are drawn on as you arrive. "It builds itself," as Nate put it.
+
+Little Nate walks along the bottom of the paper as you scroll. His position is a function of scroll progress inside each page. He walks when you scroll, idles when you stop (two-frame idle so the lines keep breathing), hops over a couple of placed obstacles between pages, and performs one small reaction per project. He is drawn in true flipbook style: two hand-drawn variants per pose, swapped on twos (twelve frames a second, six changes), so his lines boil like a real pencil test rather than a smoothed vector.
+
+Color rule (this is the "ultra realistic, then colorful, then gray" range Nate described, made into a rule rather than a mood): the sketchbook is graphite on cream. Color enters only when something is real or built: the real product screenshot or video inside the drawn frame, the colored pencil Coke can, the Miami page, and, once, on the character's shirt in About when the fun fact lands. Gray is imagination and drafts; color is the built or lived thing.
+
+Pages:
+
+0. **Cover.** Blank paper. The existing pencil writes "Nate Pegg" (keep `HandwrittenName` as is; it is already a real thing). The pencil then draws little Nate at the bottom, who looks up at the name. The intro line appears in place: "I'm a first-year at UVA. I like building things, drawing, and messing around with AI." The "RIGHT NOW: DELLA · VIALGRADE · MOVEMATE · GROUNDS GUIDE" line becomes a thought bubble over his head; each name is a link. Nav (work / drawings / rowing / about / github ↗) is drawn as tabs sticking out of the sketchbook's right edge and stays reachable on every page. A drawn corner curl hints at the flip.
+
+1. **How I got into this.** Heading "I've always liked creating things." and its paragraph, verbatim. Little Nate walks in from the left carrying a pencil.
+
+2. **Della (01).** Little Nate walks up to a drawn phone on a drawn desk; it rings (boiling sound lines). The pencil sketches a calendar and a storefront; the sketch becomes real: the lines dissolve under a hatching wipe into the actual Della video (`/della/della-promo-home.mp4`) inside the drawn frame. Copy verbatim: WHAT IT IS paragraph, the two actions, THE BUILD heading and paragraph, the four chips (as handwritten labels with pencil underlines).
+
+3. **VialGrade (02).** Little Nate holds a drawn magnifying glass over a drawn vial; sketched documents slide in; the sketch becomes the real `vialgrade/home.jpg`. Copy verbatim, three actions.
+
+4. **Transformer (03).** This page is shaded dark with heavy graphite hatching (the one dark page, replacing today's dark band), with white-pencil lines. Little Nate stands tiny on a token; a sketched attention grid lights up and becomes the real `transformer/qkv.webp`. Copy verbatim, three actions, four chips.
+
+5. **Other things (04, "the rest of the desk").** Drawn literally as objects on a desk: a house (LOT), a storefront (WeBuddy), a chart (NPGKTrades), a bottle and body outline (Say No To Plastic), a map pin (Grounds Guide), a moving box (MoveMate). Little Nate walks the desk; each object draws itself as he reaches it and its row of existing text appears beside it. He hops over a coffee mug between two of them. Rows keep today's copy, numbering, links, and MoveMate's two actions.
+
+6. **Drawings (10).** Little Nate sits down and starts drawing; the view zooms toward the paper under his hand (Nate's "zoom into the hand" idea) and the drawings arrive in order graphite portrait (Bob Marley), commission portrait (dog), architecture study, graphite (moose), colored pencil (Coke can), Miami. Each arrives as its traced outline drawing on, then the real photo fading in beneath (real becomes drawing, the reverse of the project move). Captions and both paragraphs verbatim, Instagram link kept.
+
+7. **Rowing (11).** The existing `RowingSketch` boat, but little Nate is one of the two rowers. Photos are taped-in prints (drawn tape). Both paragraphs verbatim, LA28 link kept.
+
+8. **About.** Three paragraphs verbatim. When the reader reaches the fun fact, little Nate walks in and the pencil colors his shirt: blue and red stripes and the little green alien. This is the only time color touches the character and it is the payoff for why he wore that shirt the whole way. The "tigre?" button stays.
+
+9. **Footer.** "one more thing..." disclosure and the After Abundance PDF stay. Signature, GitHub, email, top.
+
+Reviewer path: the nav tabs and the thought bubble are always one click from any project; each page is a real section with an id, so deep links and the tab key work. A reader who never scrolls still sees the name, the intro line, and the nav.
+
+## 6. Constraints
+
+- Keep Next.js 16, React 19, Motion 14. One animation library. No GSAP.
+- Reduced motion: no boil, no walking, no draw-on; every page in its final drawn state, real images visible, character standing still. This is a static version of the same page, not a different page.
+- No JavaScript: server-rendered final state with all copy and images (class on `<html>` toggled by a tiny inline script, the way the current hero reveal works).
+- Performance budget: added JavaScript under 60 KB gzipped; 60 fps scrolling on an M1 MacBook Air and iPhone 13; Largest Contentful Paint under 2.5 s (the cover is SVG, no image above the fold). Boil runs only for elements in the viewport; off-screen marks freeze.
+- Accessibility: all copy is real DOM text; pencil marks and the character are `aria-hidden`; drawn buttons are real links; focus states visible; axe clean on the home page.
+- Copy parity test: a frozen fixture of every text node on today's home page (same pattern as `tests/fixtures/della-original-copy.json`) must appear verbatim in the new page. This test is the voice lock.
+- Mobile: pages stack vertically as today; little Nate walks along the bottom edge; bubbles become inline lines; the dark Transformer page stays dark.
+- Desktop first, 360 to 1440 px checked, Chrome and WebKit, as the existing Playwright configs do.
+
+## 7. Technical decisions (Nate handed these to me; marked as my calls)
+
+- **Line boil, two ways.** Freeform pencil marks (sketch icons, arrows, bubbles, underlines) get three pre-computed wobble variants per path: sample the path, offset points perpendicular to the stroke by a seeded amplitude, re-emit as a smooth path. Cycle variants at 8 fps while on screen. This is the "draw it three times" method real pencil tests use, costs nothing per frame, and avoids SVG displacement filters on large areas (they are slow). The displacement-filter boil (feTurbulence + feDisplacementMap, baseFrequency cycling) is reserved for small headline elements if needed at all.
+- **Character frames.** SVG path groups per pose: walk (8 frames × 2 variants), idle (2 × 2), hop (4), sit-and-draw (2), look-up (1), row (2). Shipped first as my own drawings so nothing blocks. A drop-in path lets Nate's own paper drawings replace mine: PNG frames under `public/figure/<pose>/<n>.png` (phone photo, thresholded by a build script) are used instead of the SVG when present. A `scripts/trace-figure.mjs` step with `potrace` vectorizes them if he prefers vector.
+- **Sketch becomes real.** For each featured project a hand-authored SVG sketch draws on (stroke-dasharray), then a hatching mask (SVG mask of diagonal pencil strokes animating in) reveals the real image or video beneath while the sketch lines fade. For drawings, a build script (`scripts/trace-art.mjs`, node `potrace`) produces an outline SVG per image under `public/art/traced/`; the outline draws on, then the photo fades in beneath.
+- **Hand-drawn chrome.** `roughjs` (MIT, ~9 KB) for buttons, frames, tape, and the nav tabs, rendered as SVG with a fixed seed so server and client match; two seeds swapped at 4 fps on hover only.
+- **Scroll.** Motion's `useScroll` and springs. Each page is a 150–200 vh section with a sticky stage so draw-on is scrubbed by scroll; the character's x-position and the flip progress derive from the same value. Keyboard left/right nudge the scroll; space makes him hop (cosmetic). No CSS scroll-timeline dependency, since Safari and Firefox support is uneven.
+- **Paper.** Keep the existing cream (`--paper`) and grain; add a fixed spiral binding along the top, a faint vignette, and occasional eraser smudges as static SVG. Dark page = heavy graphite hatching, not a flat black.
+- **Type.** Kalam (already shipped, OFL) for labels, bubbles, captions, tabs, page numbers. Body paragraphs stay in a readable serif, not handwriting, because Nate's sentences must be easy to read. Big headings keep the heavy sans but appear by being pencil-shaded in (a scribble mask), so the one typeset thing on the page still gets drawn. If Nate produces a font of his own handwriting (Calligraphr, free tier covers the needed glyphs), it replaces Kalam with no code change.
+- **Deep pages.** `CaseShell` nav and footer get the paper, the tab, and the page number; nothing else on `/work/*` changes.
+- **Delivery.** Worktree `~/nate-pegg-portfolio-sketchbook`, branch `design/sketchbook-20261105`, Vercel preview from the branch, PR to main when Nate signs off.
+
+## 8. Left to the builder
+
+- Exact drawings of the sketch icons and the character poses (within the rule: pencil, imperfect, no clip-art look).
+- Easing, durations, hop placements, and how many frames each draw-on takes.
+- Exact page heights and sticky breakpoints per page.
+- How the thought bubble and nav tabs collapse on phones.
+- Which mark the pencil makes on each heading (circle, underline, bracket), continuing the current `ScrollTrace` vocabulary.
+- Test file layout, following the existing Playwright configs.
+
+## 9. Open items for Nate (answered in section 10 once he replies)
+
+1. Will he draw little Nate's frames himself on paper (the video he sent is the method)? Shot list: walk 8, idle 2, hop 4, sit-and-draw 2, look-up 1, row 2, each in a 4 by 4 inch box with a corner registration mark, photographed from above in daylight. My SVG frames ship either way.
+2. Does he want a 5-second phone video of his own hand drawing the first line for the cover (the "zoom into the hand" opening)? Without it the cover uses the SVG pencil.
+3. Will he make a handwriting font of his own hand for the labels (Calligraphr template, about twenty minutes)? Kalam ships either way.
+4. Is this still primarily for the Academy reviewer (ROADMAP.md), which keeps the "find every project in one click" rule as a hard requirement? I am treating it as yes.
+
+## 10. Decisions log
+
+- 2026-11-05: design drafted after reading the live site, the repo, ROADMAP.md, VOICE_PASS.md, the eight drawings, and the reference video. Builder check pending.
