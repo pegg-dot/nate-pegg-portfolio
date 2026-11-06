@@ -253,3 +253,26 @@ test.describe('the pencil (Nate, 2026-11-06: "the pencil didn\'t move")', () => 
     expect(both, 'never two pencils at once').toBe(0);
   });
 });
+
+test.describe('the Della video (Nate, 2026-11-06: start it when the reveal finishes)', () => {
+  const state = (page: Page) => page.$eval('[data-page="2"] video', v => ({ paused: (v as HTMLVideoElement).paused, t: (v as HTMLVideoElement).currentTime }));
+
+  test('it waits at the start until the real screen is up, then plays from the beginning, and stops when you move on', async ({ page }) => {
+    await page.goto('/');
+    // The way a reader arrives: the sheet is on screen while the sketch is still being drawn (the video element is in view, invisible).
+    await scrollToPage(page, 2, 0.1);
+    await page.waitForTimeout(3000);
+    const before = await state(page);
+    expect(before.paused, 'not playing in the background while the sketch is drawn').toBe(true);
+    expect(before.t, 'still at the start').toBeLessThanOrEqual(0.05);
+    const t0 = Date.now();
+    await scrollToPage(page, 2, 0.95);
+    const after = await until(() => state(page), s => !s.paused && s.t > 0, 8000);
+    const elapsed = (Date.now() - t0) / 1000;
+    expect(after.paused, 'playing once the real screen is up').toBe(false);
+    expect(after.t, 'from the beginning').toBeLessThanOrEqual(elapsed + 0.3);
+    await scrollToPage(page, 4, 0.5);
+    const away = await until(() => state(page), s => s.paused, 3000);
+    expect(away.paused, 'paused once the reader has moved on').toBe(true);
+  });
+});
