@@ -133,3 +133,20 @@ test.describe('page math', () => {
     expect(activeIndex([0, 1600, 3200], 9999)).toBe(2);
   });
 });
+
+import { readFileSync, statSync } from 'node:fs';
+
+test.describe('traced art', () => {
+  const names = ['bob-marley', 'dog-scarf', 'house', 'moose', 'coke-can', 'miami'];
+  test('traced art is small and present', () => {
+    for (const n of names) {
+      const file = `public/art/traced/${n}.json`;
+      expect(statSync(file).size, file).toBeLessThan(60_000);
+      const data = JSON.parse(readFileSync(file, 'utf8')) as { w: number; h: number; paths: string[] };
+      expect(data.w, n).toBeGreaterThan(0);
+      expect(data.h, n).toBeGreaterThan(0);
+      expect(data.paths.length, n).toBeGreaterThan(0);
+      expect(data.paths.length, n).toBeLessThanOrEqual(80);
+    }
+  });
+});

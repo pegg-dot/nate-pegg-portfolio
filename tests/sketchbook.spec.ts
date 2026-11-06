@@ -119,3 +119,11 @@ test('the hop happens over the mug', async ({ page }) => {
   }
   expect(hops).toBeGreaterThan(0);
 });
+
+test('drawings arrive real after their outline', async ({ page }) => {
+  await page.goto('/');
+  await scrollToPage(page, 6, 0.95);
+  const opacities = await page.$$eval('[data-page="6"] [data-media]', els => els.map(e => parseFloat(getComputedStyle(e).opacity)));
+  expect(opacities).toHaveLength(6);
+  opacities.forEach(o => expect(o).toBeGreaterThanOrEqual(0.99));
+});
