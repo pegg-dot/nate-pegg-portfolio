@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import DrawingPencil from "./DrawingPencil";
 
 // A coastal double seen from above: broad hull, two rowers, four sculls.
@@ -20,7 +20,11 @@ const oars = [
 const drawingPaths = [...strokes, ...oars.flatMap((oar) => [oar.shaft, oar.blade])];
 const clamp = (n: number) => Math.max(0, Math.min(1, n));
 
-export default function RowingSketch() {
+/** `progress` (0–1) drives the sketch from outside when its container is pinned; `rower` is drawn inside the boat. */
+export default function RowingSketch({ rower, progress: external }: { rower?: ReactNode; progress?: number } = {}) {
+  const externalRef = useRef(external);
+  const queueRef = useRef<(() => void) | null>(null);
+  useEffect(() => { externalRef.current = external; queueRef.current?.(); }, [external]);
   const container = useRef<HTMLDivElement>(null);
   const paths = useRef<Array<SVGPathElement | null>>([]);
   const [progress, setProgress] = useState(0);
@@ -56,7 +60,7 @@ export default function RowingSketch() {
       const elapsed = last ? Math.min(48, time - last) : 16;
       last = time;
       const rect = el.getBoundingClientRect();
-      const target = clamp((window.innerHeight * .92 - rect.top) / (window.innerHeight * .78));
+      const target = externalRef.current !== undefined ? clamp(externalRef.current) : clamp((window.innerHeight * .92 - rect.top) / (window.innerHeight * .78));
       const delta = target - current;
       const step = delta * (1 - Math.exp(-elapsed / 140));
       current = Math.abs(delta) < .0005 ? target : current + Math.sign(step) * Math.min(Math.abs(step), elapsed / 2400);
@@ -77,10 +81,12 @@ export default function RowingSketch() {
       if (!frame) last = 0;
     };
     const queue = () => { if (!frame) frame = requestAnimationFrame(animate); };
+    queueRef.current = queue;
     queue();
     window.addEventListener("scroll", queue, { passive: true });
     window.addEventListener("resize", queue);
     return () => {
+      queueRef.current = null;
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", queue);
       window.removeEventListener("resize", queue);
@@ -120,6 +126,7 @@ export default function RowingSketch() {
               </g>
             </g>
           ))}
+          {rower}
           {!reduced && tip ? <DrawingPencil x={tip.x} y={tip.y} scale={.7} /> : null}
         </g>
       </svg>

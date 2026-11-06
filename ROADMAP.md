@@ -216,3 +216,15 @@ The prior VialGrade prose fixture remains an archive; this requested rewrite sup
 - [x] Verify original-image hashes and preserve unrelated project sources.
 - [x] Complete local browser review and cross-project checks.
 - [x] Verify the published original-screen Della page: 268 cross-project checks and all 50 reviewed screenshot comparisons passed; the two original crops matched their hashes over HTTP.
+
+
+## Pencil Test home page - November 6, 2026
+
+The home page is now a spiral-bound sketchbook drawn in front of the reader: the name writes itself on arrival (any scroll finishes it), little Nate in the striped alien shirt is drawn under it and walks the bottom strip from page to page, every project is sketched as a wireframe traced from its real screen and then becomes that screen in place, the desk objects draw as he reaches them (one hop over the mug), the drawings pile up as he sits and draws them, the boat rows the rowing page, and the shirt gets its color at the fun fact. Design: `docs/superpowers/specs/2026-11-05-pencil-test-redesign-design.md`. Plan: `docs/superpowers/plans/2026-11-05-pencil-test-home.md`.
+
+- [x] Every string from the previous home page is frozen in `tests/fixtures/home-original-copy.json` and checked on the rendered page and in `src/app/sketchbook/copy.ts`.
+- [x] `/work/*` pages and `globals.css` untouched; `RowingSketch` gained two additive props.
+- [x] Overlap matrix (six viewports, three progress points per page plus the mid-turn), fast-scroll, reduced-motion, no-JavaScript, keyboard-order and axe checks in `tests/sketchbook-layout.spec.ts`; CI in `.github/workflows/sketchbook.yml`.
+- [x] Nate's second review (November 6): a page plays over two screens of scroll instead of one; a turn is the next sheet rising over the pinned page, with little Nate drawn again on each sheet, so a page never slides under the binding; the "me" note sits in the bow seat (he rows bow). Spec rules 8–10. Later the same day: "the pencil didn't move" — the pencil now draws him at the start of every page and on the cover after the name, and his sitting hand really sweeps (rule 11).
+- [ ] Deferred: Nate's own paper frames for little Nate (the loader for photographed frames is not built yet), a filmed hand for the cover, a font of his handwriting, paper chrome on the deep pages, and the onion-skin ghost between pages.
+- [ ] Pre-existing on main, not touched here: two `tests/della.spec.ts` checks fail (`#now` element absent on `/work/della`, a 10px color-contrast in `originals.module.css`).

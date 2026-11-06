@@ -1,5 +1,5 @@
-import PortfolioStory from "./PortfolioStory";
+import Sketchbook from "./sketchbook/Sketchbook";
 
 export default function Home() {
-  return <PortfolioStory />;
+  return <Sketchbook />;
 }

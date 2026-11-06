@@ -1,0 +1,46 @@
+name: Sketchbook home checks
+on:
+  push:
+    branches: [design/sketchbook-20261105, main]
+    paths:
+      - 'src/app/sketchbook/**'
+      - 'src/app/page.tsx'
+      - 'src/app/layout.tsx'
+      - 'src/app/components/RowingSketch.tsx'
+      - 'public/art/traced/**'
+      - 'scripts/trace-art.mjs'
+      - 'tests/sketchbook*'
+      - 'tests/fixtures/home-original-copy.json'
+      - 'playwright-sketchbook.config.ts'
+      - '.github/workflows/sketchbook.yml'
+  workflow_dispatch:
+concurrency:
+  group: sketchbook-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Lint and production build
+        run: npm run lint && npm run build
+      - name: Browser runtimes
+        run: npx playwright install --with-deps chromium webkit
+      - name: Voice lock, pure, page, layout, motion, keyboard and axe checks
+        run: npm run test:sketchbook
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: sketchbook-qa
+          path: |
+            test-results/sketchbook-results.json
+            test-results/
+          retention-days: 7

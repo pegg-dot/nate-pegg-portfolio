@@ -8,13 +8,16 @@
     "start": "next start",
     "lint": "eslint",
     "test:della": "playwright test",
-    "test:vial": "playwright test -c playwright-vial.config.ts"
+    "test:vial": "playwright test -c playwright-vial.config.ts",
+    "test:sketchbook": "playwright test -c playwright-sketchbook.config.ts",
+    "trace:art": "node scripts/trace-art.mjs"
   },
   "dependencies": {
     "motion": "14.1.0",
     "next": "16.3.6",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "roughjs": "^4.6.6"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
@@ -24,6 +27,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.6",
+    "potrace": "^2.1.8",
     "typescript": "^5"
   }
 }
