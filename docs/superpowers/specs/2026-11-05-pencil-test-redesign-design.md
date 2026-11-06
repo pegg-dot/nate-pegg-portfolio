@@ -129,8 +129,15 @@ These are design rules now, not polish.
 6. **Phones get a reserved strip.** The figure walks in a strip above the tabs; no canvas, caption or text enters that strip.
 7. **Every pencil mark has a reason.** Ring lines only while the phone rings, hatching only during a reveal, and nothing blinks for decoration.
 
+Added after Nate's second review (2026-11-06, on the Vercel preview):
+
+8. **Slower.** A page plays over two screens of scroll (`TRAVEL_VH` = 200; the cover and About over 120, the walk-in over 100). The first build used one screen and moved him too fast.
+9. **A turn is a sheet laid over.** The pinned page stays where it is and the next page rises over it from the bottom edge, with a paper edge and shadow. A page never slides up under the binding (the first build did, and the rowing copy ran under the coils). Each page overlaps the one before by one screen (`OVERLAP_VH`) and stacks above it. Little Nate is drawn on the active sheet, stacked just above it, so the rising sheet covers him and the pencil draws him again at the start of the next page. On a desktop the rising sheet already carries its typed copy and its heading shades in as it rises; on a phone, where the sheet passes behind the bottom tab row, copy waits for the pin. Drawing starts when the sheet pins.
+10. **Nate rows bow.** In the coastal double he is in the bow seat, the seat nearer the bow, the end the boat moves toward. The "me" note points there.
+
 ## 12. Decisions log
 
 - 2026-11-05: design drafted after reading the live site, the repo, ROADMAP.md, VOICE_PASS.md, the eight drawings, and the reference video.
 - 2026-11-05: Nate reviewed the pencil test: concept approved, execution corrections recorded in section 11, answers in section 10. Build proceeds.
+- 2026-11-06: Nate's second review on the preview: scrolling moved him too fast, and "me" sat in the stroke seat (he rows bow). His screenshot also showed the rowing copy sliding under the coils at a page turn. Rules 8–10 added; the turn reworked as a sheet laid over.
 - 2026-11-05: builder check run. Settled without Nate: cover name writes on a clock and is skippable; the voice lock is defined precisely in section 6; `/work/*` is fully out of scope; the home page uses the existing rAF pattern plus roughjs, no Motion; the no-JS fallback is new work. Left for Nate: the five items in section 9.

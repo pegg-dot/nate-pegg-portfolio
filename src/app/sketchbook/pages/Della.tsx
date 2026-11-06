@@ -34,12 +34,12 @@ function DellaMedia({ progress, reduced }: { progress: number; reduced: boolean 
   );
 }
 
-export default function Della({ progress, active, boil, vw, seen, reduced }: PageProps) {
+export default function Della({ progress, entering, active, boil, vw, seen, reduced }: PageProps) {
   return (
     <>
       <Stack progress={progress}>
         <div className={styles.split}>
-          <ProjectCopy project={HOME_COPY.projects.della} progress={progress} active={active} boil={boil} seen={seen} />
+          <ProjectCopy project={HOME_COPY.projects.della} progress={progress} entering={entering} vw={vw} active={active} boil={boil} seen={seen} />
           <Reveal kind="della" progress={progress} active={active} boil={boil} media={<DellaMedia progress={progress} reduced={reduced} />} />
         </div>
       </Stack>

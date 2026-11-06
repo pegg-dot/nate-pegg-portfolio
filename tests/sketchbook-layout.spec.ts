@@ -1,7 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-type Box = { zone: string; l: number; t: number; r: number; b: number; tag: string };
+type Box = { zone: string; l: number; t: number; r: number; b: number; tag: string; owner: number };
 
 /** Visible, clipped, viewport-intersected boxes of every zoned element. */
 async function zoneBoxes(page: Page): Promise<Box[]> {
@@ -15,16 +15,24 @@ async function zoneBoxes(page: Page): Promise<Box[]> {
       let r: { left: number; top: number; right: number; bottom: number } = el.getBoundingClientRect();
       let a = el.parentElement;
       while (a && a !== document.body) { const cs = getComputedStyle(a); if (/hidden|clip/.test(cs.overflow)) r = inter(r, a.getBoundingClientRect()); a = a.parentElement; }
+      // A later sheet rising from the bottom covers everything below its top edge: this page's marks, and the figure, which stands on the active page.
+      const own = el.closest<HTMLElement>('[data-page]'), fig = el.closest<HTMLElement>('[data-owner]');
+      const owner = own ? Number(own.dataset.page) : fig ? Number(fig.dataset.owner) : -1;
+      if (owner >= 0) for (const pg of Array.from(document.querySelectorAll<HTMLElement>('[data-page]'))) {
+        if (Number(pg.dataset.page) <= owner) continue;
+        const st = (pg.firstElementChild as HTMLElement).getBoundingClientRect();
+        if (st.top < innerHeight && st.bottom > 0) r = { ...r, bottom: Math.min(r.bottom, st.top) };
+      }
       r = inter(r, { left: 0, top: 0, right: innerWidth, bottom: innerHeight });
       if (r.right - r.left <= 2 || r.bottom - r.top <= 2) continue;
-      out.push({ zone: el.dataset.zone!, l: r.left, t: r.top, r: r.right, b: r.bottom, tag: el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') });
+      out.push({ zone: el.dataset.zone!, l: r.left, t: r.top, r: r.right, b: r.bottom, tag: el.tagName.toLowerCase() + (el.id ? '#' + el.id : ''), owner });
     }
     return out;
   });
 }
 
 export async function settle(page: Page, index: number, p: number) {
-  await page.evaluate(([i, q]) => { const el = document.querySelector(`[data-page="${i}"]`) as HTMLElement; window.scrollTo({ top: el.offsetTop + q * (el.offsetHeight - innerHeight), behavior: 'instant' as ScrollBehavior }); }, [index, p] as const);
+  await page.evaluate(([i, q]) => { const el = document.querySelector(`[data-page="${i}"]`) as HTMLElement; const overlap = Math.max(0, -parseFloat(getComputedStyle(el).marginBottom) || 0); const travel = el.offsetHeight - innerHeight - overlap; window.scrollTo({ top: el.offsetTop + Math.min(1, q) * travel + Math.max(0, q - 1) * overlap, behavior: 'instant' as ScrollBehavior }); }, [index, p] as const);
   let prev = '';
   for (let k = 0; k < 24; k++) { await page.waitForTimeout(150); const t = await page.evaluate(() => (document.querySelector('[data-zone="pagenum"]')?.textContent ?? '') + (document.querySelector('div[data-zone="figure"]')?.getAttribute('style') ?? '')); if (t === prev && k > 2) break; prev = t; }
   await page.waitForTimeout(450);
@@ -41,7 +49,7 @@ for (const [w, h] of VIEWPORTS) {
     await page.waitForTimeout(500);
     const pages = await page.locator('[data-page]').count();
     const problems: string[] = [];
-    for (let i = 0; i < pages; i++) for (const p of [0.1, 0.5, 0.9]) {
+    for (let i = 0; i < pages; i++) for (const p of i < pages - 1 ? [0.1, 0.5, 0.9, 1.5] : [0.1, 0.5, 0.9]) {
       await settle(page, i, p);
       const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
       if (scrollWidth > w) problems.push(`page ${i} p ${p}: horizontal scroll (${scrollWidth} > ${w})`);
@@ -49,6 +57,8 @@ for (const [w, h] of VIEWPORTS) {
       for (let a = 0; a < boxes.length; a++) for (let b = a + 1; b < boxes.length; b++) {
         const A = boxes[a], B = boxes[b];
         if (A.zone === B.zone) continue;
+        // Mid-turn, the rising sheet passes behind the fixed tab row on phones and tablets, as content passes behind any toolbar.
+        if (p > 1 && (A.zone === 'tabs' || B.zone === 'tabs') && (A.owner === i + 1 || B.owner === i + 1)) continue;
         const iw = Math.min(A.r, B.r) - Math.max(A.l, B.l), ih = Math.min(A.b, B.b) - Math.max(A.t, B.t);
         if (iw > 2 && ih > 2) problems.push(`page ${i} p ${p}: ${A.zone}(${A.tag}) overlaps ${B.zone}(${B.tag}) by ${Math.round(iw)}×${Math.round(ih)}`);
       }
@@ -61,7 +71,7 @@ for (const [w, h] of VIEWPORTS) {
 test('copy stays visible after a fast scroll', async ({ page }) => {
   await page.goto('/');
   await page.waitForTimeout(300);
-  await page.mouse.wheel(0, 20_000);
+  await page.mouse.wheel(0, 60_000);
   await page.waitForTimeout(1500);
   const opacities = await page.$$eval('[data-zone="copy"]', els => els.map(e => parseFloat(getComputedStyle(e).opacity)));
   expect(opacities.length).toBeGreaterThan(8);

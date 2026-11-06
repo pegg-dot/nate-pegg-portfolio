@@ -26,14 +26,14 @@ export const figureScript: FigureScript = (p, vw, figW) => {
 };
 
 
-export default function Transformer({ progress, active, boil, vw, seen }: PageProps) {
+export default function Transformer({ progress, entering, active, boil, vw, seen }: PageProps) {
   const h = blockH(vw);
   const objects = useMemo(() => { const block = tokenBlock(h); return BLOCKS.map((x, i) => ({ x, strokes: block, start: 0.02 + i * 0.01, end: 0.07 + i * 0.01, cls: 'wire' })); }, [h]);
   return (
     <>
       <Stack progress={progress}>
         <div className={styles.split}>
-          <ProjectCopy project={HOME_COPY.projects.transformer} progress={progress} active={active} boil={boil} seen={seen} />
+          <ProjectCopy project={HOME_COPY.projects.transformer} progress={progress} entering={entering} vw={vw} active={active} boil={boil} seen={seen} />
           <Reveal kind="transformer" progress={progress} active={active} boil={boil} media={<Image src="/transformer/qkv.webp" alt="Transformer visualizer showing query, key and value projections" fill sizes="(max-width: 780px) 92vw, 54vw" className={styles.mediaImg} />} />
         </div>
       </Stack>

@@ -16,7 +16,7 @@ export const figureScript: FigureScript = (p, vw, figW) => ({
   x: p < 0.5 ? lerp(vw * 0.04, vw * 0.3 - figW - 24, ease(clamp(p / 0.14))) : lerp(vw * 0.3 - figW - 24, endX(vw, figW), ease(clamp((p - 0.5) / 0.5))),
 });
 
-export default function Vial({ progress, active, boil, vw, seen }: PageProps) {
+export default function Vial({ progress, entering, active, boil, vw, seen }: PageProps) {
   const figW = vw <= 780 ? 56 : 78;
   const fx = Math.round(figureScript(progress, vw, figW).x);
   const objects = useMemo(() => [
@@ -27,7 +27,7 @@ export default function Vial({ progress, active, boil, vw, seen }: PageProps) {
     <>
       <Stack progress={progress}>
         <div className={styles.split}>
-          <ProjectCopy project={HOME_COPY.projects.vialgrade} progress={progress} active={active} boil={boil} seen={seen} />
+          <ProjectCopy project={HOME_COPY.projects.vialgrade} progress={progress} entering={entering} vw={vw} active={active} boil={boil} seen={seen} />
           <Reveal kind="vialgrade" progress={progress} active={active} boil={boil} media={<Image src="/vialgrade/home.jpg" alt="VialGrade homepage and search interface" fill sizes="(max-width: 780px) 92vw, 54vw" className={styles.mediaImg} />} />
         </div>
       </Stack>

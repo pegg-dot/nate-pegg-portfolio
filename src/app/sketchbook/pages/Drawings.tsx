@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { HOME_COPY } from '../copy';
 import Outline from '../Outline';
-import { clamp, copyOn, ease, lerp } from '../pages';
+import { clamp, copyOn, ease, headOn, lerp } from '../pages';
 import { RoughBox, RoughTape } from '../Rough';
 import ShadedHeading from '../ShadedHeading';
 import Stack from '../Stack';
@@ -19,7 +19,7 @@ const ASPECT: Record<string, number> = { 'bob-marley': 800 / 1058, 'dog-scarf': 
 /** He walks to the left side of the desk, sits down and draws; the pile of finished drawings grows beside him. */
 export const figureScript: FigureScript = (p, vw) => (p < 0.3 ? { x: lerp(vw * 0.04, vw * 0.16, ease(p / 0.3)) } : { x: vw * 0.16, pose: 'sit' });
 
-export default function Drawings({ progress, active, seen }: PageProps) {
+export default function Drawings({ progress, vw, entering, active, seen }: PageProps) {
   const [traced, setTraced] = useState<Record<string, Traced>>({});
   // Pieces are sized from the measured pile box: engines disagree on aspect-ratio boxes under max-height.
   const pileRef = useRef<HTMLDivElement>(null);
@@ -48,8 +48,8 @@ export default function Drawings({ progress, active, seen }: PageProps) {
   return (
     <Stack progress={progress}>
       <div className={styles.split}>
-        <div className={[styles.copy, copyOn(progress, seen) ? styles.on : ''].join(' ')} data-zone="copy">
-          <ShadedHeading lines={[d.heading]} progress={clamp((progress - 0.02) / 0.25)} />
+        <div className={[styles.copy, copyOn(progress, seen, entering, vw) ? styles.on : ''].join(' ')} data-zone="copy">
+          <ShadedHeading lines={[d.heading]} progress={headOn(progress, entering, vw)} />
           <p>{d.p1}</p>
           <p>{d.p2.slice(0, cut)}<a href={d.igHref} target="_blank" rel="noreferrer">{d.igHandle}</a>{d.p2.slice(cut + d.igHandle.length)}</p>
         </div>

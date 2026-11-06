@@ -36,7 +36,10 @@ test('tabs do not move after fonts.ready', async ({ page }) => {
 export async function scrollToPage(page: Page, index: number, p: number) {
   await page.evaluate(([i, q]) => {
     const el = document.querySelector(`[data-page="${i}"]`) as HTMLElement;
-    window.scrollTo({ top: el.offsetTop + q * (el.offsetHeight - innerHeight), behavior: 'instant' as ScrollBehavior });
+    // p ≤ 1 runs the page's travel; 1 < p ≤ 2 runs into the turn, where the next sheet rises over it.
+    const overlap = Math.max(0, -parseFloat(getComputedStyle(el).marginBottom) || 0);
+    const travel = el.offsetHeight - innerHeight - overlap;
+    window.scrollTo({ top: el.offsetTop + Math.min(1, q) * travel + Math.max(0, q - 1) * overlap, behavior: 'instant' as ScrollBehavior });
   }, [index, p] as const);
   // settle: the eased scroll and the figure stop moving
   let prev = '';
@@ -144,4 +147,58 @@ test('rowing hides the walking figure and keeps the boat', async ({ page }) => {
   expect(await page.$eval('div[data-zone="figure"]', el => (el as HTMLElement).hidden)).toBe(true);
   expect(await page.locator('[data-page="7"] .rowingSketchLine').count()).toBe(13);
   expect(await page.locator('[data-page="7"] .rowingSketch [data-rower]').count()).toBe(1);
+});
+
+test.describe('Nate, 2026-11-06: slower, a sheet laid over, bow seat', () => {
+  test('a page takes at least two screens of scroll to play through', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForTimeout(300);
+    const travel = await page.evaluate(() => {
+      const el = document.querySelector('[data-page="2"]') as HTMLElement;
+      return (el.offsetHeight - innerHeight + (parseFloat(getComputedStyle(el).marginBottom) || 0)) / innerHeight;
+    });
+    expect(travel).toBeGreaterThanOrEqual(1.99);
+  });
+
+  test('the next sheet rises over the pinned page; the page never slides under the binding', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForTimeout(300);
+    await scrollToPage(page, 2, 1.5);
+    const r = await page.evaluate(() => {
+      const stage = (i: number) => (document.querySelector(`[data-page="${i}"] > div`) as HTMLElement).getBoundingClientRect();
+      const z = (i: number) => parseInt(getComputedStyle(document.querySelector(`[data-page="${i}"]`) as HTMLElement).zIndex, 10);
+      return { top2: stage(2).top, top3: stage(3).top, z2: z(2), z3: z(3), vh: innerHeight };
+    });
+    expect(Math.abs(r.top2)).toBeLessThanOrEqual(1);
+    expect(r.top3).toBeGreaterThan(r.vh * 0.3);
+    expect(r.top3).toBeLessThan(r.vh * 0.7);
+    expect(r.z3).toBeGreaterThan(r.z2);
+  });
+
+  test('the rising sheet already carries its copy, and he is behind it until it pins', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForTimeout(300);
+    await scrollToPage(page, 2, 1.5);
+    await page.waitForTimeout(600);
+    expect(await ownOpacity(page, '[data-page="3"] [data-zone="copy"]')).toBeGreaterThanOrEqual(0.99);
+    const z = await page.evaluate(() => ({
+      fig: parseInt(getComputedStyle(document.querySelector('div[data-zone="figure"]') as HTMLElement).zIndex, 10),
+      p2: parseInt(getComputedStyle(document.querySelector('[data-page="2"]') as HTMLElement).zIndex, 10),
+      p3: parseInt(getComputedStyle(document.querySelector('[data-page="3"]') as HTMLElement).zIndex, 10),
+    }));
+    expect(z.fig).toBeGreaterThan(z.p2);
+    expect(z.fig).toBeLessThan(z.p3);
+  });
+
+  test('"me" sits in the bow seat, the end the boat moves toward', async ({ page }) => {
+    await page.goto('/');
+    await scrollToPage(page, 7, 0.6);
+    await page.waitForTimeout(400);
+    const r = await page.evaluate(() => {
+      const me = (document.querySelector('[data-page="7"] .rowingSketch [data-rower] text') as SVGGraphicsElement).getBoundingClientRect();
+      const hull = (document.querySelector('[data-page="7"] .rowingSketch svg g[transform] > path') as SVGGraphicsElement).getBoundingClientRect();
+      return { me: me.left + me.width / 2, hull: hull.left + hull.width / 2 };
+    });
+    expect(r.me).toBeGreaterThan(r.hull);
+  });
 });

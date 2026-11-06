@@ -14,9 +14,12 @@
 .binding { position: fixed; top: 0; left: 0; right: 0; height: var(--binding); z-index: 60; pointer-events: none; }
 .binding svg { width: 100%; height: var(--binding); display: block; overflow: visible; }
 
-.page { position: relative; height: 200vh; z-index: 5; }
+.page { position: relative; z-index: 5; }
 .stage { position: sticky; top: 0; height: 100vh; box-sizing: border-box; overflow: hidden; display: flex; flex-direction: column;
-  padding: calc(var(--binding) + 18px) calc(var(--gutter) + var(--tabs)) var(--strip) var(--gutter); }
+  padding: calc(var(--binding) + 18px) calc(var(--gutter) + var(--tabs)) var(--strip) var(--gutter);
+  /* an opaque sheet with a top edge, so a rising page reads as paper laid over the one before */
+  background: var(--paper);
+  box-shadow: 0 -1px 0 rgba(42, 41, 36, .28), 0 -2px 0 rgba(243, 239, 227, .45), 0 -16px 36px rgba(42, 41, 36, .16); }
 .stage[data-dark="true"] { background: #23221e; color: var(--paper); }
 .rail { display: grid; grid-template-columns: 48px 1fr auto; gap: 16px; align-items: center; padding-bottom: 10px; border-bottom: 1px solid currentColor;
   font: 700 14px/1 var(--hand); letter-spacing: .12em; text-transform: uppercase; opacity: .72; }
@@ -68,7 +71,7 @@
 :global(html:not(.js)) .copy { opacity: 1 !important; transform: none !important; }
 :global(html:not(.js)) .media { opacity: 1 !important; }
 :global(html:not(.js)) .figureLayer, :global(html:not(.js)) .bubble { display: none !important; }
-:global(html:not(.js)) .page { height: auto !important; }
+:global(html:not(.js)) .page { height: auto !important; margin-bottom: 0 !important; }
 :global(html:not(.js)) .piece, :global(html:not(.js)) .print, :global(html:not(.js)) .caption, :global(html:not(.js)) .pencilNote, :global(html:not(.js)) .mediaVideo { opacity: 1 !important; transform: none !important; }
 :global(html:not(.js)) .piece:not(:last-child) .caption, :global(html:not(.js)) .piece:not(:last-child) .pencilNote { display: none !important; }
 :global(html:not(.js)) .wireSvg { display: none !important; }

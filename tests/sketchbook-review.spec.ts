@@ -54,6 +54,8 @@ test('no javascript shows the drawings and prints with no wireframes on top', as
 });
 
 test('a video that cannot play stays hidden behind the real screen', async ({ page }) => {
+  // The autoplay attribute does not go through the scripted play(), so the source is cut as well: the video can never reach `playing`.
+  await page.route(/\.(mp4|webm|mov)(\?|$)/, r => r.abort());
   await page.addInitScript(() => { HTMLMediaElement.prototype.play = function () { return Promise.reject(new DOMException('blocked', 'NotAllowedError')); }; });
   await page.goto('/');
   await settle(page, 2, 0.98);

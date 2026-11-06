@@ -110,7 +110,7 @@ test.describe('little Nate', () => {
   });
 });
 
-import { pageProgress, activeIndex } from '../src/app/sketchbook/pages';
+import { pageProgress, activeIndex, pageHeightVh, copyOn, headOn, TRAVEL_VH, OVERLAP_VH, PIN_VH } from '../src/app/sketchbook/pages';
 
 test.describe('page math', () => {
   test('progress runs 0 → 1 across the scrollable part of a page', () => {
@@ -148,5 +148,43 @@ test.describe('traced art', () => {
       expect(data.paths.length, n).toBeGreaterThan(0);
       expect(data.paths.length, n).toBeLessThanOrEqual(80);
     }
+  });
+});
+
+test.describe('page turn (Nate, 2026-11-06: slower, and a sheet laid over)', () => {
+  test('a page plays through over its travel, then holds while the next sheet covers it', () => {
+    // top 1000, travel 2000, stage 1000, overlap 1000 → height 4000
+    expect(pageProgress(1000, 4000, 2000, 1000, 1000).p).toBeCloseTo(0.5);
+    expect(pageProgress(1000, 4000, 3000, 1000, 1000).p).toBe(1);
+    expect(pageProgress(1000, 4000, 3500, 1000, 1000).p).toBe(1);
+  });
+
+  test('entering runs 0 → 1 over the screen before a page pins', () => {
+    expect(pageProgress(3000, 4000, 2000, 1000, 1000).entering).toBe(0);
+    expect(pageProgress(3000, 4000, 2500, 1000, 1000).entering).toBeCloseTo(0.5);
+    expect(pageProgress(3000, 4000, 3000, 1000, 1000).entering).toBe(1);
+  });
+
+  test('a page is its travel plus the stage, plus the overlap unless it is last', () => {
+    expect(pageHeightVh(200, false)).toBe(200 + PIN_VH + OVERLAP_VH);
+    expect(pageHeightVh(120, true)).toBe(120 + PIN_VH);
+    expect(TRAVEL_VH).toBeGreaterThanOrEqual(200);
+    expect(OVERLAP_VH).toBe(100);
+  });
+
+  test('copy is on while a sheet rises on a desktop, and from the pin on a phone', () => {
+    expect(copyOn(0, false, 0.5, 1440)).toBe(true);
+    expect(copyOn(0, false, 0.1, 1440)).toBe(false);
+    expect(copyOn(0, false, 0.5, 390)).toBe(false);
+    expect(copyOn(0.1, false, 1, 390)).toBe(true);
+    expect(copyOn(0, true, 0, 390)).toBe(true);
+  });
+
+  test('a heading shades in as its sheet rises, or with progress once pinned', () => {
+    expect(headOn(0, 0.3)).toBe(0);
+    expect(headOn(0, 0.95)).toBe(1);
+    expect(headOn(0.3, 0)).toBe(1);
+    expect(headOn(0.02, 0)).toBe(0);
+    expect(headOn(0, 0.6)).toBeGreaterThan(0.2);
   });
 });

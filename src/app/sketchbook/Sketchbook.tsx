@@ -7,7 +7,7 @@ import { HOME_COPY } from './copy';
 import Figure, { type FigureState } from './FigureView';
 import type { PoseKind } from './figure';
 import Page from './Page';
-import { activeIndex, clamp, pageProgress } from './pages';
+import { activeIndex, clamp, pageProgress, TRAVEL_VH } from './pages';
 import Tabs from './Tabs';
 import type { PageDef, PageProps } from './types';
 import { useScrollClock } from './useScrollClock';
@@ -24,21 +24,21 @@ import About, { figureScript as aboutScript } from './pages/About';
 
 /** The pages, in order. Each owns its own figure script. */
 export const PAGES: PageDef[] = [
-  { id: 'cover', height: '160vh', script: coverScript, render: p => <Cover {...p} /> },
-  { id: 'work', height: '150vh', script: originScript, render: p => <Origin {...p} /> },
+  { id: 'cover', travel: 120, script: coverScript, render: p => <Cover {...p} /> },
+  { id: 'work', travel: 100, script: originScript, render: p => <Origin {...p} /> },
   { id: 'della', rail: HOME_COPY.projects.della.rail, script: dellaScript, render: p => <Della {...p} /> },
   { id: 'vialgrade', rail: HOME_COPY.projects.vialgrade.rail, script: vialScript, render: p => <Vial {...p} /> },
   { id: 'transformer', rail: HOME_COPY.projects.transformer.rail, dark: true, script: transformerScript, render: p => <Transformer {...p} /> },
   { id: 'desk', rail: HOME_COPY.desk.rail, script: deskScript, render: p => <Desk {...p} /> },
   { id: 'draw', rail: HOME_COPY.drawings.rail, script: drawScript, render: p => <Drawings {...p} /> },
   { id: 'row', rail: HOME_COPY.rowing.rail, script: rowScript, render: p => <Rowing {...p} /> },
-  { id: 'about', height: '160vh', script: aboutScript, render: p => <About {...p} /> },
+  { id: 'about', travel: 120, script: aboutScript, render: p => <About {...p} /> },
 ];
 
 type Fig = FigureState & { x: number; lift: number; hidden: boolean };
-type Frame = { scroll: number; boil: number; reduced: boolean; vw: number; vh: number; clock: number; P: { p: number; leaving: number }[]; ai: number; fig: Fig; scrolled: boolean; seen: boolean[] };
+type Frame = { scroll: number; boil: number; reduced: boolean; vw: number; vh: number; clock: number; P: { p: number; leaving: number; entering: number }[]; ai: number; fig: Fig; scrolled: boolean; seen: boolean[] };
 const initialFrame: Frame = {
-  scroll: 0, boil: 0, reduced: false, vw: 1024, vh: 768, clock: 0, P: PAGES.map(() => ({ p: 0, leaving: 0 })), ai: 0,
+  scroll: 0, boil: 0, reduced: false, vw: 1024, vh: 768, clock: 0, P: PAGES.map((_, i) => ({ p: 0, leaving: 0, entering: i === 0 ? 1 : 0 })), ai: 0,
   fig: { pose: 'idle', frame: 0, variant: 0, drawn: 0, colored: false, x: 0, lift: 0, hidden: false }, scrolled: false, seen: PAGES.map(() => false),
 };
 
@@ -49,7 +49,7 @@ const PageBody = memo(function PageBody({ def, ...props }: { def: PageDef } & Pa
 
 export default function Sketchbook() {
   const [f, setFrame] = useState<Frame>(initialFrame);
-  const geom = useRef<{ tops: number[]; heights: number[] }>({ tops: [], heights: [] });
+  const geom = useRef<{ tops: number[]; heights: number[]; overlaps: number[] }>({ tops: [], heights: [], overlaps: [] });
   const sim = useRef({ x: NaN, acc: 0, idleT: 0, frame: 0, pose: 'idle' as PoseKind, skipped: false, hopAt: -1, lookupUntil: 0, drawnOnce: false, seen: PAGES.map(() => false), P: PAGES.map(() => 0), last: { scroll: -1, boil: -1, vw: 0, vh: 0, elapsed: 0 } });
 
   /** Scroll so a page is pinned a little way in: its copy is on and its first marks are drawn. Used by anchors and focus. */
@@ -57,7 +57,7 @@ export default function Sketchbook() {
     const g = geom.current;
     if (g.tops[i] === undefined) return;
     sim.current.skipped = true;
-    const top = g.tops[i] + 0.12 * Math.max(0, g.heights[i] - window.innerHeight);
+    const top = g.tops[i] + 0.12 * Math.max(0, g.heights[i] - window.innerHeight - (g.overlaps[i] ?? 0));
     // Nearby: glide. Far away: turn straight to the page; the thumb catches up over the last screen and a half.
     const far = Math.abs(top - window.scrollY) > window.innerHeight * 2;
     window.scrollTo({ top, behavior: far ? 'instant' : behavior });
@@ -65,7 +65,7 @@ export default function Sketchbook() {
 
   const measure = useCallback(() => {
     const els = Array.from(document.querySelectorAll<HTMLElement>('[data-page]'));
-    geom.current = { tops: els.map(e => e.offsetTop), heights: els.map(e => e.offsetHeight) };
+    geom.current = { tops: els.map(e => e.offsetTop), heights: els.map(e => e.offsetHeight), overlaps: els.map(e => Math.max(0, -parseFloat(getComputedStyle(e).marginBottom) || 0)) };
   }, []);
   useEffect(() => {
     measure();
@@ -93,7 +93,9 @@ export default function Sketchbook() {
       const sec = (e.target as HTMLElement | null)?.closest<HTMLElement>('[data-page]');
       if (!sec) return;
       const i = Number(sec.dataset.page);
-      if (sim.current.P[i] < 0.1) revealPage(i);
+      // Not yet reached, or already covered by the next sheet: bring the page back so the focused link is visible.
+      const covered = i < PAGES.length - 1 && window.scrollY >= (geom.current.tops[i + 1] ?? Infinity) - 2;
+      if (sim.current.P[i] < 0.1 || covered) revealPage(i);
     };
     const onHash = () => fromHash('smooth');
     const t = window.setTimeout(() => fromHash('instant'), 60);
@@ -107,8 +109,8 @@ export default function Sketchbook() {
     const skip = () => { sim.current.skipped = true; };
     const key = (e: KeyboardEvent) => {
       sim.current.skipped = true;
-      if (e.key === 'ArrowRight') window.scrollBy({ top: window.innerHeight * 0.35, behavior: 'smooth' });
-      if (e.key === 'ArrowLeft') window.scrollBy({ top: -window.innerHeight * 0.35, behavior: 'smooth' });
+      if (e.key === 'ArrowRight') window.scrollBy({ top: window.innerHeight * 0.5, behavior: 'smooth' });
+      if (e.key === 'ArrowLeft') window.scrollBy({ top: -window.innerHeight * 0.5, behavior: 'smooth' });
       if (e.key === ' ' && e.target === document.body) { e.preventDefault(); sim.current.hopAt = performance.now(); }
     };
     window.addEventListener('scroll', skip, { passive: true });
@@ -120,7 +122,7 @@ export default function Sketchbook() {
   useScrollClock(c => {
     const s = sim.current, g = geom.current, n = PAGES.length;
     const clock = c.reduced || s.skipped ? 1 : clamp((c.elapsed - 300) / 3400);
-    const P = PAGES.map((_, i) => (c.reduced ? { p: 1, leaving: 0 } : pageProgress(g.tops[i] ?? 0, g.heights[i] ?? c.vh, c.scroll, c.vh)));
+    const P = PAGES.map((_, i) => (c.reduced ? { p: 1, leaving: 0, entering: 1 } : pageProgress(g.tops[i] ?? 0, g.heights[i] ?? c.vh, c.scroll, c.vh, g.overlaps[i] ?? 0)));
     P.forEach((q, i) => { s.P[i] = q.p; if (q.p > 0.06) s.seen[i] = true; });
     const ai = Math.min(n - 1, activeIndex(g.tops.length ? g.tops : [0], c.scroll));
     const figW = c.vw <= 780 ? 56 : c.vh <= 740 ? 70 : 78;
@@ -142,7 +144,8 @@ export default function Sketchbook() {
       if (t < 1) { lift += -70 * Math.sin(Math.PI * t); pose = 'hop'; } else s.hopAt = -1;
     }
     if (c.reduced) { pose = 'idle'; frame = 0; lift = 0; }
-    const drawn = ai === 0 ? (c.reduced ? 1 : clamp((clock - 0.62) / 0.22)) : 1;
+    // Each sheet has its own drawing of him: on the cover the pencil draws him after the name, on every later page at its start.
+    const drawn = c.reduced ? 1 : ai === 0 ? clamp((clock - 0.62) / 0.22) : clamp(P[ai].p / 0.04);
     const pastEnd = c.scroll > (g.tops[n - 1] ?? 0) + (g.heights[n - 1] ?? 0) - c.vh + 4;
     const fig: Fig = { pose, frame, variant: c.boil & 1, drawn, colored: !!script.colored, x: targetX, lift, hidden: !!script.hidden || pastEnd };
     const L = s.last;
@@ -173,13 +176,14 @@ export default function Sketchbook() {
       {PAGES.map((pg, i) => {
         const active = Math.abs(i - f.ai) <= 1;
         return (
-          <Page key={pg.id} id={pg.id} index={i} rail={pg.rail} dark={pg.dark} height={pg.height} progress={f.P[i]?.p ?? 0} leaving={f.P[i]?.leaving ?? 0}>
-            <PageBody def={pg} progress={f.P[i]?.p ?? 0} active={active} boil={active ? f.boil : 0} reduced={f.reduced} clock={i === 0 ? f.clock : 1} vw={f.vw} seen={f.seen[i] ?? false} />
+          <Page key={pg.id} id={pg.id} index={i} rail={pg.rail} dark={pg.dark} travel={pg.travel ?? TRAVEL_VH} last={i === PAGES.length - 1} progress={f.P[i]?.p ?? 0} leaving={f.P[i]?.leaving ?? 0}>
+            <PageBody def={pg} progress={f.P[i]?.p ?? 0} entering={f.P[i]?.entering ?? 0} active={active} boil={active ? f.boil : 0} reduced={f.reduced} clock={i === 0 ? f.clock : 1} vw={f.vw} seen={f.seen[i] ?? false} />
           </Page>
         );
       })}
       <PortfolioFooter />
-      <div className={[styles.figureLayer, PAGES[f.ai]?.dark ? styles.figureOnDark : ''].join(' ')} data-zone="figure" hidden={f.fig.hidden} style={{ transform: `translate(${f.fig.x.toFixed(1)}px, ${f.fig.lift.toFixed(1)}px)`, opacity: f.fig.drawn > 0 ? 1 : 0 }}>
+      {/* He is drawn on the active page: stacked just above its sheet, so the next sheet rising over it covers him too. */}
+      <div className={[styles.figureLayer, PAGES[f.ai]?.dark ? styles.figureOnDark : ''].join(' ')} data-zone="figure" data-owner={f.ai} hidden={f.fig.hidden} style={{ transform: `translate(${f.fig.x.toFixed(1)}px, ${f.fig.lift.toFixed(1)}px)`, opacity: f.fig.drawn > 0 ? 1 : 0, zIndex: 11 + 2 * f.ai }}>
         <Figure state={f.fig} className={styles.figure} />
       </div>
       <div className={styles.pagenum} data-zone="pagenum" aria-hidden="true">{f.ai + 1}</div>
