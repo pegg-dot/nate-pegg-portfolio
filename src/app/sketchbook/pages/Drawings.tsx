@@ -49,7 +49,7 @@ export default function Drawings({ progress, active, boil }: PageProps) {
             const photo = clamp((progress - s - 0.05) / 0.07);
             const shown = progress >= s;
             const depth = Math.max(0, top - i);
-            const style: CSSProperties = { zIndex: i + 1, opacity: shown ? 1 - Math.min(0.5, depth * 0.12) : 0, transform: `translate(${(-7 * depth).toFixed(0)}px, ${(-9 * depth).toFixed(0)}px) rotate(${TILT[i]}deg)`, aspectRatio: String(ASPECT[name]) };
+            const style: CSSProperties = { zIndex: i + 1, opacity: shown ? 1 - Math.min(0.5, depth * 0.12) : 0, transform: `translate(${(-6 * Math.min(depth, 3)).toFixed(0)}px, ${(-6 * Math.min(depth, 3)).toFixed(0)}px) rotate(${TILT[i]}deg)`, aspectRatio: String(ASPECT[name]) };
             const t = traced[name];
             return (
               <figure key={name} className={styles.piece} style={style} data-piece={name}>

@@ -78,7 +78,7 @@ export default function Sketchbook() {
     const clock = c.reduced || s.skipped ? 1 : clamp((c.elapsed - 300) / 3400);
     const P = PAGES.map((_, i) => (c.reduced ? { p: 1, leaving: 0 } : pageProgress(g.tops[i] ?? 0, g.heights[i] ?? c.vh, c.scroll, c.vh)));
     const ai = Math.min(n - 1, activeIndex(g.tops.length ? g.tops : [0], c.scroll));
-    const figW = c.vw <= 780 ? 56 : 78;
+    const figW = c.vw <= 780 ? 56 : c.vh <= 740 ? 70 : 78;
     const script = PAGES[ai].script(P[ai].p, c.vw, figW);
     const targetX = c.reduced ? c.vw / 2 - figW / 2 : script.x;
     const dx = Number.isNaN(s.x) ? 0 : targetX - s.x;
@@ -108,10 +108,11 @@ export default function Sketchbook() {
   });
 
   const mobile = f.vw <= 780;
-  const bubbleW = 330, figH = mobile ? 86 : 120, figBottom = mobile ? 52 : 18;
+  const short = !mobile && f.vh <= 740;
+  const bubbleW = 330, figH = mobile ? 86 : short ? 108 : 120, figBottom = mobile ? 52 : 18;
   const bubbleShown = !mobile && f.clock > 0.92 && f.ai === 0 && (f.P[0]?.p ?? 0) < 0.6 && !f.fig.hidden;
   // Desktop: the thought sits beside his head, inside the strip. Phones: above him.
-  const figW = mobile ? 56 : 78;
+  const figW = mobile ? 56 : short ? 70 : 78;
   const fitsRight = f.fig.x + figW + 12 + bubbleW < f.vw - 72;
   const bubbleX = fitsRight ? f.fig.x + figW + 10 : Math.max(8, f.fig.x - bubbleW - 10);
   const bubbleY = f.vh - figBottom - figH + 2;

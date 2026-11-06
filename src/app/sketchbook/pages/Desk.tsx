@@ -29,7 +29,7 @@ export const figureScript: FigureScript = (p, vw, figW) => {
   const x = walkX(p, vw, figW);
   const cx = x + figW / 2;
   const a = (MUG_X - 0.03) * vw, b = (MUG_X + 0.03) * vw;
-  if (cx >= a && cx <= b) return { x, pose: 'hop', lift: -56 * Math.sin(Math.PI * ((cx - a) / (b - a))) };
+  if (cx >= a && cx <= b) return { x, pose: 'hop', lift: -26 * Math.sin(Math.PI * ((cx - a) / (b - a))) };
   return { x };
 };
 
@@ -39,7 +39,7 @@ export default function Desk({ progress, active, boil, vw }: PageProps) {
   const { objects, windows } = useMemo(() => {
     const arrivals = DESK_OBJECTS.map((_, i) => (mobile ? 0.12 + i * 0.14 : arrival(SPOTS[i], vw, figW)));
     const objects: GroundObject[] = DESK_OBJECTS.map((o, i) => ({
-      x: mobile ? 0.68 : SPOTS[i], strokes: o.strokes, start: arrivals[i] - 0.04, end: arrivals[i] + 0.04, cls: 'wire',
+      x: mobile ? 0.58 : SPOTS[i], strokes: o.strokes, start: arrivals[i] - 0.04, end: arrivals[i] + 0.04, cls: 'wire',
       until: mobile && i < DESK_OBJECTS.length - 1 ? arrivals[i + 1] - 0.04 : undefined,
     }));
     objects.unshift({ x: MUG_X, strokes: MUG, start: 0, end: 0.05, cls: 'mug' });

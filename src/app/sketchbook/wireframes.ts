@@ -101,15 +101,15 @@ export const DESK_PHONE: Pt[][] = [
 ];
 export const RING: Pt[][] = [arc(0, -34, 24, -2.3, -0.8, 8), arc(0, -34, 36, -2.2, -0.9, 8), arc(0, -34, 48, -2.1, -1.0, 8)];
 export const MUG: Pt[][] = [
-  [[-16, 0], [-14, -34], [14, -34], [16, 0], [-16, 0]],
-  arc(18, -18, 9, -Math.PI / 2, Math.PI / 2, 8),
-  arc(0, -34, 14, Math.PI, 2 * Math.PI, 8),
+  [[-13, 0], [-12, -22], [12, -22], [13, 0], [-13, 0]],
+  arc(15, -12, 6, -Math.PI / 2, Math.PI / 2, 8),
+  arc(0, -22, 12, Math.PI, 2 * Math.PI, 8),
 ];
 export const MAGNIFIER: Pt[][] = [circle(0, -70, 16, 20), [[11, -58], [26, -36]], [[13, -56], [28, -38]]];
 export const VIAL: Pt[][] = [
   ...rect(-12, -52, 24, 52), ...rect(-8, -62, 16, 10), hr(-12, 12, -24), hr(-8, 8, -36),
 ];
-export const TOKEN_BLOCK: Pt[][] = [...rect(-20, -40, 40, 40), hr(-14, 14, -28), hr(-14, 14, -20), hr(-14, 14, -12)];
+export const tokenBlock = (h = 40): Pt[][] => [...rect(-20, -h, 40, h), hr(-14, 14, -h * 0.7), hr(-14, 14, -h * 0.5), hr(-14, 14, -h * 0.3)];
 
 export const DESK_OBJECTS: { slug: string; strokes: Pt[][] }[] = [
   { slug: 'lot', strokes: [[[-30, 0], [-30, -36], [0, -64], [30, -36], [30, 0], [-30, 0]], ...rect(-8, -26, 16, 26), ...rect(-24, -30, 10, 10), hr(-36, 36, -36)] },

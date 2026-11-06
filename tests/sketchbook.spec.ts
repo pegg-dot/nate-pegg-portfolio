@@ -4,8 +4,9 @@ const nameOffsets = (page: Page) => page.$$eval('[data-name] path[data-stroke]',
 
 test('the cover is complete at rest', async ({ page }) => {
   await page.goto('/');
-  await page.waitForTimeout(4200);
-  const offsets = await nameOffsets(page);
+  // It writes itself in about three seconds without any input; allow for a loaded machine.
+  let offsets: number[] = [];
+  for (let k = 0; k < 40; k++) { await page.waitForTimeout(200); offsets = await nameOffsets(page); if (offsets.length && offsets.every(o => o === 0)) break; }
   expect(offsets.length).toBeGreaterThan(0);
   offsets.forEach(o => expect(o).toBe(0));
   await expect(page.locator('#intro')).toHaveCSS('opacity', '1');
