@@ -98,12 +98,14 @@ test('no javascript shows the finished page', async ({ browser }) => {
   await ctx.close();
 });
 
-test('tab order reaches all eleven subjects', async ({ page }) => {
+test('tab order reaches all eleven subjects', async ({ page, browserName }) => {
   await page.goto('/');
   await page.waitForTimeout(300);
   const seen = new Set<string>();
+  // WebKit only tabs through links with Option held (Safari's default), the way a keyboard user there would.
+  const key = browserName === 'webkit' ? 'Alt+Tab' : 'Tab';
   for (let k = 0; k < 90; k++) {
-    await page.keyboard.press('Tab');
+    await page.keyboard.press(key);
     const href = await page.evaluate(() => (document.activeElement as HTMLAnchorElement | null)?.getAttribute('href') ?? '');
     if (href) seen.add(href);
   }

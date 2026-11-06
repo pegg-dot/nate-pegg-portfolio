@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { HOME_COPY } from '../copy';
 import Outline from '../Outline';
 import { clamp, ease, lerp } from '../pages';
@@ -21,6 +21,18 @@ export const figureScript: FigureScript = (p, vw) => (p < 0.3 ? { x: lerp(vw * 0
 
 export default function Drawings({ progress, active, boil }: PageProps) {
   const [traced, setTraced] = useState<Record<string, Traced>>({});
+  // Pieces are sized from the measured pile box: engines disagree on aspect-ratio boxes under max-height.
+  const pileRef = useRef<HTMLDivElement>(null);
+  const [box, setBox] = useState<{ w: number; h: number } | null>(null);
+  useEffect(() => {
+    const el = pileRef.current;
+    if (!el) return;
+    const measure = () => setBox({ w: el.clientWidth, h: el.clientHeight });
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
   useEffect(() => {
     if (!active || Object.keys(traced).length) return;
     let gone = false;
@@ -41,7 +53,7 @@ export default function Drawings({ progress, active, boil }: PageProps) {
           <p>{d.p1}</p>
           <p>{d.p2.slice(0, cut)}<a href={d.igHref} target="_blank" rel="noreferrer">{d.igHandle}</a>{d.p2.slice(cut + d.igHandle.length)}</p>
         </div>
-        <div className={styles.pile} style={{ transform: `scale(${zoom.toFixed(3)})` }}>
+        <div ref={pileRef} className={styles.pile} style={{ transform: `scale(${zoom.toFixed(3)})` }}>
           {d.pieces.map((piece, i) => {
             const name = NAMES[i];
             const s = FIRST + i * STEP;
@@ -49,7 +61,10 @@ export default function Drawings({ progress, active, boil }: PageProps) {
             const photo = clamp((progress - s - 0.05) / 0.07);
             const shown = progress >= s;
             const depth = Math.max(0, top - i);
-            const style: CSSProperties = { zIndex: i + 1, opacity: shown ? 1 - Math.min(0.5, depth * 0.12) : 0, transform: `translate(${(-6 * Math.min(depth, 3)).toFixed(0)}px, ${(-6 * Math.min(depth, 3)).toFixed(0)}px) rotate(${TILT[i]}deg)`, aspectRatio: String(ASPECT[name]) };
+            const ratio = ASPECT[name];
+            const h = box ? Math.min(box.h * 0.76, (box.w * 0.76) / ratio) : 0;
+            const size: CSSProperties = box ? { width: h * ratio, height: h, left: (box.w - h * ratio) / 2, right: 'auto' } : { aspectRatio: String(ratio) };
+            const style: CSSProperties = { ...size, zIndex: i + 1, opacity: shown ? 1 - Math.min(0.5, depth * 0.12) : 0, transform: `translate(${(-6 * Math.min(depth, 3)).toFixed(0)}px, ${(-6 * Math.min(depth, 3)).toFixed(0)}px) rotate(${TILT[i]}deg)` };
             const t = traced[name];
             return (
               <figure key={name} className={styles.piece} style={style} data-piece={name}>
