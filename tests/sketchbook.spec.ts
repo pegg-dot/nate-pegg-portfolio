@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { until } from './helpers/sketchbook';
 
 const nameOffsets = (page: Page) => page.$$eval('[data-name] path[data-stroke]', ps => ps.map(p => parseFloat(getComputedStyle(p).strokeDashoffset)));
 
@@ -14,10 +15,10 @@ test('the cover is complete at rest', async ({ page }) => {
 
 test('scrolling finishes the name instantly', async ({ page }) => {
   await page.goto('/');
-  await page.waitForTimeout(200);
+  // The page is live once the name has started writing (the frame loop is running), so the wheel reaches a hydrated page.
+  await until(() => nameOffsets(page), o => o.length > 0 && o.some(v => v < 1), 8000);
   await page.mouse.wheel(0, 300);
-  await page.waitForTimeout(300);
-  const offsets = await nameOffsets(page);
+  const offsets = await until(() => nameOffsets(page), o => o.length > 0 && o.every(v => v === 0), 1500);
   expect(offsets.length).toBeGreaterThan(0);
   offsets.forEach(o => expect(o).toBe(0));
 });

@@ -8,6 +8,14 @@ export async function settle(page: Page, index: number, p: number) {
   await page.waitForTimeout(450);
 }
 
+/** Poll `read` until `ok` accepts its value or `ms` runs out; returns the last value. Fixed waits race a loaded CI runner. */
+export async function until<T>(read: () => Promise<T>, ok: (v: T) => boolean, ms = 6000, step = 100): Promise<T> {
+  const t0 = Date.now();
+  let v = await read();
+  while (!ok(v) && Date.now() - t0 < ms) { await new Promise(r => setTimeout(r, step)); v = await read(); }
+  return v;
+}
+
 /** Opacity as a reader sees it: the product of the element's and its ancestors' opacities, 0 if any is hidden. */
 export const effectiveOpacity = (page: Page, selector: string) => page.$eval(selector, el => {
   let e: HTMLElement | null = el as HTMLElement, op = 1;

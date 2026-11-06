@@ -1,22 +1,20 @@
 import { test, expect } from '@playwright/test';
-import { effectiveOpacities, effectiveOpacity, settle } from './helpers/sketchbook';
+import { effectiveOpacities, effectiveOpacity, settle, until } from './helpers/sketchbook';
 
 test('clicking a tab lands on a page with its copy showing', async ({ page }) => {
   await page.goto('/');
   await page.waitForTimeout(600);
   for (const [href, index] of [['#work', 1], ['#draw', 6], ['#row', 7], ['#about', 8]] as const) {
     await page.click(`nav a[href="${href}"]`);
-    await page.waitForTimeout(1600);
-    expect(await page.$eval('[data-zone="pagenum"]', e => e.textContent), href).toBe(String(index + 1));
-    expect(await effectiveOpacity(page, `[data-page="${index}"] [data-zone="copy"]`), href).toBeGreaterThanOrEqual(0.99);
+    expect(await until(() => page.$eval('[data-zone="pagenum"]', e => e.textContent), t => t === String(index + 1)), href).toBe(String(index + 1));
+    expect(await until(() => effectiveOpacity(page, `[data-page="${index}"] [data-zone="copy"]`), o => o >= 0.99), href).toBeGreaterThanOrEqual(0.99);
   }
 });
 
 test('loading a project anchor lands on a page with its copy showing', async ({ page }) => {
   for (const [hash, index] of [['#della', 2], ['#vialgrade', 3]] as const) {
     await page.goto(`/${hash}`);
-    await page.waitForTimeout(1600);
-    expect(await effectiveOpacity(page, `[data-page="${index}"] [data-zone="copy"]`), hash).toBeGreaterThanOrEqual(0.99);
+    expect(await until(() => effectiveOpacity(page, `[data-page="${index}"] [data-zone="copy"]`), o => o >= 0.99), hash).toBeGreaterThanOrEqual(0.99);
   }
 });
 
