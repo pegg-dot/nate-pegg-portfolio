@@ -109,7 +109,28 @@ Reviewer path: the nav tabs and the thought bubble are always one click from any
 4. Is this still primarily for the Academy reviewer (ROADMAP.md), which keeps the "find every project in one click" rule as a hard requirement? I am treating it as yes.
 5. Small one: the "tigre?" easter egg ("Tigre. It was a giraffe blanket. I called it tiger anyway.") exists in code but is not on the live page. Bring it back on the About page, or leave it off? Default: off.
 
-## 10. Decisions log
+## 10. Nate's answers (2026-11-05)
+
+- Concept approved ("I like it"), with one correction: parts of the pencil test looked weird, things sat on top of other things, some moves did not make sense. Cross-check and cross-verify everything. Section 11 turns that into rules.
+- Character frames: not something he wants to commit to now. My SVG frames ship; the drop-in path for his own paper frames stays so it can happen later without code changes.
+- Hand video for the cover and a handwriting font: not now. The SVG pencil and Kalam ship.
+- Academy reviewer first: yes. "Every project one click away" stays a hard rule.
+- "tigre?" easter egg: off.
+
+## 11. Corrections from the pencil test review
+
+These are design rules now, not polish.
+
+1. **One space.** Little Nate and every drawn object stand on the same ground line. On each page the ground line is the desk edge or the page's bottom rule, and the objects he walks past are drawn on it at his scale. Nothing he reacts to floats in a separate box above him.
+2. **Sketch becomes real means the same shapes.** The pencil draws a wireframe of the actual screenshot or video frame (its panels, rows, headers, traced from the real image), and that wireframe becomes the image in place. A different drawing with a photo fading in on top is not allowed.
+3. **He only hops over something visible.** A mug, a gap in the desk, a stack of papers. No hop over nothing.
+4. **Nothing overlaps anything it should not.** Figure, thought bubble, tabs, page curl, captions, page number and the text and image columns each own a zone. A Playwright test reads the bounding boxes at several scroll positions and widths and fails on any intersection between those zones.
+5. **The curl belongs to its page.** It never shows at the top of the next page. It fades out as its page leaves.
+6. **Phones get a reserved strip.** The figure walks in a strip above the tabs; no canvas, caption or text enters that strip.
+7. **Every pencil mark has a reason.** Ring lines only while the phone rings, hatching only during a reveal, and nothing blinks for decoration.
+
+## 12. Decisions log
 
 - 2026-11-05: design drafted after reading the live site, the repo, ROADMAP.md, VOICE_PASS.md, the eight drawings, and the reference video.
+- 2026-11-05: Nate reviewed the pencil test: concept approved, execution corrections recorded in section 11, answers in section 10. Build proceeds.
 - 2026-11-05: builder check run. Settled without Nate: cover name writes on a clock and is skippable; the voice lock is defined precisely in section 6; `/work/*` is fully out of scope; the home page uses the existing rAF pattern plus roughjs, no Motion; the no-JS fallback is new work. Left for Nate: the five items in section 9.
