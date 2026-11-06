@@ -109,3 +109,27 @@ test.describe('little Nate', () => {
     expect(Math.max(...all.map(p => p[1]))).toBeLessThanOrEqual(70);
   });
 });
+
+import { pageProgress, activeIndex } from '../src/app/sketchbook/pages';
+
+test.describe('page math', () => {
+  test('progress runs 0 → 1 across the scrollable part of a page', () => {
+    expect(pageProgress(1000, 2000, 1000, 800).p).toBe(0);
+    expect(pageProgress(1000, 2000, 2200, 800).p).toBe(1);
+    expect(pageProgress(1000, 2000, 1600, 800).p).toBeCloseTo(0.5, 5);
+    expect(pageProgress(1000, 2000, 0, 800).p).toBe(0);
+    expect(pageProgress(1000, 2000, 9000, 800).p).toBe(1);
+  });
+
+  test('leaving rises only once the page bottom climbs above the viewport bottom', () => {
+    expect(pageProgress(1000, 2000, 2200, 800).leaving).toBe(0);
+    expect(pageProgress(1000, 2000, 2260, 800).leaving).toBeCloseTo(0.5, 5);
+    expect(pageProgress(1000, 2000, 2320, 800).leaving).toBe(1);
+  });
+
+  test('the active page is the last one whose top has been reached', () => {
+    expect(activeIndex([0, 1600, 3200], 1599)).toBe(0);
+    expect(activeIndex([0, 1600, 3200], 1600)).toBe(1);
+    expect(activeIndex([0, 1600, 3200], 9999)).toBe(2);
+  });
+});
