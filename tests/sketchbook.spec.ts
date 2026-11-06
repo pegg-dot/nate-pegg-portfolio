@@ -37,7 +37,14 @@ export async function scrollToPage(page: Page, index: number, p: number) {
     const el = document.querySelector(`[data-page="${i}"]`) as HTMLElement;
     window.scrollTo({ top: el.offsetTop + q * (el.offsetHeight - innerHeight), behavior: 'instant' as ScrollBehavior });
   }, [index, p] as const);
-  await page.waitForTimeout(900);
+  // settle: the eased scroll and the figure stop moving
+  let prev = '';
+  for (let k = 0; k < 24; k++) {
+    await page.waitForTimeout(150);
+    const t = await page.evaluate(() => document.querySelector('[data-zone="figure"]')?.getAttribute('style') ?? '');
+    if (t === prev && k > 2) break;
+    prev = t;
+  }
 }
 const ownOpacity = (page: Page, sel: string) => page.$eval(sel, el => parseFloat(getComputedStyle(el).opacity));
 const visibleRings = (page: Page) => page.$$eval('[data-page="2"] path.ring', ps => ps.filter(p => getComputedStyle(p).visibility === 'visible' && parseFloat(getComputedStyle(p).opacity) > 0.1).length);

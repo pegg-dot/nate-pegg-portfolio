@@ -81,6 +81,7 @@
   .tab span { writing-mode: horizontal-tb; transform: none; font-size: 11px; }
   .figure { width: 56px; height: 86px; }
   .figureLayer { bottom: 52px; }
+  .ground { bottom: 61px; }
   .note { display: none; }
   .pagenum { bottom: 48px; right: 10px; }
 }
@@ -150,4 +151,20 @@
 .figureOnDark { color: var(--paper); }
 @media (max-width: 780px) {
   .stackInner > .split { flex: none; }
+}
+
+/* short viewports: keep a project page's copy column inside the pinned stage */
+@media (min-width: 781px) and (max-height: 820px) {
+  .copy p { font-size: 16px; margin-bottom: 10px; }
+  .buildHeading { font-size: clamp(22px, 2.2vw, 30px); margin-bottom: 8px; }
+  .actions { margin: 2px 0 10px; gap: 10px 12px; }
+  .micro { margin-bottom: 6px; }
+  .chips { gap: 6px 14px; }
+}
+@media (min-width: 781px) and (max-height: 740px) {
+  .root { --strip: 126px; }
+  .copy p { font-size: 15px; margin-bottom: 8px; }
+  .buildHeading { font-size: 22px; }
+  .rbtn { padding: 8px 14px; font-size: 12px; }
+  .split { margin-top: 10px; }
 }

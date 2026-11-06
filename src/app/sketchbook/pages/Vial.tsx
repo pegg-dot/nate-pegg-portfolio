@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { HOME_COPY } from '../copy';
 import Ground from '../Ground';
-import { clamp, ease, lerp } from '../pages';
+import { clamp, ease, endX, lerp } from '../pages';
 import ProjectCopy from '../ProjectCopy';
 import Reveal from '../Reveal';
 import Stack from '../Stack';
@@ -12,7 +12,7 @@ import styles from '../sketchbook.module.css';
 
 /** He walks up to the vial, holds a magnifier over it while the screen is drawn, then crosses the page. */
 export const figureScript: FigureScript = (p, vw, figW) => ({
-  x: p < 0.5 ? lerp(vw * 0.04, vw * 0.3 - figW - 24, ease(clamp(p / 0.14))) : lerp(vw * 0.3 - figW - 24, vw * 0.9 - figW, ease(clamp((p - 0.5) / 0.5))),
+  x: p < 0.5 ? lerp(vw * 0.04, vw * 0.3 - figW - 24, ease(clamp(p / 0.14))) : lerp(vw * 0.3 - figW - 24, endX(vw, figW), ease(clamp((p - 0.5) / 0.5))),
 });
 
 export default function Vial({ progress, active, boil, vw }: PageProps & { vw: number }) {

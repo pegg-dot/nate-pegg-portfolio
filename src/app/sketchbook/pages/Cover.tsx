@@ -2,12 +2,12 @@
 import { Fragment } from 'react';
 import { HOME_COPY } from '../copy';
 import NameCover from '../NameCover';
-import { clamp, ease, lerp } from '../pages';
+import { clamp, ease, endX, lerp } from '../pages';
 import type { FigureScript, PageProps } from '../types';
 import styles from '../sketchbook.module.css';
 
 /** He is drawn under the name at centre, looks up at it, then walks off to the right as the page turns. */
-export const figureScript: FigureScript = (p, vw, figW) => ({ x: lerp(vw / 2 - figW / 2, vw * 0.86 - figW, ease(clamp((p - 0.15) / 0.85))) });
+export const figureScript: FigureScript = (p, vw, figW) => ({ x: lerp(vw / 2 - figW / 2, endX(vw, figW), ease(clamp((p - 0.15) / 0.85))) });
 
 export default function Cover({ clock, boil }: PageProps) {
   const on = clock > 0.84;

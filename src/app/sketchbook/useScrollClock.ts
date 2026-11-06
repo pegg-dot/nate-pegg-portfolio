@@ -24,6 +24,9 @@ export function useScrollClock(onFrame: (c: Clock) => void): void {
       const dt = Math.min(250, now - last);
       last = now;
       const target = window.scrollY;
+      // The thumb never trails by more than a screen and a half (anchor jumps, instant scrolls).
+      const maxLag = window.innerHeight * 1.5;
+      if (Math.abs(target - cur) > maxLag) cur = target - Math.sign(target - cur) * maxLag;
       cur = reduced ? target : cur + (target - cur) * (1 - Math.exp(-dt / 90));
       if (Math.abs(target - cur) < 0.05) cur = target;
       const elapsed = now - start;

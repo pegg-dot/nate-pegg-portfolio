@@ -14,7 +14,7 @@ export default function Stack({ progress, children }: { progress: number; childr
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const measure = () => setOverflow(Math.max(0, el.scrollHeight - el.clientHeight));
+    const measure = () => { const o = el.scrollHeight - el.clientHeight; setOverflow(o > 8 ? o : 0); };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);

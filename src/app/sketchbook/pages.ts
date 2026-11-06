@@ -15,3 +15,6 @@ export function activeIndex(tops: number[], scroll: number): number {
   for (let i = 0; i < tops.length; i++) if (tops[i] <= scroll) a = i;
   return a;
 }
+
+/** Where a walk across a page ends: short of the page curl and the tabs. */
+export const endX = (vw: number, figW: number) => Math.min(vw * 0.9 - figW, vw - 130 - figW);

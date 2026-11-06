@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { HOME_COPY } from '../copy';
 import Ground from '../Ground';
-import { clamp, ease, lerp } from '../pages';
+import { clamp, ease, endX, lerp } from '../pages';
 import ProjectCopy from '../ProjectCopy';
 import Reveal from '../Reveal';
 import Stack from '../Stack';
@@ -20,7 +20,7 @@ export const figureScript: FigureScript = (p, vw, figW) => {
   if (p < 0.5) return { x: first, lift: -BLOCK_H * ease(clamp((p - 0.08) / 0.04)) };
   if (p < 0.8) return { x: lerp(first, last, ease((p - 0.5) / 0.3)), lift: -BLOCK_H };
   const down = ease(clamp((p - 0.8) / 0.08));
-  return { x: lerp(last, vw * 0.9 - figW, ease(clamp((p - 0.8) / 0.2))), lift: -BLOCK_H * (1 - down) };
+  return { x: lerp(last, endX(vw, figW), ease(clamp((p - 0.8) / 0.2))), lift: -BLOCK_H * (1 - down) };
 };
 
 const OBJECTS = BLOCKS.map((x, i) => ({ x, strokes: TOKEN_BLOCK, start: 0.02 + i * 0.01, end: 0.07 + i * 0.01, cls: 'wire' }));
