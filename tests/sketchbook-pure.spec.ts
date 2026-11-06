@@ -58,3 +58,54 @@ test.describe('pencil', () => {
     expect(r[0][1][0]).toBeGreaterThan(100);
   });
 });
+
+import { pose, buildFrames, FRAME_COUNTS, STROKE_COUNT, STROKE_CLASSES, type PoseKind } from '../src/app/sketchbook/figure';
+
+test.describe('little Nate', () => {
+  const kinds: PoseKind[] = ['walk', 'idle', 'hop', 'sit', 'row', 'lookup'];
+
+  test('every pose has exactly fifteen strokes', () => {
+    for (const k of kinds) expect(pose(k, 0), k).toHaveLength(STROKE_COUNT);
+    expect(STROKE_CLASSES).toHaveLength(STROKE_COUNT);
+    expect(STROKE_CLASSES[7]).toBe('s1');
+    expect(STROKE_CLASSES[10]).toBe('alien');
+    expect(STROKE_CLASSES[14]).toBe('pencil');
+  });
+
+  test('standing poses rest their feet on the ground line', () => {
+    for (const k of ['walk', 'idle', 'lookup'] as PoseKind[]) {
+      for (let f = 0; f < FRAME_COUNTS[k]; f++) {
+        const legs = [...(pose(k, f / Math.max(1, FRAME_COUNTS[k] - (k === 'walk' ? 0 : 1)))[4] ?? []), ...(pose(k, 0)[5] ?? [])];
+        const lowest = Math.max(...legs.map(p => p[1]));
+        expect(Math.abs(lowest - 82), `${k} frame ${f}`).toBeLessThanOrEqual(1);
+      }
+    }
+  });
+
+  test('the hop tucks the legs', () => {
+    const all = pose('hop', 0).flatMap(s => s ?? []);
+    expect(Math.max(...all.map(p => p[1]))).toBeLessThanOrEqual(78);
+  });
+
+  test('frames are built with two boil variants each', () => {
+    const F = buildFrames();
+    expect(F.walk).toHaveLength(8);
+    for (const k of kinds) {
+      expect(F[k], k).toHaveLength(FRAME_COUNTS[k]);
+      for (const frame of F[k]) {
+        expect(frame).toHaveLength(2);
+        for (const v of frame) expect(v).toHaveLength(STROKE_COUNT);
+      }
+    }
+  });
+
+  test('sit and row move between their two frames', () => {
+    expect(pose('sit', 0)).not.toEqual(pose('sit', 1));
+    expect(pose('row', 0)).not.toEqual(pose('row', 1));
+  });
+
+  test('the rower keeps its legs inside the hull', () => {
+    const all = pose('row', 0).flatMap(s => s ?? []);
+    expect(Math.max(...all.map(p => p[1]))).toBeLessThanOrEqual(70);
+  });
+});
