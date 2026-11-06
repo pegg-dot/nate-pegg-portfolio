@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import PortfolioFooter from '../components/PortfolioFooter';
 import Binding from './Binding';
 import Bubble from './Bubble';
@@ -9,7 +9,7 @@ import type { PoseKind } from './figure';
 import Page from './Page';
 import { activeIndex, clamp, pageProgress } from './pages';
 import Tabs from './Tabs';
-import type { PageDef } from './types';
+import type { PageDef, PageProps } from './types';
 import { useScrollClock } from './useScrollClock';
 import styles from './sketchbook.module.css';
 import Cover, { figureScript as coverScript } from './pages/Cover';
@@ -36,16 +36,32 @@ export const PAGES: PageDef[] = [
 ];
 
 type Fig = FigureState & { x: number; lift: number; hidden: boolean };
-type Frame = { scroll: number; boil: number; reduced: boolean; vw: number; vh: number; clock: number; P: { p: number; leaving: number }[]; ai: number; fig: Fig; scrolled: boolean };
+type Frame = { scroll: number; boil: number; reduced: boolean; vw: number; vh: number; clock: number; P: { p: number; leaving: number }[]; ai: number; fig: Fig; scrolled: boolean; seen: boolean[] };
 const initialFrame: Frame = {
   scroll: 0, boil: 0, reduced: false, vw: 1024, vh: 768, clock: 0, P: PAGES.map(() => ({ p: 0, leaving: 0 })), ai: 0,
-  fig: { pose: 'idle', frame: 0, variant: 0, drawn: 0, colored: false, x: 0, lift: 0, hidden: false }, scrolled: false,
+  fig: { pose: 'idle', frame: 0, variant: 0, drawn: 0, colored: false, x: 0, lift: 0, hidden: false }, scrolled: false, seen: PAGES.map(() => false),
 };
+
+/** A page's content re-renders only when something it shows changes (inactive pages skip the boil tick). */
+const PageBody = memo(function PageBody({ def, ...props }: { def: PageDef } & PageProps) {
+  return <>{def.render(props)}</>;
+});
 
 export default function Sketchbook() {
   const [f, setFrame] = useState<Frame>(initialFrame);
   const geom = useRef<{ tops: number[]; heights: number[] }>({ tops: [], heights: [] });
-  const sim = useRef({ x: NaN, acc: 0, idleT: 0, frame: 0, pose: 'idle' as PoseKind, skipped: false, hopAt: -1, lookupUntil: 0, drawnOnce: false, last: { scroll: -1, boil: -1, vw: 0, vh: 0, elapsed: 0 } });
+  const sim = useRef({ x: NaN, acc: 0, idleT: 0, frame: 0, pose: 'idle' as PoseKind, skipped: false, hopAt: -1, lookupUntil: 0, drawnOnce: false, seen: PAGES.map(() => false), P: PAGES.map(() => 0), last: { scroll: -1, boil: -1, vw: 0, vh: 0, elapsed: 0 } });
+
+  /** Scroll so a page is pinned a little way in: its copy is on and its first marks are drawn. Used by anchors and focus. */
+  const revealPage = useCallback((i: number, behavior: ScrollBehavior = 'smooth') => {
+    const g = geom.current;
+    if (g.tops[i] === undefined) return;
+    sim.current.skipped = true;
+    const top = g.tops[i] + 0.12 * Math.max(0, g.heights[i] - window.innerHeight);
+    // Nearby: glide. Far away: turn straight to the page; the thumb catches up over the last screen and a half.
+    const far = Math.abs(top - window.scrollY) > window.innerHeight * 2;
+    window.scrollTo({ top, behavior: far ? 'instant' : behavior });
+  }, []);
 
   const measure = useCallback(() => {
     const els = Array.from(document.querySelectorAll<HTMLElement>('[data-page]'));
@@ -58,6 +74,34 @@ export default function Sketchbook() {
     ro.observe(document.body);
     return () => { window.removeEventListener('resize', measure); ro.disconnect(); };
   }, [measure]);
+
+  // Anchors (#della, #draw…), the initial hash and keyboard focus all land on a page with its copy showing.
+  useEffect(() => {
+    const indexOf = (hash: string) => PAGES.findIndex(p => '#' + p.id === hash);
+    const fromHash = (behavior: ScrollBehavior) => { const i = indexOf(window.location.hash); if (i >= 0) { measure(); revealPage(i, behavior); } };
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as HTMLElement | null)?.closest<HTMLAnchorElement>('a[href^="#"]');
+      if (!a) return;
+      const hash = a.getAttribute('href') ?? '';
+      const i = indexOf(hash);
+      if (i < 0) return;
+      e.preventDefault();
+      history.replaceState(null, '', hash);
+      revealPage(i);
+    };
+    const onFocus = (e: FocusEvent) => {
+      const sec = (e.target as HTMLElement | null)?.closest<HTMLElement>('[data-page]');
+      if (!sec) return;
+      const i = Number(sec.dataset.page);
+      if (sim.current.P[i] < 0.1) revealPage(i);
+    };
+    const onHash = () => fromHash('smooth');
+    const t = window.setTimeout(() => fromHash('instant'), 60);
+    document.addEventListener('click', onClick);
+    document.addEventListener('focusin', onFocus);
+    window.addEventListener('hashchange', onHash);
+    return () => { window.clearTimeout(t); document.removeEventListener('click', onClick); document.removeEventListener('focusin', onFocus); window.removeEventListener('hashchange', onHash); };
+  }, [measure, revealPage]);
 
   useEffect(() => {
     const skip = () => { sim.current.skipped = true; };
@@ -77,6 +121,7 @@ export default function Sketchbook() {
     const s = sim.current, g = geom.current, n = PAGES.length;
     const clock = c.reduced || s.skipped ? 1 : clamp((c.elapsed - 300) / 3400);
     const P = PAGES.map((_, i) => (c.reduced ? { p: 1, leaving: 0 } : pageProgress(g.tops[i] ?? 0, g.heights[i] ?? c.vh, c.scroll, c.vh)));
+    P.forEach((q, i) => { s.P[i] = q.p; if (q.p > 0.06) s.seen[i] = true; });
     const ai = Math.min(n - 1, activeIndex(g.tops.length ? g.tops : [0], c.scroll));
     const figW = c.vw <= 780 ? 56 : c.vh <= 740 ? 70 : 78;
     const script = PAGES[ai].script(P[ai].p, c.vw, figW);
@@ -104,7 +149,7 @@ export default function Sketchbook() {
     const moved = Math.abs(c.scroll - L.scroll) > 0.3 || c.boil !== L.boil || c.vw !== L.vw || c.vh !== L.vh || (clock < 1 && c.elapsed - L.elapsed > 30) || s.hopAt >= 0 || c.elapsed < s.lookupUntil + 50;
     if (!moved) return;
     s.last = { scroll: c.scroll, boil: c.boil, vw: c.vw, vh: c.vh, elapsed: c.elapsed };
-    setFrame({ scroll: c.scroll, boil: c.boil, reduced: c.reduced, vw: c.vw, vh: c.vh, clock, P, ai, fig, scrolled: s.skipped });
+    setFrame({ scroll: c.scroll, boil: c.boil, reduced: c.reduced, vw: c.vw, vh: c.vh, clock, P, ai, fig, scrolled: s.skipped, seen: s.seen.slice() });
   });
 
   const mobile = f.vw <= 780;
@@ -124,16 +169,19 @@ export default function Sketchbook() {
       <div className={styles.grain} aria-hidden="true" />
       <div className={styles.vignette} aria-hidden="true" />
       <Tabs />
-      {PAGES.map((pg, i) => (
-        <Page key={pg.id} id={pg.id} index={i} rail={pg.rail} dark={pg.dark} height={pg.height} progress={f.P[i]?.p ?? 0} leaving={f.P[i]?.leaving ?? 0}>
-          {pg.render({ progress: f.P[i]?.p ?? 0, active: Math.abs(i - f.ai) <= 1, boil: f.boil, reduced: f.reduced, clock: f.clock, vw: f.vw })}
-        </Page>
-      ))}
+      <Bubble shown={bubbleShown} x={bubbleX} y={bubbleY} />
+      {PAGES.map((pg, i) => {
+        const active = Math.abs(i - f.ai) <= 1;
+        return (
+          <Page key={pg.id} id={pg.id} index={i} rail={pg.rail} dark={pg.dark} height={pg.height} progress={f.P[i]?.p ?? 0} leaving={f.P[i]?.leaving ?? 0}>
+            <PageBody def={pg} progress={f.P[i]?.p ?? 0} active={active} boil={active ? f.boil : 0} reduced={f.reduced} clock={i === 0 ? f.clock : 1} vw={f.vw} seen={f.seen[i] ?? false} />
+          </Page>
+        );
+      })}
       <PortfolioFooter />
       <div className={[styles.figureLayer, PAGES[f.ai]?.dark ? styles.figureOnDark : ''].join(' ')} data-zone="figure" hidden={f.fig.hidden} style={{ transform: `translate(${f.fig.x.toFixed(1)}px, ${f.fig.lift.toFixed(1)}px)`, opacity: f.fig.drawn > 0 ? 1 : 0 }}>
         <Figure state={f.fig} className={styles.figure} />
       </div>
-      <Bubble shown={bubbleShown} x={bubbleX} y={bubbleY} />
       <div className={styles.pagenum} data-zone="pagenum" aria-hidden="true">{f.ai + 1}</div>
       {!f.scrolled && f.ai === 0 ? <div className={styles.note} aria-hidden="true">scroll ↓</div> : null}
     </main>

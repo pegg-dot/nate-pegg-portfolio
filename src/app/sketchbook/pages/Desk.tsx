@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 import { HOME_COPY } from '../copy';
 import Ground, { type GroundObject } from '../Ground';
-import { clamp, endX, lerp } from '../pages';
+import { clamp, copyOn, endX, lerp } from '../pages';
 import { seq } from '../pencil';
 import ShadedHeading from '../ShadedHeading';
 import Sketch from '../Sketch';
@@ -33,7 +33,7 @@ export const figureScript: FigureScript = (p, vw, figW) => {
   return { x };
 };
 
-export default function Desk({ progress, active, boil, vw }: PageProps) {
+export default function Desk({ progress, active, boil, vw, seen }: PageProps) {
   const mobile = vw <= 780;
   const figW = mobile ? 56 : 78;
   const { objects, windows } = useMemo(() => {
@@ -50,7 +50,7 @@ export default function Desk({ progress, active, boil, vw }: PageProps) {
   return (
     <>
       <Stack progress={progress}>
-        <div className={[styles.copy, progress > 0.06 ? styles.on : ''].join(' ')} data-zone="copy">
+        <div className={[styles.copy, copyOn(progress, seen) ? styles.on : ''].join(' ')} data-zone="copy">
           <span className={styles.micro}>{HOME_COPY.desk.label}</span>
           <ShadedHeading lines={[HOME_COPY.desk.heading]} progress={clamp((progress - 0.02) / 0.25)} className={styles.deskHeading} />
           <div className={styles.originList}>

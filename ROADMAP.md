@@ -225,5 +225,5 @@ The home page is now a spiral-bound sketchbook drawn in front of the reader: the
 - [x] Every string from the previous home page is frozen in `tests/fixtures/home-original-copy.json` and checked on the rendered page and in `src/app/sketchbook/copy.ts`.
 - [x] `/work/*` pages and `globals.css` untouched; `RowingSketch` gained two additive props.
 - [x] Overlap matrix (six viewports, three progress points per page), fast-scroll, reduced-motion, no-JavaScript, keyboard-order and axe checks in `tests/sketchbook-layout.spec.ts`; CI in `.github/workflows/sketchbook.yml`.
-- [ ] Deferred: Nate's own paper frames for little Nate (drop-in path exists), a filmed hand for the cover, a font of his handwriting, paper chrome on the deep pages, and the onion-skin ghost between pages.
+- [ ] Deferred: Nate's own paper frames for little Nate (the loader for photographed frames is not built yet), a filmed hand for the cover, a font of his handwriting, paper chrome on the deep pages, and the onion-skin ghost between pages.
 - [ ] Pre-existing on main, not touched here: two `tests/della.spec.ts` checks fail (`#now` element absent on `/work/della`, a 10px color-contrast in `originals.module.css`).

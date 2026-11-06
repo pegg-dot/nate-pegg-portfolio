@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import { useMemo } from 'react';
 import { HOME_COPY } from '../copy';
 import Ground from '../Ground';
 import { clamp, ease, endX, lerp } from '../pages';
@@ -25,14 +26,14 @@ export const figureScript: FigureScript = (p, vw, figW) => {
 };
 
 
-export default function Transformer({ progress, active, boil, vw }: PageProps & { vw: number }) {
+export default function Transformer({ progress, active, boil, vw, seen }: PageProps) {
   const h = blockH(vw);
-  const objects = BLOCKS.map((x, i) => ({ x, strokes: tokenBlock(h), start: 0.02 + i * 0.01, end: 0.07 + i * 0.01, cls: 'wire' }));
+  const objects = useMemo(() => { const block = tokenBlock(h); return BLOCKS.map((x, i) => ({ x, strokes: block, start: 0.02 + i * 0.01, end: 0.07 + i * 0.01, cls: 'wire' })); }, [h]);
   return (
     <>
       <Stack progress={progress}>
         <div className={styles.split}>
-          <ProjectCopy project={HOME_COPY.projects.transformer} progress={progress} active={active} boil={boil} />
+          <ProjectCopy project={HOME_COPY.projects.transformer} progress={progress} active={active} boil={boil} seen={seen} />
           <Reveal kind="transformer" progress={progress} active={active} boil={boil} media={<Image src="/transformer/qkv.webp" alt="Transformer visualizer showing query, key and value projections" fill sizes="(max-width: 780px) 92vw, 54vw" className={styles.mediaImg} />} />
         </div>
       </Stack>

@@ -18,3 +18,6 @@ export function activeIndex(tops: number[], scroll: number): number {
 
 /** Where a walk across a page ends: short of the page curl and the tabs. */
 export const endX = (vw: number, figW: number) => Math.min(vw * 0.9 - figW, vw - 130 - figW);
+
+/** Copy turns on just after a page starts and stays on once the page has been seen (scrolling back never hides it). */
+export const copyOn = (progress: number, seen: boolean) => progress > 0.06 || seen;

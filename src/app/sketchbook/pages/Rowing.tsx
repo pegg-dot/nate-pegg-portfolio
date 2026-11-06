@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import RowingSketch from '../../components/RowingSketch';
 import { HOME_COPY } from '../copy';
-import { clamp } from '../pages';
+import { clamp, copyOn } from '../pages';
 import { RoughBox, RoughTape } from '../Rough';
 import ShadedHeading from '../ShadedHeading';
 import Stack from '../Stack';
@@ -19,14 +19,14 @@ const me = (
   </g>
 );
 
-export default function Rowing({ progress }: PageProps) {
+export default function Rowing({ progress, seen }: PageProps) {
   const r = HOME_COPY.rowing;
   const cut = r.p2.indexOf(r.la28Text);
   return (
     <>
       <Stack progress={progress}>
         <div className={styles.split}>
-          <div className={[styles.copy, progress > 0.06 ? styles.on : ''].join(' ')} data-zone="copy">
+          <div className={[styles.copy, copyOn(progress, seen) ? styles.on : ''].join(' ')} data-zone="copy">
             <ShadedHeading lines={[r.heading]} progress={clamp((progress - 0.02) / 0.25)} />
             <p>{r.p1}</p>
             <p>{r.p2.slice(0, cut)}<a href={r.la28Href} target="_blank" rel="noreferrer">{r.la28Text}</a></p>

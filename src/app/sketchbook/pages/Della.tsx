@@ -22,24 +22,25 @@ const OBJECTS = [
 ];
 
 /** The concept demo plays over the real workspace screenshot; if it cannot play, the screenshot stays. */
-function DellaMedia({ progress }: { progress: number }) {
-  const [paused, setPaused] = useState(false);
+function DellaMedia({ progress, reduced }: { progress: number; reduced: boolean }) {
+  // Hidden until it is actually playing, so a blocked autoplay never covers the real screen with a frozen first frame.
+  const [playing, setPlaying] = useState(false);
   const late = clamp((progress - 0.88) / 0.1);
   return (
     <>
       <Image src="/della/room-identity.png" alt="Della workspace showing the AI employee's permissions, activity and state" fill sizes="(max-width: 780px) 92vw, 54vw" data-fallback="" className={styles.mediaImg} />
-      <video className={styles.mediaVideo} src="/della/della-promo-home.mp4" autoPlay muted loop playsInline preload="metadata" aria-label="Della concept demo showing how the product could work" onPause={() => setPaused(true)} onPlaying={() => setPaused(false)} style={{ opacity: paused ? 0 : late }} />
+      <video className={styles.mediaVideo} src="/della/della-promo-home.mp4" autoPlay={!reduced} muted loop playsInline controls preload="metadata" aria-label="Della product demo" onPause={() => setPlaying(false)} onPlaying={() => setPlaying(true)} style={{ opacity: playing || reduced ? late : 0 }} />
     </>
   );
 }
 
-export default function Della({ progress, active, boil, vw }: PageProps & { vw: number }) {
+export default function Della({ progress, active, boil, vw, seen, reduced }: PageProps) {
   return (
     <>
       <Stack progress={progress}>
         <div className={styles.split}>
-          <ProjectCopy project={HOME_COPY.projects.della} progress={progress} active={active} boil={boil} />
-          <Reveal kind="della" progress={progress} active={active} boil={boil} media={<DellaMedia progress={progress} />} />
+          <ProjectCopy project={HOME_COPY.projects.della} progress={progress} active={active} boil={boil} seen={seen} />
+          <Reveal kind="della" progress={progress} active={active} boil={boil} media={<DellaMedia progress={progress} reduced={reduced} />} />
         </div>
       </Stack>
       <Ground objects={OBJECTS} vw={vw} progress={progress} active={active} boil={boil} />
