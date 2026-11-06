@@ -1,5 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { dense, wobble, toPath, circle, seq, variants, rect, type Pt } from '../src/app/sketchbook/pencil';
+import { figureScript as deskScript, obstacle, spotX } from '../src/app/sketchbook/desk';
+import { DESK_OBJECTS } from '../src/app/sketchbook/wireframes';
+import { GROUND_Y } from '../src/app/sketchbook/figure';
 
 const line: Pt[] = [[0, 0], [30, 0]];
 
@@ -197,5 +200,44 @@ test.describe('the pencil (Nate, 2026-11-06: "the pencil didn\'t move")', () => 
     const xs = tips.map(q => q[0]), ys = tips.map(q => q[1]);
     expect(Math.max(...xs) - Math.min(...xs)).toBeGreaterThanOrEqual(8);
     expect(Math.max(...ys) - Math.min(...ys)).toBeGreaterThanOrEqual(3);
+  });
+});
+
+test.describe('the desk (Nate, 2026-11-06: "why is he jumping over a beer can?")', () => {
+  // Desktop and phone widths, with the figure width the shell uses at each.
+  const widths: [number, number][] = [[1440, 78], [1024, 78], [781, 78], [768, 56], [375, 56]];
+
+  test('what he hops is drawn at the scale of the other desk objects, and his feet clear it', () => {
+    const smallest = Math.min(...DESK_OBJECTS.map(o => -Math.min(...o.strokes.flat().map(pt => pt[1]))));
+    // In the hop his legs tuck: his feet ride this far above the ground line (figure units, 60 wide).
+    const feet = Math.max(...pose('hop', 0).slice(4, 6).flatMap(s => s ?? []).map(pt => pt[1]));
+    for (const [vw, figW] of widths) {
+      const o = obstacle(vw);
+      expect(o.height, `${vw}: not a mug among houses`).toBeGreaterThanOrEqual(0.75 * smallest * o.scale);
+      const tuck = (GROUND_Y - feet) * (figW / 60);
+      let apex = 0, first = Infinity, last = -Infinity, hops = 0;
+      for (let p = 0; p <= 1; p += 0.001) {
+        const s = deskScript(p, vw, figW);
+        const cx = s.x + figW / 2;
+        if (s.pose === 'hop') { hops++; apex = Math.min(apex, s.lift ?? 0); first = Math.min(first, cx); last = Math.max(last, cx); }
+        else expect(s.lift ?? 0, `${vw}: no lift except in the hop`).toBe(0);
+      }
+      expect(hops, `${vw}: he hops`).toBeGreaterThan(0);
+      expect(first, `${vw}: takes off before its left edge`).toBeLessThanOrEqual(o.left);
+      expect(last, `${vw}: lands past its right edge`).toBeGreaterThanOrEqual(o.right);
+      expect(tuck - apex, `${vw}: his feet clear its top`).toBeGreaterThanOrEqual(o.height + 4);
+    }
+  });
+
+  test('it stands clear of the desk objects at every width', () => {
+    for (const [vw] of widths) {
+      const o = obstacle(vw);
+      for (const [i, d] of DESK_OBJECTS.entries()) {
+        const xs = d.strokes.flat().map(pt => pt[0]);
+        const cx = spotX(i, vw) * vw;
+        const l = cx + Math.min(...xs), r = cx + Math.max(...xs);
+        expect(r <= o.left - 4 || l >= o.right + 4, `${vw}: ${d.slug} ${l.toFixed(0)}–${r.toFixed(0)} against ${o.left.toFixed(0)}–${o.right.toFixed(0)}`).toBe(true);
+      }
+    }
   });
 });

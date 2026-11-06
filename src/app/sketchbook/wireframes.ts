@@ -100,10 +100,13 @@ export const DESK_PHONE: Pt[][] = [
   hr(-12, -4, -14), hr(4, 12, -14), hr(-12, -4, -8), hr(4, 12, -8),
 ];
 export const RING: Pt[][] = [arc(0, -34, 24, -2.3, -0.8, 8), arc(0, -34, 36, -2.2, -0.9, 8), arc(0, -34, 48, -2.1, -1.0, 8)];
-export const MUG: Pt[][] = [
-  [[-13, 0], [-12, -22], [12, -22], [13, 0], [-13, 0]],
-  arc(15, -12, 6, -Math.PI / 2, Math.PI / 2, 8),
-  arc(0, -22, 12, Math.PI, 2 * Math.PI, 8),
+/** The Rotunda, as a paperweight on the desk (he leaps it): two steps, four columns under a pediment, the drum, the dome. 64 wide, 66 tall. */
+export const ROTUNDA: Pt[][] = [
+  hr(-32, 32, 0), hr(-28, 28, -5),
+  line(-16, -5, -16, -24), line(-5, -5, -5, -24), line(5, -5, 5, -24), line(16, -5, 16, -24),
+  [[-22, -24], [0, -34], [22, -24], [-22, -24]],
+  line(-26, -5, -26, -40), line(26, -5, 26, -40), hr(-26, 26, -40),
+  arc(0, -40, 26, Math.PI, 2 * Math.PI, 14),
 ];
 export const MAGNIFIER: Pt[][] = [circle(0, -70, 16, 20), [[11, -58], [26, -36]], [[13, -56], [28, -38]]];
 export const VIAL: Pt[][] = [

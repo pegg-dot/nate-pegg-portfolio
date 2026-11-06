@@ -3,53 +3,39 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 import { HOME_COPY } from '../copy';
 import Ground, { type GroundObject } from '../Ground';
-import { clamp, copyOn, endX, headOn, lerp } from '../pages';
+import { arrival, figureScript, leap, obstacle, spotX } from '../desk';
+import { copyOn, headOn } from '../pages';
 import { seq } from '../pencil';
 import ShadedHeading from '../ShadedHeading';
 import Sketch from '../Sketch';
 import Stack from '../Stack';
-import type { FigureScript, PageProps } from '../types';
-import { DESK_OBJECTS, MUG } from '../wireframes';
+import type { PageProps } from '../types';
+import { DESK_OBJECTS } from '../wireframes';
 import styles from '../sketchbook.module.css';
 
-const SPOTS = [0.12, 0.24, 0.36, 0.52, 0.66, 0.8];
-const MUG_X = 0.42;
-const P0 = 0.05, P1 = 0.95;
+export { figureScript };
+
 const UNDERLINE = [[[0, 5], [30, 7], [60, 4], [100, 6]] as [number, number][]];
-
-/** A linear walk across the desk, so each object draws exactly as he reaches it. */
-const walkX = (p: number, vw: number, figW: number) => lerp(vw * 0.04, endX(vw, figW), clamp((p - P0) / (P1 - P0)));
-/** The progress at which his centre reaches a spot (as a fraction of the width). */
-function arrival(spot: number, vw: number, figW: number) {
-  const x0 = vw * 0.04, x1 = endX(vw, figW);
-  return P0 + (P1 - P0) * clamp((spot * vw - figW / 2 - x0) / (x1 - x0));
-}
-
-export const figureScript: FigureScript = (p, vw, figW) => {
-  const x = walkX(p, vw, figW);
-  const cx = x + figW / 2;
-  const a = (MUG_X - 0.03) * vw, b = (MUG_X + 0.03) * vw;
-  if (cx >= a && cx <= b) return { x, pose: 'hop', lift: -26 * Math.sin(Math.PI * ((cx - a) / (b - a))) };
-  return { x };
-};
 
 export default function Desk({ progress, entering, active, boil, vw, seen }: PageProps) {
   const mobile = vw <= 780;
   const figW = mobile ? 56 : 78;
   const { objects, windows } = useMemo(() => {
-    const arrivals = DESK_OBJECTS.map((_, i) => (mobile ? 0.12 + i * 0.14 : arrival(SPOTS[i], vw, figW)));
+    const arrivals = DESK_OBJECTS.map((_, i) => (mobile ? 0.12 + i * 0.14 : arrival(spotX(i, vw), vw, figW)));
     const objects: GroundObject[] = DESK_OBJECTS.map((o, i) => ({
-      x: mobile ? 0.58 : SPOTS[i], strokes: o.strokes, start: arrivals[i] - 0.04, end: arrivals[i] + 0.04, cls: 'wire',
+      x: spotX(i, vw), strokes: o.strokes, start: arrivals[i] - 0.04, end: arrivals[i] + 0.04, cls: 'wire',
       until: mobile && i < DESK_OBJECTS.length - 1 ? arrivals[i + 1] - 0.04 : undefined,
     }));
-    objects.unshift({ x: MUG_X, strokes: MUG, start: 0, end: 0.05, cls: 'mug' });
+    const ob = obstacle(vw);
+    objects.unshift({ x: ob.x, strokes: ob.strokes, start: 0, end: 0.08, cls: 'rotunda' });
     const windows = arrivals.map(a => seq(UNDERLINE, a - 0.04, a + 0.04, undefined, 0.6));
     return { objects, windows };
   }, [vw, figW, mobile]);
   const { story, live, arrowStory, arrowLive } = HOME_COPY.desk.rowActions;
+  const room = Math.ceil(leap(obstacle(vw))) + 4;
   return (
     <>
-      <Stack progress={progress}>
+      <Stack progress={progress} room={room}>
         <div className={[styles.copy, copyOn(progress, seen, entering, vw) ? styles.on : ''].join(' ')} data-zone="copy">
           <span className={styles.micro}>{HOME_COPY.desk.label}</span>
           <ShadedHeading lines={[HOME_COPY.desk.heading]} progress={headOn(progress, entering, vw)} className={styles.deskHeading} />

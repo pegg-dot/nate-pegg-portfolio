@@ -7,8 +7,9 @@ import styles from './sketchbook.module.css';
  * The page's content column. When it is taller than the pinned stage (phones), it scrolls
  * itself up between p .35 and .65 so the second half (the drawing) comes into view.
  * On a desktop it fits and this does nothing.
+ * `room` is px kept clear beneath the content (the desk keeps the height of his leap, so he never rises into the words).
  */
-export default function Stack({ progress, children }: { progress: number; children: ReactNode }) {
+export default function Stack({ progress, children, room }: { progress: number; children: ReactNode; room?: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [overflow, setOverflow] = useState(0);
   useEffect(() => {
@@ -22,5 +23,5 @@ export default function Stack({ progress, children }: { progress: number; childr
     return () => ro.disconnect();
   }, []);
   const shift = overflow * ease(clamp((progress - 0.35) / 0.3));
-  return <div ref={ref} className={styles.stack}><div className={styles.stackInner} style={{ transform: `translateY(${(-shift).toFixed(1)}px)` }}>{children}</div></div>;
+  return <div ref={ref} className={styles.stack} style={room ? { marginBottom: room } : undefined}><div className={styles.stackInner} style={{ transform: `translateY(${(-shift).toFixed(1)}px)` }}>{children}</div></div>;
 }
