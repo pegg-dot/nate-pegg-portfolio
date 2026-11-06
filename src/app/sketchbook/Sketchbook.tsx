@@ -19,6 +19,8 @@ import Vial, { figureScript as vialScript } from './pages/Vial';
 import Transformer, { figureScript as transformerScript } from './pages/Transformer';
 import Desk, { figureScript as deskScript } from './pages/Desk';
 import Drawings, { figureScript as drawScript } from './pages/Drawings';
+import Rowing, { figureScript as rowScript } from './pages/Rowing';
+import About, { figureScript as aboutScript } from './pages/About';
 
 /** The pages, in order. Each owns its own figure script. */
 export const PAGES: PageDef[] = [
@@ -29,6 +31,8 @@ export const PAGES: PageDef[] = [
   { id: 'transformer', rail: HOME_COPY.projects.transformer.rail, dark: true, script: transformerScript, render: p => <Transformer {...p} /> },
   { id: 'desk', rail: HOME_COPY.desk.rail, script: deskScript, render: p => <Desk {...p} /> },
   { id: 'draw', rail: HOME_COPY.drawings.rail, script: drawScript, render: p => <Drawings {...p} /> },
+  { id: 'row', rail: HOME_COPY.rowing.rail, script: rowScript, render: p => <Rowing {...p} /> },
+  { id: 'about', height: '160vh', script: aboutScript, render: p => <About {...p} /> },
 ];
 
 type Fig = FigureState & { x: number; lift: number; hidden: boolean };

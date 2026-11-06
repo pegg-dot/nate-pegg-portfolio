@@ -127,3 +127,20 @@ test('drawings arrive real after their outline', async ({ page }) => {
   expect(opacities).toHaveLength(6);
   opacities.forEach(o => expect(o).toBeGreaterThanOrEqual(0.99));
 });
+
+test('the shirt gets its color only on the About page', async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.goto('/');
+  const colored = () => page.$eval('div[data-zone="figure"] svg', el => el.classList.contains('colored'));
+  for (const i of [0, 1, 2, 3, 4, 5, 6]) { await scrollToPage(page, i, 0.95); expect(await colored(), `page ${i}`).toBe(false); }
+  await scrollToPage(page, 8, 0.95);
+  expect(await colored()).toBe(true);
+});
+
+test('rowing hides the walking figure and keeps the boat', async ({ page }) => {
+  await page.goto('/');
+  await scrollToPage(page, 7, 0.5);
+  expect(await page.$eval('div[data-zone="figure"]', el => (el as HTMLElement).hidden)).toBe(true);
+  expect(await page.locator('[data-page="7"] .rowingSketchLine').count()).toBe(13);
+  expect(await page.locator('[data-page="7"] .rowingSketch [data-rower]').count()).toBe(1);
+});

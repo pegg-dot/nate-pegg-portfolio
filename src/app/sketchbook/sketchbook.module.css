@@ -209,3 +209,18 @@
   .pile { max-width: 100%; }
   .caption { font-size: 15px; }
 }
+
+/* rowing and about */
+.prints { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 24px; align-self: center; padding: 16px 12px 24px; }
+.print { position: relative; margin: 0; transition: opacity .5s; }
+.printImg { position: relative; width: 100%; aspect-ratio: 4 / 3; }
+.water { position: absolute; left: 0; right: 0; bottom: 10px; height: 140px; pointer-events: none; }
+.water :global(.rowingSketch), .water :global(.rowingSketch) svg { width: 100%; height: 100%; display: block; }
+.aboutCopy { max-width: 40em; margin: 6vh auto 0; }
+.aboutCopy p { font-size: clamp(17px, 1.5vw, 21px); }
+.funFact { font-family: var(--hand); font-size: 1.05em; line-height: 1.5; }
+@media (max-width: 780px) {
+  .prints { gap: 18px 12px; padding: 10px 8px 16px; }
+  .water { height: 100px; bottom: 44px; }
+  .aboutCopy { margin-top: 2vh; }
+}
