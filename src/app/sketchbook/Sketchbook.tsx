@@ -17,6 +17,7 @@ import Origin, { figureScript as originScript } from './pages/Origin';
 import Della, { figureScript as dellaScript } from './pages/Della';
 import Vial, { figureScript as vialScript } from './pages/Vial';
 import Transformer, { figureScript as transformerScript } from './pages/Transformer';
+import Desk, { figureScript as deskScript } from './pages/Desk';
 
 /** The pages, in order. Each owns its own figure script. */
 export const PAGES: PageDef[] = [
@@ -25,6 +26,7 @@ export const PAGES: PageDef[] = [
   { id: 'della', rail: HOME_COPY.projects.della.rail, script: dellaScript, render: p => <Della {...p} /> },
   { id: 'vialgrade', rail: HOME_COPY.projects.vialgrade.rail, script: vialScript, render: p => <Vial {...p} /> },
   { id: 'transformer', rail: HOME_COPY.projects.transformer.rail, dark: true, script: transformerScript, render: p => <Transformer {...p} /> },
+  { id: 'desk', rail: HOME_COPY.desk.rail, script: deskScript, render: p => <Desk {...p} /> },
 ];
 
 type Fig = FigureState & { x: number; lift: number; hidden: boolean };

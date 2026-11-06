@@ -89,3 +89,33 @@ test('the transformer page is the only dark page', async ({ page }) => {
   expect(await page.locator('[data-dark="true"]').count()).toBe(1);
   expect(await page.locator('[data-page="4"] [data-dark="true"]').count()).toBe(1);
 });
+
+import { HOME_COPY } from '../src/app/sketchbook/copy';
+
+test('each desk row keeps its link', async ({ page }) => {
+  await page.goto('/');
+  for (const row of HOME_COPY.desk.rows) {
+    await expect(page.locator(`[data-page="5"] a[href="${row.href}"]`).first(), row.href).toBeAttached();
+    if (row.liveHref) await expect(page.locator(`[data-page="5"] a[href="${row.liveHref}"]`).first(), row.liveHref).toBeAttached();
+  }
+});
+
+test('the hop happens over the mug', async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.goto('/');
+  let hops = 0;
+  for (let p = 0.3; p <= 0.6; p += 0.02) {
+    await scrollToPage(page, 5, p);
+    const s = await page.evaluate(() => {
+      const fig = document.querySelector('[data-zone="figure"]') as HTMLElement;
+      const m = fig.style.transform.match(/translate\(([-\d.]+)px, ([-\d.]+)px\)/);
+      const fr = fig.getBoundingClientRect();
+      const mugs = Array.from(document.querySelectorAll('[data-page="5"] path.mug')).map(e => e.getBoundingClientRect());
+      const left = Math.min(...mugs.map(r => r.left)), right = Math.max(...mugs.map(r => r.right));
+      return { cx: fr.left + fr.width / 2, lift: m ? parseFloat(m[2]) : 0, mugL: left, mugR: right };
+    });
+    const over = s.cx >= s.mugL - 40 && s.cx <= s.mugR + 40;
+    if (s.lift < -10) { hops++; expect(over, `lift ${s.lift} at x ${s.cx} (mug ${s.mugL}–${s.mugR}, p ${p.toFixed(2)})`).toBe(true); }
+  }
+  expect(hops).toBeGreaterThan(0);
+});
