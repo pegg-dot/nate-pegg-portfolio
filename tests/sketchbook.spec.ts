@@ -105,24 +105,31 @@ test('each desk row keeps its link', async ({ page }) => {
   }
 });
 
-test('the hop happens over the mug', async ({ page }) => {
+test('the hop happens over the Rotunda, and it is a real leap', async ({ page }) => {
   test.setTimeout(120_000);
   await page.goto('/');
-  let hops = 0;
+  const lifts: number[] = [];
   for (let p = 0.3; p <= 0.6; p += 0.02) {
     await scrollToPage(page, 5, p);
     const s = await page.evaluate(() => {
       const fig = document.querySelector('[data-zone="figure"]') as HTMLElement;
       const m = fig.style.transform.match(/translate\(([-\d.]+)px, ([-\d.]+)px\)/);
       const fr = fig.getBoundingClientRect();
-      const mugs = Array.from(document.querySelectorAll('[data-page="5"] path.mug')).map(e => e.getBoundingClientRect());
-      const left = Math.min(...mugs.map(r => r.left)), right = Math.max(...mugs.map(r => r.right));
-      return { cx: fr.left + fr.width / 2, lift: m ? parseFloat(m[2]) : 0, mugL: left, mugR: right };
+      const parts = Array.from(document.querySelectorAll('[data-page="5"] path.rotunda')).map(e => e.getBoundingClientRect());
+      const left = Math.min(...parts.map(r => r.left)), right = Math.max(...parts.map(r => r.right));
+      // The copy's visible bottom edge: its box, clipped by every overflow-hidden ancestor (the stack).
+      const copy = document.querySelector('[data-page="5"] [data-zone="copy"]') as HTMLElement;
+      let copyBottom = copy.getBoundingClientRect().bottom;
+      for (let a = copy.parentElement; a && a !== document.body; a = a.parentElement) if (/hidden|clip/.test(getComputedStyle(a).overflow)) copyBottom = Math.min(copyBottom, a.getBoundingClientRect().bottom);
+      return { cx: fr.left + fr.width / 2, top: fr.top, lift: m ? parseFloat(m[2]) : 0, left, right, drawn: parts.length, copyBottom };
     });
-    const over = s.cx >= s.mugL - 40 && s.cx <= s.mugR + 40;
-    if (s.lift < -10) { hops++; expect(over, `lift ${s.lift} at x ${s.cx} (mug ${s.mugL}–${s.mugR}, p ${p.toFixed(2)})`).toBe(true); }
+    expect(s.drawn, 'a Rotunda is drawn on the desk').toBeGreaterThan(0);
+    expect(s.top, `he never leaps into the words (lift ${s.lift}, p ${p.toFixed(2)})`).toBeGreaterThanOrEqual(s.copyBottom - 2);
+    const over = s.cx >= s.left - 40 && s.cx <= s.right + 40;
+    if (s.lift < -10) { lifts.push(s.lift); expect(over, `lift ${s.lift} at x ${s.cx} (Rotunda ${s.left}–${s.right}, p ${p.toFixed(2)})`).toBe(true); }
   }
-  expect(hops).toBeGreaterThan(0);
+  expect(lifts.length, 'he hops').toBeGreaterThan(0);
+  expect(Math.min(...lifts), 'a leap that clears a dome, not a hop over a mug').toBeLessThan(-40);
 });
 
 test('drawings arrive real after their outline', async ({ page }) => {

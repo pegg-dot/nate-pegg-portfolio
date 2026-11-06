@@ -58,7 +58,7 @@ Pages:
 
 4. **Transformer (03).** This page is shaded dark with heavy graphite hatching (the one dark page, replacing today's dark band), with white-pencil lines. Little Nate stands tiny on a token; a sketched attention grid lights up and becomes the real `transformer/qkv.webp`. Copy verbatim, three actions, four chips.
 
-5. **Other things (04, "the rest of the desk").** Heading "A few other things I've built or am still working on." verbatim. Drawn literally as objects on a desk: a house (LOT), a storefront (WeBuddy), a chart (NPGKTrades), a bottle and body outline (Say No To Plastic), a map pin (Grounds Guide), a moving box (MoveMate). Little Nate walks the desk; each object draws itself as he reaches it and its row of existing text appears beside it. He hops over a coffee mug between two of them. Rows keep today's copy, numbering, links, and MoveMate's two actions.
+5. **Other things (04, "the rest of the desk").** Heading "A few other things I've built or am still working on." verbatim. Drawn literally as objects on a desk: a house (LOT), a storefront (WeBuddy), a chart (NPGKTrades), a bottle and body outline (Say No To Plastic), a map pin (Grounds Guide), a moving box (MoveMate). Little Nate walks the desk; each object draws itself as he reaches it and its row of existing text appears beside it. He leaps a little Rotunda, a paperweight on the desk, standing in the gap between the chart and the bottle. Rows keep today's copy, numbering, links, and MoveMate's two actions.
 
 6. **Drawings (10).** Little Nate sits down and starts drawing; the view zooms toward the paper under his hand (Nate's "zoom into the hand" idea) and the drawings arrive in order graphite portrait (Bob Marley), commission portrait (dog), architecture study, graphite (moose), colored pencil (Coke can), Miami. Each arrives as its traced outline drawing on, then the real photo fading in beneath (real becomes drawing, the reverse of the project move). Captions and both paragraphs verbatim, Instagram link kept.
 
@@ -123,7 +123,7 @@ These are design rules now, not polish.
 
 1. **One space.** Little Nate and every drawn object stand on the same ground line. On each page the ground line is the desk edge or the page's bottom rule, and the objects he walks past are drawn on it at his scale. Nothing he reacts to floats in a separate box above him.
 2. **Sketch becomes real means the same shapes.** The pencil draws a wireframe of the actual screenshot or video frame (its panels, rows, headers, traced from the real image), and that wireframe becomes the image in place. A different drawing with a photo fading in on top is not allowed.
-3. **He only hops over something visible.** A mug, a gap in the desk, a stack of papers. No hop over nothing.
+3. **He only hops over something visible.** A Rotunda paperweight, a gap in the desk, a stack of papers. No hop over nothing.
 4. **Nothing overlaps anything it should not.** Figure, thought bubble, tabs, page curl, captions, page number and the text and image columns each own a zone. A Playwright test reads the bounding boxes at several scroll positions and widths and fails on any intersection between those zones.
 5. **The curl belongs to its page.** It never shows at the top of the next page. It fades out as its page leaves.
 6. **Phones get a reserved strip.** The figure walks in a strip above the tabs; no canvas, caption or text enters that strip.
@@ -136,11 +136,13 @@ Added after Nate's second review (2026-11-06, on the Vercel preview):
 10. **Nate rows bow.** In the coastal double he is in the bow seat, the seat nearer the bow, the end the boat moves toward. The "me" note points there.
 11. **One pencil, and it moves.** On the cover the pencil writes the name, lifts, then draws him (never two pencils at once: the name finishes before he starts). At the start of every page the same pencil draws him again, stroke by stroke, and lifts when he is complete. When he sits and draws, his hand sweeps the page; a hand that shuffles a pixel or two reads as a pencil that does not move.
 12. **The video starts when the screen does.** The Della demo does not play in the background while its wireframe is being drawn. It starts from the beginning once the real screen is up, stops and rewinds once the reader has moved on, and never starts by itself under reduced motion.
+13. **He leaps the Rotunda, not a beer can.** The coffee mug read as a can at that size. What he hops on the desk is now a little Rotunda (two steps, four columns under a pediment, the drum, the dome), drawn at the scale of the other desk objects and standing clear of them at every width. The leap is sized to it: he takes off before its left edge, lands past its right edge, and his feet clear the dome.
 
 ## 12. Decisions log
 
 - 2026-11-05: design drafted after reading the live site, the repo, ROADMAP.md, VOICE_PASS.md, the eight drawings, and the reference video.
 - 2026-11-05: Nate reviewed the pencil test: concept approved, execution corrections recorded in section 11, answers in section 10. Build proceeds.
+- 2026-11-06 (after the video merge): "why is he jumping over a beer can?" The mug was 30 px wide with a 6 px handle. Rule 13 added; the Rotunda chosen over a laptop because this is the page with Grounds Guide on it, and a dome breaks a row of boxes.
 - 2026-11-06 (merged, then): the Della video was already half over when the reveal finished, because it autoplayed from the moment the page scrolled into view. Rule 12 added.
 - 2026-11-06 (later): "the pencil didn't move." The cover pencil was verified moving in a production build on both engines; the two real gaps were the sitting hand (a 2 px shuffle under the boil) and the figure drawing on with no pencil. Rule 11 added.
 - 2026-11-06: Nate's second review on the preview: scrolling moved him too fast, and "me" sat in the stroke seat (he rows bow). His screenshot also showed the rowing copy sliding under the coils at a page turn. Rules 8–10 added; the turn reworked as a sheet laid over.
