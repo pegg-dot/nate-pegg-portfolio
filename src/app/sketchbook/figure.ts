@@ -8,7 +8,7 @@ import { circle, dense, toPath, wobble, type Pt } from './pencil';
 export type PoseKind = 'walk' | 'idle' | 'hop' | 'sit' | 'row' | 'lookup';
 export const STROKE_COUNT = 15;
 export const GROUND_Y = 82;
-export const FRAME_COUNTS: Record<PoseKind, number> = { walk: 8, idle: 2, hop: 1, sit: 2, row: 2, lookup: 1 };
+export const FRAME_COUNTS: Record<PoseKind, number> = { walk: 8, idle: 2, hop: 1, sit: 4, row: 2, lookup: 1 };
 /** 0 head, 1 torso, 2–3 arms, 4–5 legs, 6 shirt, 7–9 stripes, 10 alien, 11–12 alien eyes, 13 eye, 14 pencil */
 export const STROKE_CLASSES = ['', '', '', '', '', '', '', 's1', 's2', 's3', 'alien', 'alienEye', 'alienEye', 'eye', 'pencil'];
 
@@ -44,12 +44,15 @@ export function pose(kind: PoseKind, phase: number): (Pt[] | null)[] {
     S[2] = limb(30, 28, -135, 12, -165, 11);
     S[3] = limb(30, 28, 135, 12, 165, 11);
   } else if (kind === 'sit') {
+    // Sketching: the forearm circles from the elbow, so the pencil visibly sweeps the page beside him (the old 2 px shuffle vanished under the boil).
+    const a = (phase / FRAME_COUNTS.sit) * 2 * Math.PI;
+    const hx = 52 + 6 * Math.sin(a), hy = 43 + 3 * Math.cos(a);
     S[1] = [[30, 22.5], [31, hipY]];
     S[4] = [[31, hipY], [44, 50], [44, 64]];
     S[5] = [[31, hipY], [41, 51], [41, 65]];
-    S[2] = [[30, 28], [42, 35], [52 + phase * 2, 42 + phase]];
+    S[2] = [[30, 28], [42, 35], [hx, hy]];
     S[3] = [[30, 28], [25, 38], [29, 44]];
-    S[14] = [[52 + phase * 2, 42 + phase], [58 + phase * 2, 50 + phase]];
+    S[14] = [[hx, hy], [hx + 6, hy + 8]];
   } else if (kind === 'row') {
     // Facing the stern: legs bent forward inside the hull, both arms reach then pull.
     S[1] = [[30, 22.5], [31, hipY]];

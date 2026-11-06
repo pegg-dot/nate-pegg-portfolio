@@ -5,7 +5,7 @@ import Binding from './Binding';
 import Bubble from './Bubble';
 import { HOME_COPY } from './copy';
 import Figure, { type FigureState } from './FigureView';
-import type { PoseKind } from './figure';
+import { FRAME_COUNTS, type PoseKind } from './figure';
 import Page from './Page';
 import { activeIndex, clamp, pageProgress, TRAVEL_VH } from './pages';
 import Tabs from './Tabs';
@@ -121,7 +121,8 @@ export default function Sketchbook() {
 
   useScrollClock(c => {
     const s = sim.current, g = geom.current, n = PAGES.length;
-    const clock = c.reduced || s.skipped ? 1 : clamp((c.elapsed - 300) / 3400);
+    // The cover clock: the name writes until .74, the pencil draws him .76–.9, he looks up, the intro and the thought follow. One pencil at a time.
+    const clock = c.reduced || s.skipped ? 1 : clamp((c.elapsed - 300) / 4600);
     const P = PAGES.map((_, i) => (c.reduced ? { p: 1, leaving: 0, entering: 1 } : pageProgress(g.tops[i] ?? 0, g.heights[i] ?? c.vh, c.scroll, c.vh, g.overlaps[i] ?? 0)));
     P.forEach((q, i) => { s.P[i] = q.p; if (q.p > 0.06) s.seen[i] = true; });
     const ai = Math.min(n - 1, activeIndex(g.tops.length ? g.tops : [0], c.scroll));
@@ -133,10 +134,10 @@ export default function Sketchbook() {
     s.acc += Math.abs(dx);
     if (Math.abs(dx) > 0.15) { s.idleT = 0; if (s.acc > 15) { s.acc = 0; s.frame = (s.frame + 1) % 8; } s.pose = 'walk'; }
     else { s.idleT += c.dt; if (s.idleT > 180) { s.pose = 'idle'; s.frame = Math.floor(c.elapsed / 420) % 2; } }
-    if (ai === 0 && clock >= 0.84 && !s.drawnOnce) { s.drawnOnce = true; s.lookupUntil = c.elapsed + 1000; }
+    if (ai === 0 && clock >= 0.9 && !s.drawnOnce) { s.drawnOnce = true; s.lookupUntil = c.elapsed + 1000; }
     let pose: PoseKind = script.pose ?? s.pose;
     let frame = s.frame;
-    if (pose === 'sit' || pose === 'row') frame = Math.floor(c.elapsed / 260) % 2;
+    if (pose === 'sit' || pose === 'row') frame = Math.floor(c.elapsed / 180) % FRAME_COUNTS[pose];
     if (!script.pose && s.pose === 'idle' && c.elapsed < s.lookupUntil) pose = 'lookup';
     let lift = script.lift ?? 0;
     if (s.hopAt >= 0) {
@@ -145,7 +146,7 @@ export default function Sketchbook() {
     }
     if (c.reduced) { pose = 'idle'; frame = 0; lift = 0; }
     // Each sheet has its own drawing of him: on the cover the pencil draws him after the name, on every later page at its start.
-    const drawn = c.reduced ? 1 : ai === 0 ? clamp((clock - 0.62) / 0.22) : clamp(P[ai].p / 0.04);
+    const drawn = c.reduced ? 1 : ai === 0 ? clamp((clock - 0.76) / 0.14) : clamp(P[ai].p / 0.04);
     const pastEnd = c.scroll > (g.tops[n - 1] ?? 0) + (g.heights[n - 1] ?? 0) - c.vh + 4;
     const fig: Fig = { pose, frame, variant: c.boil & 1, drawn, colored: !!script.colored, x: targetX, lift, hidden: !!script.hidden || pastEnd };
     const L = s.last;
@@ -158,7 +159,7 @@ export default function Sketchbook() {
   const mobile = f.vw <= 780;
   const short = !mobile && f.vh <= 740;
   const bubbleW = 330, figH = mobile ? 86 : short ? 108 : 120, figBottom = mobile ? 52 : 18;
-  const bubbleShown = !mobile && f.clock > 0.92 && f.ai === 0 && (f.P[0]?.p ?? 0) < 0.6 && !f.fig.hidden;
+  const bubbleShown = !mobile && f.clock > 0.95 && f.ai === 0 && (f.P[0]?.p ?? 0) < 0.6 && !f.fig.hidden;
   // Desktop: the thought sits beside his head, inside the strip. Phones: above him.
   const figW = mobile ? 56 : short ? 70 : 78;
   const fitsRight = f.fig.x + figW + 12 + bubbleW < f.vw - 72;

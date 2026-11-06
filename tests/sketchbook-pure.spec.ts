@@ -188,3 +188,14 @@ test.describe('page turn (Nate, 2026-11-06: slower, and a sheet laid over)', () 
     expect(headOn(0, 0.6)).toBeGreaterThan(0.2);
   });
 });
+
+test.describe('the pencil (Nate, 2026-11-06: "the pencil didn\'t move")', () => {
+  test('sitting, his pencil sweeps across the page instead of sitting still', () => {
+    const n = FRAME_COUNTS.sit;
+    expect(n).toBeGreaterThanOrEqual(4);
+    const tips = Array.from({ length: n }, (_, f) => pose('sit', f)[14]![0]);
+    const xs = tips.map(q => q[0]), ys = tips.map(q => q[1]);
+    expect(Math.max(...xs) - Math.min(...xs)).toBeGreaterThanOrEqual(8);
+    expect(Math.max(...ys) - Math.min(...ys)).toBeGreaterThanOrEqual(3);
+  });
+});

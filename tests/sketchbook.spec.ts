@@ -203,3 +203,53 @@ test.describe('Nate, 2026-11-06: slower, a sheet laid over, bow seat', () => {
     expect(r.me).toBeGreaterThan(r.hull);
   });
 });
+
+test.describe('the pencil (Nate, 2026-11-06: "the pencil didn\'t move")', () => {
+  const pencil = (page: Page) => page.$eval('div[data-zone="figure"] [data-pencil]', g => ({ t: g.getAttribute('transform'), on: getComputedStyle(g).visibility !== 'hidden' && parseFloat(getComputedStyle(g).opacity) > 0.5 }));
+
+  test('the pencil draws him at the start of a page, then lifts', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForTimeout(300);
+    await scrollToPage(page, 3, 0.012);
+    expect(await page.$('div[data-zone="figure"] [data-pencil]'), 'a pencil glyph in the figure').not.toBeNull();
+    const a = await pencil(page);
+    await scrollToPage(page, 3, 0.03);
+    const b = await pencil(page);
+    await scrollToPage(page, 3, 0.1);
+    const c = await pencil(page);
+    expect(a.on, 'drawing his first strokes').toBe(true);
+    expect(b.on, 'still drawing').toBe(true);
+    expect(a.t, 'the pencil moved between the two').not.toBe(b.t);
+    expect(c.on, 'lifted once he is complete').toBe(false);
+  });
+
+  test('sitting on the Drawings page, his pencil keeps moving', async ({ page }) => {
+    await page.goto('/');
+    await scrollToPage(page, 6, 0.6);
+    await page.waitForTimeout(400);
+    const xs: number[] = [];
+    for (let k = 0; k < 10; k++) {
+      await page.waitForTimeout(120);
+      xs.push(await page.$eval('div[data-zone="figure"] svg path.pencil', p => (p as SVGPathElement).getPointAtLength(0).x));
+    }
+    expect(Math.max(...xs) - Math.min(...xs)).toBeGreaterThanOrEqual(8);
+  });
+
+  test('on the cover, one pencil: it writes the name, then draws him', async ({ page }) => {
+    await page.goto('/');
+    let both = 0, figSeen = 0, nameSeen = 0;
+    for (let k = 0; k < 60; k++) {
+      await page.waitForTimeout(100);
+      const s = await page.evaluate(() => {
+        const vis = (el: Element | null) => !!el && getComputedStyle(el).visibility !== 'hidden' && parseFloat(getComputedStyle(el).opacity) > 0.5;
+        return { name: vis(document.querySelector('[data-name] > g')), fig: vis(document.querySelector('div[data-zone="figure"]')) && vis(document.querySelector('div[data-zone="figure"] [data-pencil]')) };
+      });
+      if (s.name && s.fig) both++;
+      if (s.fig) figSeen++;
+      if (s.name) nameSeen++;
+    }
+    expect(nameSeen, 'the name pencil was seen').toBeGreaterThan(0);
+    expect(figSeen, 'the pencil was seen drawing him').toBeGreaterThan(0);
+    expect(both, 'never two pencils at once').toBe(0);
+  });
+});
