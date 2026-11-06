@@ -13,10 +13,14 @@ import type { PageDef } from './types';
 import { useScrollClock } from './useScrollClock';
 import styles from './sketchbook.module.css';
 import Cover, { figureScript as coverScript } from './pages/Cover';
+import Origin, { figureScript as originScript } from './pages/Origin';
+import Della, { figureScript as dellaScript } from './pages/Della';
 
 /** The pages, in order. Each owns its own figure script. */
 export const PAGES: PageDef[] = [
   { id: 'cover', height: '160vh', script: coverScript, render: p => <Cover {...p} /> },
+  { id: 'work', height: '150vh', script: originScript, render: p => <Origin {...p} /> },
+  { id: 'della', rail: HOME_COPY.projects.della.rail, script: dellaScript, render: p => <Della {...p} /> },
 ];
 
 type Fig = FigureState & { x: number; lift: number; hidden: boolean };
@@ -109,7 +113,7 @@ export default function Sketchbook() {
       <Tabs />
       {PAGES.map((pg, i) => (
         <Page key={pg.id} id={pg.id} index={i} rail={pg.rail} dark={pg.dark} height={pg.height} progress={f.P[i]?.p ?? 0} leaving={f.P[i]?.leaving ?? 0}>
-          {pg.render({ progress: f.P[i]?.p ?? 0, active: Math.abs(i - f.ai) <= 1, boil: f.boil, reduced: f.reduced, clock: f.clock })}
+          {pg.render({ progress: f.P[i]?.p ?? 0, active: Math.abs(i - f.ai) <= 1, boil: f.boil, reduced: f.reduced, clock: f.clock, vw: f.vw })}
         </Page>
       ))}
       <PortfolioFooter />

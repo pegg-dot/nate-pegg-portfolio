@@ -5,7 +5,7 @@
  * through (line boil). Pure functions; no DOM.
  */
 export type Pt = [number, number];
-export type Stroke = { pts: Pt[]; start: number; end: number; cls?: string; amp?: number; seed?: number };
+export type Stroke = { pts: Pt[]; start: number; end: number; cls?: string; amp?: number; seed?: number; until?: number; blink?: boolean };
 
 /** mulberry32: small, fast, deterministic. */
 export function rng(seed: number): () => number {
