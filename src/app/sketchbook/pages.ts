@@ -39,3 +39,10 @@ export const copyOn = (progress: number, seen: boolean, entering = 1, vw = 1024)
 /** A heading shades in as its sheet rises (desktop), or with progress once the page is pinned. */
 export const headOn = (progress: number, entering: number, vw = 1024, from = 0.02, over = 0.25) =>
   Math.max(vw > 780 ? clamp((entering - 0.3) / 0.6) : 0, clamp((progress - from) / over));
+
+/** The shell's figure sizing at a viewport: width, height, how far the layer sits above the viewport bottom, and the gap from the layer's bottom to his feet. Mirrors the CSS breakpoints. */
+export function figureMetrics(vw: number, vh: number) {
+  const mobile = vw <= 780, short = !mobile && vh <= 740;
+  const figW = mobile ? 56 : short ? 70 : 78, figH = mobile ? 86 : short ? 108 : 120, bottom = mobile ? 52 : 18;
+  return { figW, figH, bottom, footGap: figH * (1 - 82 / 92) };
+}

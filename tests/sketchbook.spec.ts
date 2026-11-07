@@ -132,6 +132,116 @@ test('the hop happens over the Rotunda, and it is a real leap', async ({ page })
   expect(Math.min(...lifts), 'a leap that clears a dome, not a hop over a mug').toBeLessThan(-40);
 });
 
+test.describe('page one (Nate, 2026-11-07: "build a city, jump on letters and over words, come up to the camera")', () => {
+  /** The box of a run of text inside an element, via a Range so the markup stays one text node. */
+  const figureBox = (page: Page) => page.evaluate(() => { const svg = document.querySelector('div[data-zone="figure"] svg') as SVGSVGElement; const r = svg.getBoundingClientRect(); return { cx: r.left + r.width / 2, top: r.top, h: r.height, feet: r.top + r.height * (82 / 92), pose: svg.getAttribute('data-pose') }; });
+  const drawn = (page: Page, cls: string) => page.$$eval(`[data-page="1"] path.${cls}`, es => es.filter(e => getComputedStyle(e).visibility !== 'hidden' && parseFloat(getComputedStyle(e).strokeDashoffset) < 0.5).map(e => { const r = e.getBoundingClientRect(); return { l: r.left, r: r.right, t: r.top, b: r.bottom }; }));
+
+  test('he stands on the top line of the heading', async ({ page }) => {
+    await page.goto('/');
+    expect(await page.$eval('[data-page="1"]', el => Number(el.getAttribute('data-travel'))), 'three screens of scroll for the scene').toBeGreaterThanOrEqual(300);
+    // Across the walk along the line: always over it and never below its top; standing (not hopping a gap), his feet are on the letters.
+    let standing = 0;
+    for (const p of [0.14, 0.17, 0.2, 0.23, 0.26, 0.29]) {
+      await scrollToPage(page, 1, p);
+      const line = await page.evaluate(() => { const r = document.querySelector('[data-page="1"] h2 span')!.getBoundingClientRect(); return { l: r.left, r: r.right, top: r.top }; });
+      const f = await figureBox(page);
+      expect(f.cx, `over the line (p ${p})`).toBeGreaterThanOrEqual(line.l - 4); expect(f.cx).toBeLessThanOrEqual(line.r + 4);
+      expect(f.feet, `never below the letter tops (p ${p})`).toBeLessThanOrEqual(line.top + 5);
+      if (f.pose !== 'hop') { standing++; expect(Math.abs(f.feet - line.top), `feet ${f.feet.toFixed(0)} on the letters at ${line.top.toFixed(0)} (p ${p})`).toBeLessThanOrEqual(5); }
+    }
+    expect(standing, 'stands on the letters').toBeGreaterThanOrEqual(2);
+  });
+
+  test('he hurdles the words of the first line at word size', async ({ page }) => {
+    await page.goto('/');
+    const normal = (await (async () => { await scrollToPage(page, 1, 0.02); return figureBox(page); })()).h;
+    await scrollToPage(page, 1, 0.46);
+    const f = await figureBox(page);
+    const line = await page.evaluate(() => { const p = document.querySelector('[data-page="1"] [data-zone="copy"] p')!; const range = document.createRange(); range.selectNodeContents(p); const first = range.getClientRects()[0]; return { top: first.top, bottom: first.bottom }; });
+    expect(f.h, 'word-sized').toBeLessThan(normal * 0.6);
+    // mid-hop his feet clear a word by a third of the line; on the baseline they sit at the line's bottom
+    expect(f.feet, 'running the first line').toBeGreaterThanOrEqual(line.top - 40);
+    expect(f.feet).toBeLessThanOrEqual(line.bottom + 4);
+  });
+
+  test('he sketches the first house and a city rises as he walks, taller to the right', async ({ page }) => {
+    await page.goto('/');
+    await scrollToPage(page, 1, 0.67);
+    expect((await figureBox(page)).pose, 'sits to draw').toBe('sit');
+    expect((await drawn(page, 'house')).length, 'the house is being drawn').toBeGreaterThan(0);
+    await scrollToPage(page, 1, 0.875);
+    const city = await drawn(page, 'city');
+    expect(city.length, 'a city').toBeGreaterThan(20);
+    const top = Math.min(...city.map(b => b.t)), bottom = Math.max(...city.map(b => b.b));
+    expect(bottom - top, 'the skyline is taller than him').toBeGreaterThan(150);
+  });
+
+  test('he comes up to the glass: big, centred, hands on the lens, then a knock', async ({ page }) => {
+    await page.goto('/');
+    await scrollToPage(page, 1, 0.02);
+    const normal = (await figureBox(page)).h;
+    await scrollToPage(page, 1, 0.95);
+    const f = await figureBox(page);
+    const vw = await page.evaluate(() => innerWidth);
+    expect(f.h, 'big').toBeGreaterThan(normal * 2.2);
+    expect(Math.abs(f.cx - vw / 2), 'centred').toBeLessThanOrEqual(6);
+    expect(f.pose, 'hands on the glass').toBe('peer');
+    expect((await drawn(page, 'porthole')).length, 'the porthole on the page').toBeGreaterThan(0);
+    expect((await drawn(page, 'palm')).length, 'palms on the glass').toBeGreaterThanOrEqual(2);
+    const copyBottom = await page.$eval('[data-page="1"] [data-zone="copy"]', e => e.getBoundingClientRect().bottom);
+    expect(f.top, 'his head stays under the words').toBeGreaterThanOrEqual(copyBottom);
+    await scrollToPage(page, 1, 0.978);
+    expect((await drawn(page, 'knock')).length, 'knock rings').toBeGreaterThanOrEqual(2);
+  });
+});
+
+test('on the VialGrade page he holds a magnifier over the bottle (Nate, 2026-11-07: "what is the guy doing?")', async ({ page }) => {
+  await page.goto('/');
+  await scrollToPage(page, 3, 0.3);
+  const s = await page.evaluate(() => {
+    const vis = (sel: string) => Array.from(document.querySelectorAll<SVGPathElement>(sel)).filter(e => getComputedStyle(e).visibility !== 'hidden' && parseFloat(getComputedStyle(e).strokeDashoffset) < 0.05).map(e => e.getBoundingClientRect());
+    const box = (rs: DOMRect[]) => ({ l: Math.min(...rs.map(r => r.left)), r: Math.max(...rs.map(r => r.right)), t: Math.min(...rs.map(r => r.top)), b: Math.max(...rs.map(r => r.bottom)) });
+    const vial = vis('[data-page="3"] path.vial'), lens = vis('[data-page="3"] path.lens');
+    return { pose: document.querySelector('div[data-zone="figure"] svg')?.getAttribute('data-pose'), vial: box(vial), lens: box(lens), nVial: vial.length, nLens: lens.length };
+  });
+  expect(s.pose, 'his arm is up, holding it').toBe('inspect');
+  expect(s.nVial, 'a bottle').toBeGreaterThan(0);
+  expect(s.nLens, 'a magnifier').toBeGreaterThan(0);
+  const iw = Math.min(s.vial.r, s.lens.r) - Math.max(s.vial.l, s.lens.l), ih = Math.min(s.vial.b, s.lens.b) - Math.max(s.vial.t, s.lens.t);
+  expect(iw, 'the lens sits over the bottle').toBeGreaterThan(10);
+  expect(ih, 'the lens sits over the bottle').toBeGreaterThan(10);
+  await scrollToPage(page, 3, 0.48);
+  const checked = await page.$$eval('[data-page="3"] path.lens', es => es.filter(e => parseFloat(getComputedStyle(e).strokeDashoffset) < 0.05).length);
+  expect(checked, 'a check appears in the lens once the screen is up').toBeGreaterThanOrEqual(4);
+});
+
+test('each drawing holds on top, fully real, long enough to look at (Nate, 2026-11-07: "moves through them too quickly")', async ({ page }) => {
+  test.setTimeout(240_000);
+  await page.goto('/');
+  const travel = await page.$eval('[data-page="6"]', el => Number(el.getAttribute('data-travel')));
+  const vh = await page.evaluate(() => innerHeight);
+  const hold: Record<string, number> = {};
+  const STEP = 0.015;
+  for (let p = 0.05; p <= 1.0001; p += STEP) {
+    await scrollToPage(page, 6, p);
+    const top = await page.evaluate(() => {
+      const figs = Array.from(document.querySelectorAll<HTMLElement>('[data-page="6"] [data-piece]')).filter(f => parseFloat(getComputedStyle(f).opacity) > 0.5);
+      if (!figs.length) return null;
+      const t = figs.reduce((a, b) => (parseInt(getComputedStyle(b).zIndex, 10) > parseInt(getComputedStyle(a).zIndex, 10) ? b : a));
+      const photo = parseFloat(getComputedStyle(t.querySelector('[data-media]') as HTMLElement).opacity);
+      const o = t.querySelector('[data-sketch="outline"]') as HTMLElement | null;
+      return { name: t.dataset.piece!, photo, outline: o ? parseFloat(getComputedStyle(o).opacity) : 0 };
+    });
+    if (top && top.photo >= 0.99 && top.outline <= 0.02) hold[top.name] = (hold[top.name] ?? 0) + 1;
+  }
+  for (const name of ['bob-marley', 'dog-scarf', 'house', 'moose', 'coke-can', 'miami']) {
+    const span = (hold[name] ?? 0) * STEP;
+    expect(span, `${name} holds for a share of the page`).toBeGreaterThanOrEqual(0.06);
+    expect(span * travel * vh / 100, `${name} holds for real scrolling (px)`).toBeGreaterThanOrEqual(180);
+  }
+});
+
 test('drawings arrive real after their outline', async ({ page }) => {
   await page.goto('/');
   await scrollToPage(page, 6, 0.95);

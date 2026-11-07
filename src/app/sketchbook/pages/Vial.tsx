@@ -3,26 +3,26 @@ import Image from 'next/image';
 import { useMemo } from 'react';
 import { HOME_COPY } from '../copy';
 import Ground from '../Ground';
-import { clamp, ease, endX, lerp } from '../pages';
 import ProjectCopy from '../ProjectCopy';
 import Reveal from '../Reveal';
 import Stack from '../Stack';
-import type { FigureScript, PageProps } from '../types';
-import { MAGNIFIER, VIAL } from '../wireframes';
+import type { PageProps } from '../types';
+import { figureScript, INSPECT, vialScene } from '../vial';
 import styles from '../sketchbook.module.css';
 
-/** He walks up to the vial, holds a magnifier over it while the screen is drawn, then crosses the page. */
-export const figureScript: FigureScript = (p, vw, figW) => ({
-  x: p < 0.5 ? lerp(vw * 0.04, vw * 0.3 - figW - 24, ease(clamp(p / 0.14))) : lerp(vw * 0.3 - figW - 24, endX(vw, figW), ease(clamp((p - 0.5) / 0.5))),
-});
+export { figureScript };
 
 export default function Vial({ progress, entering, active, boil, vw, seen }: PageProps) {
   const figW = vw <= 780 ? 56 : 78;
-  const fx = Math.round(figureScript(progress, vw, figW).x);
-  const objects = useMemo(() => [
-    { x: 0.3, strokes: VIAL, start: 0.05, end: 0.12, cls: 'wire' },
-    { x: (fx + figW * 0.78) / vw, strokes: MAGNIFIER, start: 0.1, end: 0.16, cls: 'wire', until: 0.5 },
-  ], [fx, figW, vw]);
+  // The bottle, the magnifier he raises over it, and a check in the lens once the real screen is up.
+  const objects = useMemo(() => {
+    const o = vialScene(vw, figW);
+    return [
+      { x: o.vialX, strokes: o.vial, start: 0.05, end: 0.12, cls: 'vial' },
+      { x: o.lens.x, strokes: o.lens.strokes, start: INSPECT[0], end: INSPECT[0] + 0.06, cls: 'lens', until: INSPECT[1] },
+      { x: o.check.x, strokes: o.check.strokes, start: 0.4, end: 0.46, cls: 'lens', until: INSPECT[1] },
+    ];
+  }, [figW, vw]);
   return (
     <>
       <Stack progress={progress}>

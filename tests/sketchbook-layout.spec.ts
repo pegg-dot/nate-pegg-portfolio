@@ -59,6 +59,10 @@ for (const [w, h] of VIEWPORTS) {
         if (A.zone === B.zone) continue;
         // Mid-turn, the rising sheet passes behind the fixed tab row on phones and tablets, as content passes behind any toolbar.
         if (p > 1 && (A.zone === 'tabs' || B.zone === 'tabs') && (A.owner === i + 1 || B.owner === i + 1)) continue;
+        // Page one: he walks the heading's letters and hurdles the words, so figure-over-copy there is the scene, not a collision.
+        if (i === 1 && (A.zone === 'figure' || B.zone === 'figure') && (A.zone === 'copy' || B.zone === 'copy')) continue;
+        // Page one at the glass: he is the foreground, three times his size and centred; on a phone his box reaches the page corner's box.
+        if (i === 1 && p >= 0.85 && (A.zone === 'figure' || B.zone === 'figure') && (A.zone === 'curl' || B.zone === 'curl')) continue;
         const iw = Math.min(A.r, B.r) - Math.max(A.l, B.l), ih = Math.min(A.b, B.b) - Math.max(A.t, B.t);
         if (iw > 2 && ih > 2) problems.push(`page ${i} p ${p}: ${A.zone}(${A.tag}) overlaps ${B.zone}(${B.tag}) by ${Math.round(iw)}×${Math.round(ih)}`);
       }
@@ -128,4 +132,25 @@ test('home has no serious axe violations', async ({ page }) => {
   const results = await new AxeBuilder({ page }).analyze();
   const serious = results.violations.filter(v => v.impact === 'serious' || v.impact === 'critical');
   expect(serious.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
+});
+
+test('on a phone the ground objects stand at his feet, above the tab row, not behind it', async ({ browser }) => {
+  // The phone rule for the ground band was written before the base rule and lost to it: objects sat 30 px below his feet, behind the tabs.
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await ctx.newPage();
+  await page.goto('/');
+  await settle(page, 5, 0.15);
+  const s = await page.evaluate(() => {
+    const svg = document.querySelector('div[data-zone="figure"] svg') as SVGSVGElement;
+    const r = svg.getBoundingClientRect();
+    const feet = r.top + r.height * (82 / 92);
+    const parts = Array.from(document.querySelectorAll('[data-page="5"] path.rotunda')).map(e => e.getBoundingClientRect());
+    const base = Math.max(...parts.map(b => b.bottom));
+    const tabs = (document.querySelector('[data-zone="tabs"]') as HTMLElement).getBoundingClientRect().top;
+    return { feet, base, tabs, n: parts.length };
+  });
+  expect(s.n).toBeGreaterThan(0);
+  expect(Math.abs(s.base - s.feet), `object base ${s.base.toFixed(0)} vs his feet ${s.feet.toFixed(0)}`).toBeLessThanOrEqual(4);
+  expect(s.base, `object base ${s.base.toFixed(0)} above the tabs at ${s.tabs.toFixed(0)}`).toBeLessThanOrEqual(s.tabs);
+  await ctx.close();
 });

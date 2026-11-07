@@ -108,9 +108,63 @@ export const ROTUNDA: Pt[][] = [
   line(-26, -5, -26, -40), line(26, -5, 26, -40), hr(-26, 26, -40),
   arc(0, -40, 26, Math.PI, 2 * Math.PI, 14),
 ];
-export const MAGNIFIER: Pt[][] = [circle(0, -70, 16, 20), [[11, -58], [26, -36]], [[13, -56], [28, -38]]];
+/** A little house, drawn in a hand's order: floor, walls, roof, chimney, door, window. 68 wide, 62 tall. */
+export const HOUSE: Pt[][] = [
+  hr(-32, 32, 0),
+  line(-26, 0, -26, -34), line(26, 0, 26, -34),
+  [[-34, -34], [0, -62], [34, -34]],
+  [[14, -50], [14, -62], [22, -62], [22, -44]],
+  [[-8, 0], [-8, -24], [8, -24], [8, 0]],
+  ...rect(10, -32, 12, 12),
+];
+/** The second pass, once he stands: the same lines inked, the roof hatched, the window crossed, a knob, and smoke from the chimney. */
+export const HOUSE_BUILT: Pt[][] = [
+  hr(-32, 32, 0), line(-26, 0, -26, -34), line(26, 0, 26, -34), [[-34, -34], [0, -62], [34, -34]],
+  [[14, -50], [14, -62], [22, -62], [22, -44]], [[-8, 0], [-8, -24], [8, -24], [8, 0]], ...rect(10, -32, 12, 12),
+  line(-26, -36, -14, -46), line(-18, -36, -6, -46), line(-10, -36, 2, -46),
+  hr(10, 22, -26), line(16, -20, 16, -32), circle(5, -12, 1.2, 8),
+  arc(24, -69, 4, 0.6, 4.4, 8), arc(29, -79, 5, 3.4, 7.2, 8), arc(24, -91, 6, 0.6, 4.4, 8),
+];
+/** A building on page one's skyline, drawn in a local frame with its base on y = 0. `phone` marks the smaller set for narrow screens. */
+export type Building = { slug: string; w: number; h: number; phone?: boolean; strokes: Pt[][] };
+const vr = (x: number, y0: number, y1: number): Pt[] => line(x, y0, x, y1);
+/** The city he walks up, taller to the right: a shop, apartments, an office block, a tower, a skyscraper. */
+export const CITY: Building[] = [
+  { slug: 'shop', w: 60, h: 72, phone: true, strokes: [
+    ...rect(-30, -56, 60, 56),
+    [[-34, -56], [-30, -63], [-26, -56], [-22, -63], [-18, -56], [-14, -63], [-10, -56], [-6, -63], [-2, -56], [2, -63], [6, -56], [10, -63], [14, -56], [18, -63], [22, -56], [26, -63], [30, -56], [34, -63]],
+    hr(-34, 34, -63), [[-8, 0], [-8, -26], [8, -26], [8, 0]], ...rect(10, -46, 16, 14), ...rect(-26, -50, 24, 10), hr(-22, -6, -45), hr(-26, -10, -30),
+  ] },
+  { slug: 'apartments', w: 56, h: 118, phone: true, strokes: [
+    ...rect(-28, -112, 56, 112), hr(-32, 32, -112), vr(-30, -112, -118), vr(30, -112, -118), hr(-30, 30, -118),
+    ...rect(-20, -100, 14, 12), ...rect(6, -100, 14, 12), ...rect(-20, -76, 14, 12), ...rect(6, -76, 14, 12), ...rect(-20, -52, 14, 12), ...rect(6, -52, 14, 12),
+    [[-7, 0], [-7, -22], [7, -22], [7, 0]],
+  ] },
+  { slug: 'office', w: 64, h: 162, strokes: [
+    ...rect(-32, -150, 64, 150), ...rect(-10, -162, 20, 12),
+    hr(-26, 26, -132), hr(-26, 26, -108), hr(-26, 26, -84), hr(-26, 26, -60), hr(-26, 26, -36),
+    vr(-13, -140, -30), vr(0, -140, -30), vr(13, -140, -30),
+    [[-8, 0], [-8, -24], [8, -24], [8, 0]],
+  ] },
+  { slug: 'tower', w: 48, h: 214, strokes: [
+    [[-24, 0], [-24, -180], [-16, -200], [16, -200], [24, -180], [24, 0]], vr(0, -200, -214),
+    hr(-22, 22, -30), hr(-22, 22, -50), hr(-22, 22, -70), hr(-22, 22, -90), hr(-22, 22, -110), hr(-22, 22, -130), hr(-22, 22, -150), hr(-22, 22, -170),
+    [[-6, 0], [-6, -20], [6, -20], [6, 0]],
+  ] },
+  { slug: 'skyscraper', w: 64, h: 268, phone: true, strokes: [
+    ...rect(-32, -120, 64, 120), ...rect(-24, -200, 48, 80), ...rect(-14, -250, 28, 50), vr(0, -250, -268), [[0, -266], [10, -262], [0, -258]],
+    vr(-24, -110, -10), vr(-12, -110, -10), vr(0, -110, -10), vr(12, -110, -10), vr(24, -110, -10),
+    vr(-16, -190, -130), vr(-8, -190, -130), vr(0, -190, -130), vr(8, -190, -130), vr(16, -190, -130),
+    vr(-8, -240, -210), vr(0, -240, -210), vr(8, -240, -210),
+    [[-8, 0], [-8, -26], [8, -26], [8, 0]],
+  ] },
+];
+/** A bottle that reads as one: shoulders, a neck, a cap, a label with two lines, the liquid line. 32 wide, 94 tall. */
 export const VIAL: Pt[][] = [
-  ...rect(-12, -52, 24, 52), ...rect(-8, -62, 16, 10), hr(-12, 12, -24), hr(-8, 8, -36),
+  [[-16, 0], [-16, -62], [-12, -72], [-5, -76], [-5, -84], [5, -84], [5, -76], [12, -72], [16, -62], [16, 0], [-16, 0]],
+  ...rect(-7, -94, 14, 10),
+  ...rect(-11, -70, 22, 20), hr(-7, 7, -57), hr(-7, 1, -63),
+  hr(-16, 16, -28),
 ];
 export const tokenBlock = (h = 40): Pt[][] => [...rect(-20, -h, 40, h), hr(-14, 14, -h * 0.7), hr(-14, 14, -h * 0.5), hr(-14, 14, -h * 0.3)];
 

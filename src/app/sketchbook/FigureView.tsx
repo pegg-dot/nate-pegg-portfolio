@@ -27,7 +27,7 @@ export default function Figure({ state, className }: { state: FigureState; class
     g.style.visibility = 'visible';
   });
   return (
-    <svg viewBox="0 0 60 92" className={[className, state.colored ? 'colored' : ''].filter(Boolean).join(' ')} data-zone="figure" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 60 92" className={[className, state.colored ? 'colored' : ''].filter(Boolean).join(' ')} data-zone="figure" data-pose={state.pose} aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
       {Array.from({ length: STROKE_COUNT }, (_, k) => {
         const v = visibleAt(state.drawn, k);
         return <path key={k} ref={el => { paths.current[k] = el; }} d={frame[k]} className={STROKE_CLASSES[k] || undefined} pathLength={1} style={{ strokeDasharray: 1, strokeDashoffset: 1 - v, visibility: v > 0 ? 'visible' : 'hidden' }} />;
