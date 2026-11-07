@@ -132,34 +132,68 @@ test('the hop happens over the Rotunda, and it is a real leap', async ({ page })
   expect(Math.min(...lifts), 'a leap that clears a dome, not a hop over a mug').toBeLessThan(-40);
 });
 
-test('on page one he draws a house, it gets built, and he leaps a river (Nate, 2026-11-07)', async ({ page }) => {
-  test.setTimeout(180_000);
-  await page.goto('/');
-  expect(await page.$eval('[data-page="1"]', el => Number(el.getAttribute('data-travel'))), 'the page has two screens of scroll for the scene').toBeGreaterThanOrEqual(200);
-  const drawnCount = (cls: string) => page.$$eval(`[data-page="1"] path.${cls}`, es => es.filter(e => getComputedStyle(e).visibility !== 'hidden' && parseFloat(getComputedStyle(e).strokeDashoffset) < 0.5).length);
-  const poseNow = () => page.$eval('div[data-zone="figure"] svg', e => e.getAttribute('data-pose'));
-  await scrollToPage(page, 1, 0.3);
-  expect(await poseNow(), 'he sits to draw').toBe('sit');
-  expect(await drawnCount('house'), 'the house is being drawn beside him').toBeGreaterThan(0);
-  expect(await drawnCount('built'), 'not built yet').toBe(0);
-  await scrollToPage(page, 1, 0.52);
-  expect(await poseNow(), 'he stands while it is built').toBe('idle');
-  expect(await drawnCount('built'), 'the house is built').toBeGreaterThan(3);
-  const lifts: number[] = [];
-  for (let p = 0.56; p <= 0.98; p += 0.02) {
-    await scrollToPage(page, 1, p);
-    const s = await page.evaluate(() => {
-      const fig = document.querySelector('[data-zone="figure"]') as HTMLElement;
-      const m = fig.style.transform.match(/translate\(([-\d.]+)px, ([-\d.]+)px\)/);
-      const fr = fig.getBoundingClientRect();
-      const rs = Array.from(document.querySelectorAll('[data-page="1"] path.river')).map(e => e.getBoundingClientRect());
-      return { cx: fr.left + fr.width / 2, lift: m ? parseFloat(m[2]) : 0, left: Math.min(...rs.map(r => r.left)), right: Math.max(...rs.map(r => r.right)), n: rs.length };
-    });
-    expect(s.n, 'a river is drawn across his path').toBeGreaterThan(0);
-    if (s.lift < -6) { lifts.push(s.lift); expect(s.cx >= s.left - 40 && s.cx <= s.right + 40, `lift ${s.lift} at ${s.cx} (river ${s.left}–${s.right}, p ${p.toFixed(2)})`).toBe(true); }
-  }
-  expect(lifts.length, 'he leaps the river').toBeGreaterThan(0);
-  expect(Math.min(...lifts), 'a real leap').toBeLessThan(-25);
+test.describe('page one (Nate, 2026-11-07: "build a city, jump on letters and over words, come up to the camera")', () => {
+  /** The box of a run of text inside an element, via a Range so the markup stays one text node. */
+  const figureBox = (page: Page) => page.evaluate(() => { const svg = document.querySelector('div[data-zone="figure"] svg') as SVGSVGElement; const r = svg.getBoundingClientRect(); return { cx: r.left + r.width / 2, top: r.top, h: r.height, feet: r.top + r.height * (82 / 92), pose: svg.getAttribute('data-pose') }; });
+  const drawn = (page: Page, cls: string) => page.$$eval(`[data-page="1"] path.${cls}`, es => es.filter(e => getComputedStyle(e).visibility !== 'hidden' && parseFloat(getComputedStyle(e).strokeDashoffset) < 0.5).map(e => { const r = e.getBoundingClientRect(); return { l: r.left, r: r.right, t: r.top, b: r.bottom }; }));
+
+  test('he stands on the top line of the heading', async ({ page }) => {
+    await page.goto('/');
+    expect(await page.$eval('[data-page="1"]', el => Number(el.getAttribute('data-travel'))), 'three screens of scroll for the scene').toBeGreaterThanOrEqual(300);
+    // Across the walk along the line: always over it and never below its top; standing (not hopping a gap), his feet are on the letters.
+    let standing = 0;
+    for (const p of [0.14, 0.17, 0.2, 0.23, 0.26, 0.29]) {
+      await scrollToPage(page, 1, p);
+      const line = await page.evaluate(() => { const r = document.querySelector('[data-page="1"] h2 span')!.getBoundingClientRect(); return { l: r.left, r: r.right, top: r.top }; });
+      const f = await figureBox(page);
+      expect(f.cx, `over the line (p ${p})`).toBeGreaterThanOrEqual(line.l - 4); expect(f.cx).toBeLessThanOrEqual(line.r + 4);
+      expect(f.feet, `never below the letter tops (p ${p})`).toBeLessThanOrEqual(line.top + 5);
+      if (f.pose !== 'hop') { standing++; expect(Math.abs(f.feet - line.top), `feet ${f.feet.toFixed(0)} on the letters at ${line.top.toFixed(0)} (p ${p})`).toBeLessThanOrEqual(5); }
+    }
+    expect(standing, 'stands on the letters').toBeGreaterThanOrEqual(2);
+  });
+
+  test('he hurdles the words of the first line at word size', async ({ page }) => {
+    await page.goto('/');
+    const normal = (await (async () => { await scrollToPage(page, 1, 0.02); return figureBox(page); })()).h;
+    await scrollToPage(page, 1, 0.46);
+    const f = await figureBox(page);
+    const line = await page.evaluate(() => { const p = document.querySelector('[data-page="1"] [data-zone="copy"] p')!; const range = document.createRange(); range.selectNodeContents(p); const first = range.getClientRects()[0]; return { top: first.top, bottom: first.bottom }; });
+    expect(f.h, 'word-sized').toBeLessThan(normal * 0.6);
+    // mid-hop his feet clear a word by a third of the line; on the baseline they sit at the line's bottom
+    expect(f.feet, 'running the first line').toBeGreaterThanOrEqual(line.top - 40);
+    expect(f.feet).toBeLessThanOrEqual(line.bottom + 4);
+  });
+
+  test('he sketches the first house and a city rises as he walks, taller to the right', async ({ page }) => {
+    await page.goto('/');
+    await scrollToPage(page, 1, 0.67);
+    expect((await figureBox(page)).pose, 'sits to draw').toBe('sit');
+    expect((await drawn(page, 'house')).length, 'the house is being drawn').toBeGreaterThan(0);
+    await scrollToPage(page, 1, 0.875);
+    const city = await drawn(page, 'city');
+    expect(city.length, 'a city').toBeGreaterThan(20);
+    const top = Math.min(...city.map(b => b.t)), bottom = Math.max(...city.map(b => b.b));
+    expect(bottom - top, 'the skyline is taller than him').toBeGreaterThan(150);
+  });
+
+  test('he comes up to the glass: big, centred, hands on the lens, then a knock', async ({ page }) => {
+    await page.goto('/');
+    await scrollToPage(page, 1, 0.02);
+    const normal = (await figureBox(page)).h;
+    await scrollToPage(page, 1, 0.95);
+    const f = await figureBox(page);
+    const vw = await page.evaluate(() => innerWidth);
+    expect(f.h, 'big').toBeGreaterThan(normal * 2.2);
+    expect(Math.abs(f.cx - vw / 2), 'centred').toBeLessThanOrEqual(6);
+    expect(f.pose, 'hands on the glass').toBe('peer');
+    expect((await drawn(page, 'porthole')).length, 'the porthole on the page').toBeGreaterThan(0);
+    expect((await drawn(page, 'palm')).length, 'palms on the glass').toBeGreaterThanOrEqual(2);
+    const copyBottom = await page.$eval('[data-page="1"] [data-zone="copy"]', e => e.getBoundingClientRect().bottom);
+    expect(f.top, 'his head stays under the words').toBeGreaterThanOrEqual(copyBottom);
+    await scrollToPage(page, 1, 0.978);
+    expect((await drawn(page, 'knock')).length, 'knock rings').toBeGreaterThanOrEqual(2);
+  });
 });
 
 test('on the VialGrade page he holds a magnifier over the bottle (Nate, 2026-11-07: "what is the guy doing?")', async ({ page }) => {

@@ -59,6 +59,10 @@ for (const [w, h] of VIEWPORTS) {
         if (A.zone === B.zone) continue;
         // Mid-turn, the rising sheet passes behind the fixed tab row on phones and tablets, as content passes behind any toolbar.
         if (p > 1 && (A.zone === 'tabs' || B.zone === 'tabs') && (A.owner === i + 1 || B.owner === i + 1)) continue;
+        // Page one: he walks the heading's letters and hurdles the words, so figure-over-copy there is the scene, not a collision.
+        if (i === 1 && (A.zone === 'figure' || B.zone === 'figure') && (A.zone === 'copy' || B.zone === 'copy')) continue;
+        // Page one at the glass: he is the foreground, three times his size and centred; on a phone his box reaches the page corner's box.
+        if (i === 1 && p >= 0.85 && (A.zone === 'figure' || B.zone === 'figure') && (A.zone === 'curl' || B.zone === 'curl')) continue;
         const iw = Math.min(A.r, B.r) - Math.max(A.l, B.l), ih = Math.min(A.b, B.b) - Math.max(A.t, B.t);
         if (iw > 2 && ih > 2) problems.push(`page ${i} p ${p}: ${A.zone}(${A.tag}) overlaps ${B.zone}(${B.tag}) by ${Math.round(iw)}×${Math.round(ih)}`);
       }
