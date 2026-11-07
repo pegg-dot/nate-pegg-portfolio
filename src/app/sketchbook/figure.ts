@@ -5,10 +5,10 @@
  */
 import { circle, dense, toPath, wobble, type Pt } from './pencil';
 
-export type PoseKind = 'walk' | 'idle' | 'hop' | 'sit' | 'row' | 'lookup';
+export type PoseKind = 'walk' | 'idle' | 'hop' | 'sit' | 'row' | 'lookup' | 'inspect';
 export const STROKE_COUNT = 15;
 export const GROUND_Y = 82;
-export const FRAME_COUNTS: Record<PoseKind, number> = { walk: 8, idle: 2, hop: 1, sit: 4, row: 2, lookup: 1 };
+export const FRAME_COUNTS: Record<PoseKind, number> = { walk: 8, idle: 2, hop: 1, sit: 4, row: 2, lookup: 1, inspect: 2 };
 /** 0 head, 1 torso, 2–3 arms, 4–5 legs, 6 shirt, 7–9 stripes, 10 alien, 11–12 alien eyes, 13 eye, 14 pencil */
 export const STROKE_CLASSES = ['', '', '', '', '', '', '', 's1', 's2', 's3', 'alien', 'alienEye', 'alienEye', 'eye', 'pencil'];
 
@@ -38,6 +38,12 @@ export function pose(kind: PoseKind, phase: number): (Pt[] | null)[] {
     S[5] = limb(30, hipY, 7, 15, 5, 15);
     S[2] = limb(30, 28, -8, 12, -4 + phase * 2, 11);
     S[3] = limb(30, 28, 9, 12, 5 - phase * 2, 11);
+  } else if (kind === 'inspect') {
+    // Standing, the right arm raised straight out: he holds a magnifier up to something in front of him.
+    S[4] = limb(30, hipY, -6, 15, -4, 15);
+    S[5] = limb(30, hipY, 7, 15, 5, 15);
+    S[2] = limb(30, 28, -8, 12, -4, 11);
+    S[3] = limb(30, 28, 90, 12, 60 + phase * 4, 11);
   } else if (kind === 'hop') {
     S[4] = limb(30, hipY, -40, 13, 50, 13);
     S[5] = limb(30, hipY, -20, 13, 70, 13);
@@ -70,7 +76,7 @@ export function pose(kind: PoseKind, phase: number): (Pt[] | null)[] {
   S[11] = circle(28.9, 39.4, 0.5, 6);
   S[12] = circle(31.1, 39.4, 0.5, 6);
   S[13] = circle(33.5, kind === 'lookup' ? headY - 3 : headY - 1, 0.6, 6);
-  if (kind === 'walk' || kind === 'idle' || kind === 'lookup' || kind === 'sit') {
+  if (kind === 'walk' || kind === 'idle' || kind === 'lookup' || kind === 'sit' || kind === 'inspect') {
     const lowest = Math.max(...[...(S[4] ?? []), ...(S[5] ?? [])].map(p => p[1]));
     return shift(S, 0, GROUND_Y - lowest);
   }

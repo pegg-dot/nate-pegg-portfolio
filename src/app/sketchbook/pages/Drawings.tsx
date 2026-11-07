@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { HOME_COPY } from '../copy';
 import Outline from '../Outline';
+import { startOf, topAt } from '../drawings';
 import { clamp, copyOn, ease, headOn, lerp } from '../pages';
 import { RoughBox, RoughTape } from '../Rough';
 import ShadedHeading from '../ShadedHeading';
@@ -13,7 +14,7 @@ import styles from '../sketchbook.module.css';
 type Traced = { w: number; h: number; paths: string[] };
 const NAMES = ['bob-marley', 'dog-scarf', 'house', 'moose', 'coke-can', 'miami'];
 const TILT = [-2.5, 1.5, -1, 2, -1.5, 1];
-const FIRST = 0.08, STEP = 0.14;
+/** Each drawing's slot (see drawings.ts): the outline over .035, the photo from .03 over .03, the outline gone by .075, then it holds on top until the next starts. */
 const ASPECT: Record<string, number> = { 'bob-marley': 800 / 1058, 'dog-scarf': 3 / 4, house: 800 / 621, moose: 3 / 4, 'coke-can': 800 / 1281, miami: 3 / 4 };
 
 /** He walks to the left side of the desk, sits down and draws; the pile of finished drawings grows beside him. */
@@ -41,7 +42,7 @@ export default function Drawings({ progress, vw, entering, active, seen }: PageP
       .catch(() => {});
     return () => { gone = true; };
   }, [active, traced]);
-  const top = Math.min(5, Math.floor((progress - FIRST) / STEP));
+  const top = topAt(progress);
   const zoom = 0.74 + 0.26 * ease(clamp((progress - 0.3) / 0.3));
   const d = HOME_COPY.drawings;
   const cut = d.p2.indexOf(d.igHandle);
@@ -56,10 +57,10 @@ export default function Drawings({ progress, vw, entering, active, seen }: PageP
         <div ref={pileRef} className={styles.pile} style={{ transform: `scale(${zoom.toFixed(3)})` }}>
           {d.pieces.map((piece, i) => {
             const name = NAMES[i];
-            const s = FIRST + i * STEP;
-            const outline = clamp((progress - s) / 0.06);
-            const photo = clamp((progress - s - 0.05) / 0.07);
-            const shown = progress >= s;
+            const s = startOf(i);
+            const outline = clamp((progress - s) / 0.035);
+            const photo = clamp((progress - s - 0.03) / 0.03);
+            const shown = i <= top;
             const depth = Math.max(0, top - i);
             const ratio = ASPECT[name];
             const h = box ? Math.min(box.h * 0.76, (box.w * 0.76) / ratio) : 0;
@@ -73,7 +74,7 @@ export default function Drawings({ progress, vw, entering, active, seen }: PageP
                   <div className={styles.media} data-media="" style={{ opacity: photo.toFixed(3) }}>
                     <Image src={piece.src} alt={piece.alt} fill sizes="(max-width: 780px) 80vw, 36vw" className={styles.pieceImg} />
                   </div>
-                  {t ? <Outline paths={t.paths} w={t.w} h={t.h} progress={outline} style={{ opacity: 1 - clamp((progress - s - 0.1) / 0.04) }} /> : null}
+                  {t ? <Outline paths={t.paths} w={t.w} h={t.h} progress={outline} style={{ opacity: 1 - clamp((progress - s - 0.06) / 0.015) }} /> : null}
                   <RoughTape seed={520 + i} corner="tl" />
                   <RoughTape seed={540 + i} corner="br" />
                 </div>

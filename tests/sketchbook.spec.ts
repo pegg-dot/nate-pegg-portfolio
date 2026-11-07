@@ -132,6 +132,82 @@ test('the hop happens over the Rotunda, and it is a real leap', async ({ page })
   expect(Math.min(...lifts), 'a leap that clears a dome, not a hop over a mug').toBeLessThan(-40);
 });
 
+test('on page one he draws a house, it gets built, and he leaps a river (Nate, 2026-11-07)', async ({ page }) => {
+  test.setTimeout(180_000);
+  await page.goto('/');
+  expect(await page.$eval('[data-page="1"]', el => Number(el.getAttribute('data-travel'))), 'the page has two screens of scroll for the scene').toBeGreaterThanOrEqual(200);
+  const drawnCount = (cls: string) => page.$$eval(`[data-page="1"] path.${cls}`, es => es.filter(e => getComputedStyle(e).visibility !== 'hidden' && parseFloat(getComputedStyle(e).strokeDashoffset) < 0.5).length);
+  const poseNow = () => page.$eval('div[data-zone="figure"] svg', e => e.getAttribute('data-pose'));
+  await scrollToPage(page, 1, 0.3);
+  expect(await poseNow(), 'he sits to draw').toBe('sit');
+  expect(await drawnCount('house'), 'the house is being drawn beside him').toBeGreaterThan(0);
+  expect(await drawnCount('built'), 'not built yet').toBe(0);
+  await scrollToPage(page, 1, 0.52);
+  expect(await poseNow(), 'he stands while it is built').toBe('idle');
+  expect(await drawnCount('built'), 'the house is built').toBeGreaterThan(3);
+  const lifts: number[] = [];
+  for (let p = 0.56; p <= 0.98; p += 0.02) {
+    await scrollToPage(page, 1, p);
+    const s = await page.evaluate(() => {
+      const fig = document.querySelector('[data-zone="figure"]') as HTMLElement;
+      const m = fig.style.transform.match(/translate\(([-\d.]+)px, ([-\d.]+)px\)/);
+      const fr = fig.getBoundingClientRect();
+      const rs = Array.from(document.querySelectorAll('[data-page="1"] path.river')).map(e => e.getBoundingClientRect());
+      return { cx: fr.left + fr.width / 2, lift: m ? parseFloat(m[2]) : 0, left: Math.min(...rs.map(r => r.left)), right: Math.max(...rs.map(r => r.right)), n: rs.length };
+    });
+    expect(s.n, 'a river is drawn across his path').toBeGreaterThan(0);
+    if (s.lift < -6) { lifts.push(s.lift); expect(s.cx >= s.left - 40 && s.cx <= s.right + 40, `lift ${s.lift} at ${s.cx} (river ${s.left}–${s.right}, p ${p.toFixed(2)})`).toBe(true); }
+  }
+  expect(lifts.length, 'he leaps the river').toBeGreaterThan(0);
+  expect(Math.min(...lifts), 'a real leap').toBeLessThan(-25);
+});
+
+test('on the VialGrade page he holds a magnifier over the bottle (Nate, 2026-11-07: "what is the guy doing?")', async ({ page }) => {
+  await page.goto('/');
+  await scrollToPage(page, 3, 0.3);
+  const s = await page.evaluate(() => {
+    const vis = (sel: string) => Array.from(document.querySelectorAll<SVGPathElement>(sel)).filter(e => getComputedStyle(e).visibility !== 'hidden' && parseFloat(getComputedStyle(e).strokeDashoffset) < 0.05).map(e => e.getBoundingClientRect());
+    const box = (rs: DOMRect[]) => ({ l: Math.min(...rs.map(r => r.left)), r: Math.max(...rs.map(r => r.right)), t: Math.min(...rs.map(r => r.top)), b: Math.max(...rs.map(r => r.bottom)) });
+    const vial = vis('[data-page="3"] path.vial'), lens = vis('[data-page="3"] path.lens');
+    return { pose: document.querySelector('div[data-zone="figure"] svg')?.getAttribute('data-pose'), vial: box(vial), lens: box(lens), nVial: vial.length, nLens: lens.length };
+  });
+  expect(s.pose, 'his arm is up, holding it').toBe('inspect');
+  expect(s.nVial, 'a bottle').toBeGreaterThan(0);
+  expect(s.nLens, 'a magnifier').toBeGreaterThan(0);
+  const iw = Math.min(s.vial.r, s.lens.r) - Math.max(s.vial.l, s.lens.l), ih = Math.min(s.vial.b, s.lens.b) - Math.max(s.vial.t, s.lens.t);
+  expect(iw, 'the lens sits over the bottle').toBeGreaterThan(10);
+  expect(ih, 'the lens sits over the bottle').toBeGreaterThan(10);
+  await scrollToPage(page, 3, 0.48);
+  const checked = await page.$$eval('[data-page="3"] path.lens', es => es.filter(e => parseFloat(getComputedStyle(e).strokeDashoffset) < 0.05).length);
+  expect(checked, 'a check appears in the lens once the screen is up').toBeGreaterThanOrEqual(4);
+});
+
+test('each drawing holds on top, fully real, long enough to look at (Nate, 2026-11-07: "moves through them too quickly")', async ({ page }) => {
+  test.setTimeout(240_000);
+  await page.goto('/');
+  const travel = await page.$eval('[data-page="6"]', el => Number(el.getAttribute('data-travel')));
+  const vh = await page.evaluate(() => innerHeight);
+  const hold: Record<string, number> = {};
+  const STEP = 0.015;
+  for (let p = 0.05; p <= 1.0001; p += STEP) {
+    await scrollToPage(page, 6, p);
+    const top = await page.evaluate(() => {
+      const figs = Array.from(document.querySelectorAll<HTMLElement>('[data-page="6"] [data-piece]')).filter(f => parseFloat(getComputedStyle(f).opacity) > 0.5);
+      if (!figs.length) return null;
+      const t = figs.reduce((a, b) => (parseInt(getComputedStyle(b).zIndex, 10) > parseInt(getComputedStyle(a).zIndex, 10) ? b : a));
+      const photo = parseFloat(getComputedStyle(t.querySelector('[data-media]') as HTMLElement).opacity);
+      const o = t.querySelector('[data-sketch="outline"]') as HTMLElement | null;
+      return { name: t.dataset.piece!, photo, outline: o ? parseFloat(getComputedStyle(o).opacity) : 0 };
+    });
+    if (top && top.photo >= 0.99 && top.outline <= 0.02) hold[top.name] = (hold[top.name] ?? 0) + 1;
+  }
+  for (const name of ['bob-marley', 'dog-scarf', 'house', 'moose', 'coke-can', 'miami']) {
+    const span = (hold[name] ?? 0) * STEP;
+    expect(span, `${name} holds for a share of the page`).toBeGreaterThanOrEqual(0.06);
+    expect(span * travel * vh / 100, `${name} holds for real scrolling (px)`).toBeGreaterThanOrEqual(180);
+  }
+});
+
 test('drawings arrive real after their outline', async ({ page }) => {
   await page.goto('/');
   await scrollToPage(page, 6, 0.95);

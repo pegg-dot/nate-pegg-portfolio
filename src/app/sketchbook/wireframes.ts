@@ -108,9 +108,41 @@ export const ROTUNDA: Pt[][] = [
   line(-26, -5, -26, -40), line(26, -5, 26, -40), hr(-26, 26, -40),
   arc(0, -40, 26, Math.PI, 2 * Math.PI, 14),
 ];
-export const MAGNIFIER: Pt[][] = [circle(0, -70, 16, 20), [[11, -58], [26, -36]], [[13, -56], [28, -38]]];
+/** A little house, drawn in a hand's order: floor, walls, roof, chimney, door, window. 68 wide, 62 tall. */
+export const HOUSE: Pt[][] = [
+  hr(-32, 32, 0),
+  line(-26, 0, -26, -34), line(26, 0, 26, -34),
+  [[-34, -34], [0, -62], [34, -34]],
+  [[14, -50], [14, -62], [22, -62], [22, -44]],
+  [[-8, 0], [-8, -24], [8, -24], [8, 0]],
+  ...rect(10, -32, 12, 12),
+];
+/** The second pass, once he stands: the same lines inked, the roof hatched, the window crossed, a knob, and smoke from the chimney. */
+export const HOUSE_BUILT: Pt[][] = [
+  hr(-32, 32, 0), line(-26, 0, -26, -34), line(26, 0, 26, -34), [[-34, -34], [0, -62], [34, -34]],
+  [[14, -50], [14, -62], [22, -62], [22, -44]], [[-8, 0], [-8, -24], [8, -24], [8, 0]], ...rect(10, -32, 12, 12),
+  line(-26, -36, -14, -46), line(-18, -36, -6, -46), line(-10, -36, 2, -46),
+  hr(10, 22, -26), line(16, -20, 16, -32), circle(5, -12, 1.2, 8),
+  arc(24, -69, 4, 0.6, 4.4, 8), arc(29, -79, 5, 3.4, 7.2, 8), arc(24, -91, 6, 0.6, 4.4, 8),
+];
+const wave = (x0: number, x1: number, y: number, step: number, amp: number): Pt[] => {
+  const pts: Pt[] = [];
+  for (let x = x0, i = 0; x <= x1; x += step, i++) pts.push([x, y + (i % 2 ? amp : -amp)]);
+  return pts;
+};
+/** A river across his path: a near bank, a far bank, a stone at the foot of each, water between. 100 wide; the banks rise 16. */
+export const RIVER: Pt[][] = [
+  [[-50, -16], [-47, -8], [-44, 0]],
+  [[44, 0], [47, -8], [50, -16]],
+  circle(-46, -2, 2.2, 8), circle(46, -2, 2.2, 8),
+  wave(-40, 40, -4, 8, 3), wave(-36, 36, -9, 8, 2.5), wave(-26, 26, -14, 8, 2),
+];
+/** A bottle that reads as one: shoulders, a neck, a cap, a label with two lines, the liquid line. 32 wide, 94 tall. */
 export const VIAL: Pt[][] = [
-  ...rect(-12, -52, 24, 52), ...rect(-8, -62, 16, 10), hr(-12, 12, -24), hr(-8, 8, -36),
+  [[-16, 0], [-16, -62], [-12, -72], [-5, -76], [-5, -84], [5, -84], [5, -76], [12, -72], [16, -62], [16, 0], [-16, 0]],
+  ...rect(-7, -94, 14, 10),
+  ...rect(-11, -70, 22, 20), hr(-7, 7, -57), hr(-7, 1, -63),
+  hr(-16, 16, -28),
 ];
 export const tokenBlock = (h = 40): Pt[][] => [...rect(-20, -h, 40, h), hr(-14, 14, -h * 0.7), hr(-14, 14, -h * 0.5), hr(-14, 14, -h * 0.3)];
 

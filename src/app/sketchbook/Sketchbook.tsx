@@ -25,12 +25,12 @@ import About, { figureScript as aboutScript } from './pages/About';
 /** The pages, in order. Each owns its own figure script. */
 export const PAGES: PageDef[] = [
   { id: 'cover', travel: 120, script: coverScript, render: p => <Cover {...p} /> },
-  { id: 'work', travel: 100, script: originScript, render: p => <Origin {...p} /> },
+  { id: 'work', script: originScript, render: p => <Origin {...p} /> },
   { id: 'della', rail: HOME_COPY.projects.della.rail, script: dellaScript, render: p => <Della {...p} /> },
   { id: 'vialgrade', rail: HOME_COPY.projects.vialgrade.rail, script: vialScript, render: p => <Vial {...p} /> },
   { id: 'transformer', rail: HOME_COPY.projects.transformer.rail, dark: true, script: transformerScript, render: p => <Transformer {...p} /> },
   { id: 'desk', rail: HOME_COPY.desk.rail, script: deskScript, render: p => <Desk {...p} /> },
-  { id: 'draw', rail: HOME_COPY.drawings.rail, script: drawScript, render: p => <Drawings {...p} /> },
+  { id: 'draw', rail: HOME_COPY.drawings.rail, travel: 320, script: drawScript, render: p => <Drawings {...p} /> },
   { id: 'row', rail: HOME_COPY.rowing.rail, script: rowScript, render: p => <Rowing {...p} /> },
   { id: 'about', travel: 120, script: aboutScript, render: p => <About {...p} /> },
 ];
@@ -137,7 +137,7 @@ export default function Sketchbook() {
     if (ai === 0 && clock >= 0.9 && !s.drawnOnce) { s.drawnOnce = true; s.lookupUntil = c.elapsed + 1000; }
     let pose: PoseKind = script.pose ?? s.pose;
     let frame = s.frame;
-    if (pose === 'sit' || pose === 'row') frame = Math.floor(c.elapsed / 180) % FRAME_COUNTS[pose];
+    if (pose === 'sit' || pose === 'row' || pose === 'inspect') frame = Math.floor(c.elapsed / (pose === 'inspect' ? 420 : 180)) % FRAME_COUNTS[pose];
     if (!script.pose && s.pose === 'idle' && c.elapsed < s.lookupUntil) pose = 'lookup';
     let lift = script.lift ?? 0;
     if (s.hopAt >= 0) {

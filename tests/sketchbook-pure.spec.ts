@@ -3,6 +3,9 @@ import { dense, wobble, toPath, circle, seq, variants, rect, type Pt } from '../
 import { figureScript as deskScript, obstacle, spotX } from '../src/app/sketchbook/desk';
 import { DESK_OBJECTS } from '../src/app/sketchbook/wireframes';
 import { GROUND_Y } from '../src/app/sketchbook/figure';
+import { figureScript as originScript, originScene, SIT, SKETCH, BUILD, GO } from '../src/app/sketchbook/origin';
+import { figureScript as vialScript, vialScene, inspectHand, INSPECT } from '../src/app/sketchbook/vial';
+import { COUNT, startOf, topAt } from '../src/app/sketchbook/drawings';
 
 const line: Pt[] = [[0, 0], [30, 0]];
 
@@ -65,7 +68,7 @@ test.describe('pencil', () => {
 import { pose, buildFrames, FRAME_COUNTS, STROKE_COUNT, STROKE_CLASSES, type PoseKind } from '../src/app/sketchbook/figure';
 
 test.describe('little Nate', () => {
-  const kinds: PoseKind[] = ['walk', 'idle', 'hop', 'sit', 'row', 'lookup'];
+  const kinds: PoseKind[] = ['walk', 'idle', 'hop', 'sit', 'row', 'lookup', 'inspect'];
 
   test('every pose has exactly fifteen strokes', () => {
     for (const k of kinds) expect(pose(k, 0), k).toHaveLength(STROKE_COUNT);
@@ -76,13 +79,24 @@ test.describe('little Nate', () => {
   });
 
   test('standing poses rest their feet on the ground line', () => {
-    for (const k of ['walk', 'idle', 'lookup'] as PoseKind[]) {
+    for (const k of ['walk', 'idle', 'lookup', 'inspect'] as PoseKind[]) {
       for (let f = 0; f < FRAME_COUNTS[k]; f++) {
         const legs = [...(pose(k, f / Math.max(1, FRAME_COUNTS[k] - (k === 'walk' ? 0 : 1)))[4] ?? []), ...(pose(k, 0)[5] ?? [])];
         const lowest = Math.max(...legs.map(p => p[1]));
         expect(Math.abs(lowest - 82), `${k} frame ${f}`).toBeLessThanOrEqual(1);
       }
     }
+  });
+
+  test('the inspect pose raises a hand forward to chest height, feet on the ground', () => {
+    const S = pose('inspect', 0);
+    const arm = S[3];
+    expect(arm, 'a right arm').toBeTruthy();
+    const [hx, hy] = arm![arm!.length - 1];
+    expect(hx, 'hand out in front').toBeGreaterThan(45);
+    expect(hy, 'hand up at chest height').toBeLessThan(40);
+    expect(hy).toBeGreaterThan(26);
+    expect(pose('inspect', 0)).not.toEqual(pose('inspect', 1));
   });
 
   test('the hop tucks the legs', () => {
@@ -239,5 +253,74 @@ test.describe('the desk (Nate, 2026-11-06: "why is he jumping over a beer can?")
         expect(r <= o.left - 4 || l >= o.right + 4, `${vw}: ${d.slug} ${l.toFixed(0)}–${r.toFixed(0)} against ${o.left.toFixed(0)}–${o.right.toFixed(0)}`).toBe(true);
       }
     }
+  });
+});
+
+
+test.describe('how I got into this (Nate, 2026-11-07: "my guy just walks across")', () => {
+  const widths: [number, number][] = [[1440, 78], [1024, 78], [1440, 70], [768, 56], [390, 56]];
+
+  test('he sits and draws a house beside his pencil, stands while it is built, then leaps a river', () => {
+    const feet = Math.max(...pose('hop', 0).slice(4, 6).flatMap(st => st ?? []).map(pt => pt[1]));
+    expect(SKETCH[0]).toBeGreaterThanOrEqual(SIT[0]); expect(SKETCH[1]).toBeLessThanOrEqual(SIT[1]);
+    expect(BUILD[0]).toBeGreaterThanOrEqual(SIT[1]); expect(BUILD[1]).toBeLessThanOrEqual(GO);
+    for (const [vw, figW] of widths) {
+      const o = originScene(vw, figW);
+      expect(o.house.left - o.pencilX, `${vw}: the house starts just past his pencil`).toBeGreaterThanOrEqual(0);
+      expect(o.house.left - o.pencilX, `${vw}`).toBeLessThanOrEqual(20);
+      expect(o.house.right, `${vw}: the house stands clear of the river`).toBeLessThan(o.river.left - 8);
+      const tuck = (GROUND_Y - feet) * (figW / 60);
+      let sits = 0, stands = 0, hops = 0, apex = 0, first = Infinity, last = -Infinity;
+      for (let p = 0; p <= 1; p += 0.001) {
+        const s = originScript(p, vw, figW);
+        const cx = s.x + figW / 2;
+        if (p >= SKETCH[0] && p < SKETCH[1]) { expect(s.pose, `${vw}: he sits while the house is drawn (p ${p.toFixed(3)})`).toBe('sit'); sits++; }
+        if (p >= BUILD[0] && p < BUILD[1]) { expect(s.pose, `${vw}: he stands beside it while it is built (p ${p.toFixed(3)})`).toBe('idle'); expect(s.x, `${vw}: and stays put`).toBe(o.sitX); stands++; }
+        if (s.pose === 'hop') { hops++; apex = Math.min(apex, s.lift ?? 0); first = Math.min(first, cx); last = Math.max(last, cx); }
+        else expect(s.lift ?? 0, `${vw}: no lift except over the river`).toBe(0);
+      }
+      expect(sits).toBeGreaterThan(0); expect(stands).toBeGreaterThan(0);
+      expect(hops, `${vw}: he leaps`).toBeGreaterThan(0);
+      expect(first, `${vw}: takes off before the near bank`).toBeLessThanOrEqual(o.river.left);
+      expect(last, `${vw}: lands past the far bank`).toBeGreaterThanOrEqual(o.river.right);
+      expect(tuck - apex, `${vw}: his feet clear the banks`).toBeGreaterThanOrEqual(o.river.bank + 4);
+      expect(originScript(1, vw, figW).pose, `${vw}: landed before the page ends`).not.toBe('hop');
+    }
+  });
+});
+
+test.describe('VialGrade (Nate, 2026-11-07: "what is the guy doing?")', () => {
+  const widths: [number, number][] = [[1440, 78], [1024, 78], [1440, 70], [768, 56], [390, 56]];
+
+  test('he stops, raises the magnifier so the lens sits on the bottle, and the handle starts in his hand', () => {
+    const [hx, hy] = inspectHand();
+    for (const [vw, figW] of widths) {
+      const o = vialScene(vw, figW), s = figW / 60;
+      expect(o.lens.cx, `${vw}: the lens is over the bottle (x)`).toBeGreaterThanOrEqual(o.vialBox.left);
+      expect(o.lens.cx, `${vw}`).toBeLessThanOrEqual(o.vialBox.right);
+      expect(-o.lens.cy, `${vw}: the lens is over the bottle (y), not above it`).toBeLessThanOrEqual(o.vialBox.top - o.lens.r / 2);
+      expect(-o.lens.cy, `${vw}`).toBeGreaterThanOrEqual(o.lens.r);
+      expect(Math.abs(o.hand[0] - (o.standX + hx * s)), `${vw}: the hand is the pose's hand (x)`).toBeLessThan(1);
+      expect(Math.abs(o.hand[1] + (GROUND_Y - hy) * s), `${vw}: the hand is the pose's hand (y)`).toBeLessThan(1);
+      expect(o.lens.strokes.some(st => Math.hypot(st[0][0], st[0][1] - o.hand[1]) < 3), `${vw}: a handle stroke starts in his hand`).toBe(true);
+      expect(o.check.strokes.length, `${vw}: a check to draw in the lens once the screen is up`).toBeGreaterThan(0);
+      for (let p = 0; p <= 1; p += 0.002) {
+        const f = vialScript(p, vw, figW);
+        if (p >= INSPECT[0] && p < INSPECT[1]) { expect(f.pose, `${vw}: inspecting at p ${p.toFixed(3)}`).toBe('inspect'); expect(f.x, `${vw}: standing still`).toBe(o.standX); }
+        else expect(f.pose, `${vw}: not inspecting at p ${p.toFixed(3)}`).toBeUndefined();
+      }
+    }
+  });
+});
+
+test.describe('the drawings pile', () => {
+  test('the piece that has just started is the one on top, at its exact start', () => {
+    // floor((p - FIRST) / STEP) rounds 2.9999… down at the boundary, so the top said one piece while the next was already shown over it.
+    for (let i = 0; i < COUNT; i++) {
+      expect(topAt(startOf(i)), `piece ${i} at its start`).toBe(i);
+      expect(topAt(startOf(i) - 0.0001), `just before piece ${i}`).toBe(i - 1);
+    }
+    expect(topAt(0)).toBe(-1);
+    expect(topAt(1)).toBe(COUNT - 1);
   });
 });
