@@ -5,11 +5,11 @@
  */
 import { circle, dense, toPath, wobble, type Pt } from './pencil';
 
-export type PoseKind = 'walk' | 'idle' | 'hop' | 'sit' | 'row' | 'lookup' | 'inspect' | 'crouch' | 'peer';
+export type PoseKind = 'walk' | 'idle' | 'hop' | 'sit' | 'row' | 'lookup' | 'inspect' | 'hammer';
 export const STROKE_COUNT = 15;
 export const GROUND_Y = 82;
-export const FRAME_COUNTS: Record<PoseKind, number> = { walk: 8, idle: 2, hop: 1, sit: 4, row: 2, lookup: 1, inspect: 2, crouch: 1, peer: 2 };
-/** 0 head, 1 torso, 2–3 arms, 4–5 legs, 6 shirt, 7–9 stripes, 10 alien, 11–12 alien eyes, 13 eye, 14 pencil */
+export const FRAME_COUNTS: Record<PoseKind, number> = { walk: 8, idle: 2, hop: 1, sit: 4, row: 2, lookup: 1, inspect: 2, hammer: 2 };
+/** 0 head, 1 torso, 2–3 arms, 4–5 legs, 6 shirt, 7–9 stripes, 10 alien, 11–12 alien eyes, 13 eye, 14 the thing in his hand (pencil, hammer) */
 export const STROKE_CLASSES = ['', '', '', '', '', '', '', 's1', 's2', 's3', 'alien', 'alienEye', 'alienEye', 'eye', 'pencil'];
 
 const D = Math.PI / 180;
@@ -20,6 +20,13 @@ function limb(x: number, y: number, a1: number, l1: number, a2: number, l2: numb
   return [[x, y], [kx, ky], [kx + Math.sin(a2 * D) * l2, ky + Math.cos(a2 * D) * l2]];
 }
 const shift = (S: (Pt[] | null)[], dx: number, dy: number) => S.map(s => (s ? s.map(([x, y]) => [x + dx, y + dy] as Pt) : s));
+/** A hammer in the hand at (hx, hy), its handle pointing `deg` degrees from horizontal (y down), as one stroke: handle, then around the head. */
+function hammer([hx, hy]: Pt, deg: number): Pt[] {
+  const d = [Math.cos(deg * D), Math.sin(deg * D)], n = [-d[1], d[0]];
+  const ex = hx + d[0] * 13, ey = hy + d[1] * 13;
+  const c = (a: number, b: number): Pt => [ex + n[0] * a + d[0] * b, ey + n[1] * a + d[1] * b];
+  return [[hx, hy], [ex, ey], c(3.5, 1.8), c(3.5, -1.8), c(-3.5, -1.8), c(-3.5, 1.8), c(3.5, 1.8)];
+}
 
 export function pose(kind: PoseKind, phase: number): (Pt[] | null)[] {
   const S: (Pt[] | null)[] = new Array(STROKE_COUNT).fill(null);
@@ -44,18 +51,13 @@ export function pose(kind: PoseKind, phase: number): (Pt[] | null)[] {
     S[5] = limb(30, hipY, 7, 15, 5, 15);
     S[2] = limb(30, 28, -8, 12, -4, 11);
     S[3] = limb(30, 28, 90, 12, 60 + phase * 4, 11);
-  } else if (kind === 'crouch') {
-    // Squashed before a leap and on landing: knees out wide, arms back for balance; the grounding shift drops him.
-    S[4] = limb(30, hipY, -50, 14, 40, 14);
-    S[5] = limb(30, hipY, 50, 14, -40, 14);
-    S[2] = limb(30, 28, -70, 12, -110, 11);
-    S[3] = limb(30, 28, 70, 12, 110, 11);
-  } else if (kind === 'peer') {
-    // Up at the glass: both hands flat on it beside his head, feet planted.
-    S[4] = limb(30, hipY, -8, 15, -5, 15);
-    S[5] = limb(30, hipY, 9, 15, 6, 15);
-    S[2] = [[30, 28], [21, 22], [17, 13 + phase]];
-    S[3] = [[30, 28], [39, 22], [43, 13 + phase]];
+  } else if (kind === 'hammer') {
+    // Building: the right arm swings a hammer, raised on one frame and down on the beam on the other; the left hand steadies the work.
+    S[4] = limb(30, hipY, -10, 15, -6, 15);
+    S[5] = limb(30, hipY, 12, 15, 8, 15);
+    S[2] = [[30, 28], [38, 36], [44, 42]];
+    if (phase === 0) { S[3] = [[30, 28], [39, 19], [45, 9]]; S[14] = hammer([45, 9], -55); }
+    else { S[3] = [[30, 28], [41, 37], [49, 46]]; S[14] = hammer([49, 46], 24); }
   } else if (kind === 'hop') {
     S[4] = limb(30, hipY, -40, 13, 50, 13);
     S[5] = limb(30, hipY, -20, 13, 70, 13);
@@ -88,7 +90,7 @@ export function pose(kind: PoseKind, phase: number): (Pt[] | null)[] {
   S[11] = circle(28.9, 39.4, 0.5, 6);
   S[12] = circle(31.1, 39.4, 0.5, 6);
   S[13] = circle(33.5, kind === 'lookup' ? headY - 3 : headY - 1, 0.6, 6);
-  if (kind === 'walk' || kind === 'idle' || kind === 'lookup' || kind === 'sit' || kind === 'inspect' || kind === 'crouch' || kind === 'peer') {
+  if (kind === 'walk' || kind === 'idle' || kind === 'lookup' || kind === 'sit' || kind === 'inspect' || kind === 'hammer') {
     const lowest = Math.max(...[...(S[4] ?? []), ...(S[5] ?? [])].map(p => p[1]));
     return shift(S, 0, GROUND_Y - lowest);
   }
