@@ -108,7 +108,7 @@ export const ROTUNDA: Pt[][] = [
   line(-26, -5, -26, -40), line(26, -5, 26, -40), hr(-26, 26, -40),
   arc(0, -40, 26, Math.PI, 2 * Math.PI, 14),
 ];
-/** A little house, drawn in a hand's order: floor, walls, roof, chimney, door, window. 68 wide, 62 tall. */
+/** A little house, in a builder's order: floor, walls, roof, chimney, door, window. 68 wide, 62 tall. */
 export const HOUSE: Pt[][] = [
   hr(-32, 32, 0),
   line(-26, 0, -26, -34), line(26, 0, 26, -34),
@@ -117,19 +117,12 @@ export const HOUSE: Pt[][] = [
   [[-8, 0], [-8, -24], [8, -24], [8, 0]],
   ...rect(10, -32, 12, 12),
 ];
-/** The second pass, once he stands: the same lines inked, the roof hatched, the window crossed, a knob, and smoke from the chimney. */
-export const HOUSE_BUILT: Pt[][] = [
-  hr(-32, 32, 0), line(-26, 0, -26, -34), line(26, 0, 26, -34), [[-34, -34], [0, -62], [34, -34]],
-  [[14, -50], [14, -62], [22, -62], [22, -44]], [[-8, 0], [-8, -24], [8, -24], [8, 0]], ...rect(10, -32, 12, 12),
-  line(-26, -36, -14, -46), line(-18, -36, -6, -46), line(-10, -36, 2, -46),
-  hr(10, 22, -26), line(16, -20, 16, -32), circle(5, -12, 1.2, 8),
-  arc(24, -69, 4, 0.6, 4.4, 8), arc(29, -79, 5, 3.4, 7.2, 8), arc(24, -91, 6, 0.6, 4.4, 8),
-];
 /** A building on page one's skyline, drawn in a local frame with its base on y = 0. `phone` marks the smaller set for narrow screens. */
 export type Building = { slug: string; w: number; h: number; phone?: boolean; strokes: Pt[][] };
 const vr = (x: number, y0: number, y1: number): Pt[] => line(x, y0, x, y1);
-/** The city he walks up, taller to the right: a shop, apartments, an office block, a tower, a skyscraper. */
+/** The city he hammers up, taller to the right: a house, a shop, apartments, an office block, a tower, a skyscraper. */
 export const CITY: Building[] = [
+  { slug: 'house', w: 68, h: 62, phone: true, strokes: HOUSE },
   { slug: 'shop', w: 60, h: 72, phone: true, strokes: [
     ...rect(-30, -56, 60, 56),
     [[-34, -56], [-30, -63], [-26, -56], [-22, -63], [-18, -56], [-14, -63], [-10, -56], [-6, -63], [-2, -56], [2, -63], [6, -56], [10, -63], [14, -56], [18, -63], [22, -56], [26, -63], [30, -56], [34, -63]],
