@@ -19,3 +19,10 @@ test('HOME_COPY carries every locked string', () => {
   const all = JSON.stringify(HOME_COPY);
   for (const s of fixture.strings) expect(all, s).toContain(s);
 });
+
+test('the About page carries no fun fact (Nate, 2026-11-17)', () => {
+  expect(JSON.stringify(HOME_COPY.about)).not.toContain('Fun fact');
+  expect(Object.keys(HOME_COPY.about).sort()).toEqual(['heading', 'p1', 'p2']);
+  expect(fixture.strings.some(s => s.startsWith('Fun fact'))).toBe(false);
+  expect(fixture.removed.map(r => r.string.slice(0, 9))).toContain('Fun fact:');
+});

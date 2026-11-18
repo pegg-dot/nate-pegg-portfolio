@@ -132,7 +132,6 @@ export const HOME_COPY = {
     heading: "About me",
     p1: "I grew up in Miami and went to Ransom Everglades before starting at UVA this year. I've always wanted to be an entrepreneur, and over the years I've tried a lot of different ideas. More recently, I've been spending a lot of time building with AI and trying to understand how it works by making things myself.",
     p2: "Outside of that, I like drawing, going to the gym, playing sports, and spending time with friends.",
-    p3: "Fun fact: when I was four, I had two of the same blue and red striped shirt with a little green alien on it. I wore it nearly every day and refused to wear other shirts.",
   },
   footer: ["one more thing...", "After Abundance", "Read the paper"],
 };

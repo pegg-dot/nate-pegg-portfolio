@@ -1,16 +1,23 @@
 /**
- * Little Nate: a stick figure in the striped alien shirt, drawn as fifteen strokes
+ * Little Nate: a stick figure in the striped shirt, drawn as twelve strokes
  * in a 60 × 92 box. Standing poses are grounded so the lowest foot sits on y = 82,
  * which is what gives the walk its bob. Pure geometry; no DOM.
  */
 import { circle, dense, toPath, wobble, type Pt } from './pencil';
 
 export type PoseKind = 'walk' | 'idle' | 'hop' | 'sit' | 'row' | 'lookup' | 'inspect' | 'hammer';
-export const STROKE_COUNT = 15;
+export const STROKE_COUNT = 12;
 export const GROUND_Y = 82;
 export const FRAME_COUNTS: Record<PoseKind, number> = { walk: 8, idle: 2, hop: 1, sit: 4, row: 2, lookup: 1, inspect: 2, hammer: 2 };
-/** 0 head, 1 torso, 2–3 arms, 4–5 legs, 6 shirt, 7–9 stripes, 10 alien, 11–12 alien eyes, 13 eye, 14 the thing in his hand (pencil, hammer) */
-export const STROKE_CLASSES = ['', '', '', '', '', '', '', 's1', 's2', 's3', 'alien', 'alienEye', 'alienEye', 'eye', 'pencil'];
+/** 0 head, 1 torso, 2–3 arms, 4–5 legs, 6 shirt, 7–9 stripes, 10 eye, 11 the thing in his hand (pencil, hammer) */
+export const STROKE_CLASSES = ['', '', '', '', '', '', '', 's1', 's2', 's3', 'eye', 'pencil'];
+
+/** Each stroke takes this share of the draw-on; they overlap a little so the pencil is always on one of them until he is done. */
+const STROKE_SPAN = 1.5 / STROKE_COUNT;
+/** Where stroke k begins in the draw-on (0–1): spaced so the last one ends exactly at 1. */
+export const strokeStart = (k: number) => (k * (1 - STROKE_SPAN)) / (STROKE_COUNT - 1);
+/** How much of stroke k is drawn at `drawn` (0–1). */
+export const visibleAt = (drawn: number, k: number) => Math.min(1, Math.max(0, (drawn - strokeStart(k)) / STROKE_SPAN));
 
 const D = Math.PI / 180;
 /** Two-segment limb from (x, y): first segment at angle a1 (degrees from straight down), second at a2. */
@@ -56,8 +63,8 @@ export function pose(kind: PoseKind, phase: number): (Pt[] | null)[] {
     S[4] = limb(30, hipY, -10, 15, -6, 15);
     S[5] = limb(30, hipY, 12, 15, 8, 15);
     S[2] = [[30, 28], [38, 36], [44, 42]];
-    if (phase === 0) { S[3] = [[30, 28], [39, 19], [45, 9]]; S[14] = hammer([45, 9], -55); }
-    else { S[3] = [[30, 28], [41, 37], [49, 46]]; S[14] = hammer([49, 46], 24); }
+    if (phase === 0) { S[3] = [[30, 28], [39, 19], [45, 9]]; S[11] = hammer([45, 9], -55); }
+    else { S[3] = [[30, 28], [41, 37], [49, 46]]; S[11] = hammer([49, 46], 24); }
   } else if (kind === 'hop') {
     S[4] = limb(30, hipY, -40, 13, 50, 13);
     S[5] = limb(30, hipY, -20, 13, 70, 13);
@@ -72,7 +79,7 @@ export function pose(kind: PoseKind, phase: number): (Pt[] | null)[] {
     S[5] = [[31, hipY], [41, 51], [41, 65]];
     S[2] = [[30, 28], [42, 35], [hx, hy]];
     S[3] = [[30, 28], [25, 38], [29, 44]];
-    S[14] = [[hx, hy], [hx + 6, hy + 8]];
+    S[11] = [[hx, hy], [hx + 6, hy + 8]];
   } else if (kind === 'row') {
     // Facing the stern: legs bent forward inside the hull, both arms reach then pull.
     S[1] = [[30, 22.5], [31, hipY]];
@@ -86,10 +93,7 @@ export function pose(kind: PoseKind, phase: number): (Pt[] | null)[] {
   S[7] = [[22, 31], [38, 31]];
   S[8] = [[22, 37], [38, 37]];
   S[9] = [[21, 43], [39, 43]];
-  S[10] = circle(30, 40, 3.2, 16);
-  S[11] = circle(28.9, 39.4, 0.5, 6);
-  S[12] = circle(31.1, 39.4, 0.5, 6);
-  S[13] = circle(33.5, kind === 'lookup' ? headY - 3 : headY - 1, 0.6, 6);
+  S[10] = circle(33.5, kind === 'lookup' ? headY - 3 : headY - 1, 0.6, 6);
   if (kind === 'walk' || kind === 'idle' || kind === 'lookup' || kind === 'sit' || kind === 'inspect' || kind === 'hammer') {
     const lowest = Math.max(...[...(S[4] ?? []), ...(S[5] ?? [])].map(p => p[1]));
     return shift(S, 0, GROUND_Y - lowest);

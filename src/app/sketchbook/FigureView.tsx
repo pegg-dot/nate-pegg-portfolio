@@ -1,11 +1,8 @@
 import { useLayoutEffect, useRef } from 'react';
 import DrawingPencil from '../components/DrawingPencil';
-import { buildFrames, FRAME_COUNTS, STROKE_CLASSES, STROKE_COUNT, type PoseKind } from './figure';
+import { buildFrames, FRAME_COUNTS, STROKE_CLASSES, STROKE_COUNT, visibleAt, type PoseKind } from './figure';
 
 export type FigureState = { pose: PoseKind; frame: number; variant: number; drawn: number; colored: boolean };
-
-/** How much of stroke k is drawn at `drawn`: strokes start one after another and each takes a sixth of the run. */
-const visibleAt = (drawn: number, k: number) => Math.min(1, Math.max(0, (drawn - k / STROKE_COUNT) * 6));
 
 /** Renders little Nate in one pose/frame/variant. Draw-on comes from `drawn` (0–1), stroke by stroke, with the pencil on the stroke being drawn. */
 export default function Figure({ state, className }: { state: FigureState; className?: string }) {
