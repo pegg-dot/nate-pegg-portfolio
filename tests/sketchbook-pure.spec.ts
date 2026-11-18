@@ -66,17 +66,32 @@ test.describe('pencil', () => {
   });
 });
 
-import { pose, buildFrames, FRAME_COUNTS, STROKE_COUNT, STROKE_CLASSES, type PoseKind } from '../src/app/sketchbook/figure';
+import { pose, buildFrames, FRAME_COUNTS, STROKE_COUNT, STROKE_CLASSES, strokeStart, visibleAt, type PoseKind } from '../src/app/sketchbook/figure';
 
 test.describe('little Nate', () => {
   const kinds: PoseKind[] = ['walk', 'idle', 'hop', 'sit', 'row', 'lookup', 'inspect', 'hammer'];
 
-  test('every pose has exactly fifteen strokes', () => {
+  test('every pose has exactly twelve strokes: no alien on the shirt (Nate, 2026-11-17)', () => {
+    expect(STROKE_COUNT).toBe(12);
     for (const k of kinds) expect(pose(k, 0), k).toHaveLength(STROKE_COUNT);
     expect(STROKE_CLASSES).toHaveLength(STROKE_COUNT);
     expect(STROKE_CLASSES[7]).toBe('s1');
-    expect(STROKE_CLASSES[10]).toBe('alien');
-    expect(STROKE_CLASSES[14]).toBe('pencil');
+    expect(STROKE_CLASSES.some(c => /alien/i.test(c)), 'nothing alien').toBe(false);
+    expect(STROKE_CLASSES[10]).toBe('eye');
+    expect(STROKE_CLASSES[11]).toBe('pencil');
+    for (const k of kinds) expect(pose(k, 0)[6], `${k}: the striped shirt stays`).toBeTruthy();
+  });
+
+  test('every stroke is complete once he is fully drawn, they start in order, and the pencil is never between strokes', () => {
+    // (drawn - k/N) * 6 never finished the last strokes: the eye stopped at 80% and the thing in his hand at 40%.
+    for (let k = 0; k < STROKE_COUNT; k++) {
+      expect(visibleAt(1, k), `stroke ${k} complete at drawn = 1`).toBe(1);
+      expect(visibleAt(0, k), `stroke ${k} not started at drawn = 0`).toBe(0);
+      if (k) expect(strokeStart(k), `stroke ${k} starts after stroke ${k - 1}`).toBeGreaterThan(strokeStart(k - 1));
+      if (k) expect(visibleAt(strokeStart(k) - 0.001, k), `stroke ${k} waits its turn`).toBe(0);
+    }
+    // Strictly one-after-another strokes left nothing in progress at each boundary, and the pencil blinked off twelve times.
+    for (let d = 0.001; d < 1; d += 0.001) expect(Array.from({ length: STROKE_COUNT }, (_, k) => visibleAt(d, k)).some(v => v > 0 && v < 1), `something under the pencil at drawn = ${d.toFixed(3)}`).toBe(true);
   });
 
   test('standing poses rest their feet on the ground line', () => {
@@ -103,15 +118,15 @@ test.describe('little Nate', () => {
   test('the hammer pose swings: up on one frame, down on the beam on the other, the hammer in his hand', () => {
     const up = pose('hammer', 0), down = pose('hammer', 1);
     for (const [name, S] of [['up', up], ['down', down]] as const) {
-      expect(S[14], `${name}: a hammer`).toBeTruthy();
+      expect(S[11], `${name}: a hammer`).toBeTruthy();
       const hand = S[3]![S[3]!.length - 1];
-      expect(S[14]![0], `${name}: held in the right hand`).toEqual(hand);
-      expect(S[14]!.length, `${name}: a handle and a head`).toBeGreaterThanOrEqual(6);
+      expect(S[11]![0], `${name}: held in the right hand`).toEqual(hand);
+      expect(S[11]!.length, `${name}: a handle and a head`).toBeGreaterThanOrEqual(6);
     }
     expect(up[3]![2][1], 'raised: hand above the shoulder').toBeLessThan(16);
     expect(down[3]![2][1], 'struck: hand down in front').toBeGreaterThan(40);
-    expect(down[14]![1][0], 'the head lands out in front of him').toBeGreaterThan(55);
-    expect(down[14]![1][1], 'and above his feet').toBeLessThan(60);
+    expect(down[11]![1][0], 'the head lands out in front of him').toBeGreaterThan(55);
+    expect(down[11]![1][1], 'and above his feet').toBeLessThan(60);
   });
 
   test('the hop tucks the legs', () => {
@@ -225,7 +240,7 @@ test.describe('the pencil (Nate, 2026-11-06: "the pencil didn\'t move")', () => 
   test('sitting, his pencil sweeps across the page instead of sitting still', () => {
     const n = FRAME_COUNTS.sit;
     expect(n).toBeGreaterThanOrEqual(4);
-    const tips = Array.from({ length: n }, (_, f) => pose('sit', f)[14]![0]);
+    const tips = Array.from({ length: n }, (_, f) => pose('sit', f)[11]![0]);
     const xs = tips.map(q => q[0]), ys = tips.map(q => q[1]);
     expect(Math.max(...xs) - Math.min(...xs)).toBeGreaterThanOrEqual(8);
     expect(Math.max(...ys) - Math.min(...ys)).toBeGreaterThanOrEqual(3);

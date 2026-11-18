@@ -31,7 +31,7 @@ export function originScene(vw: number, figW: number) {
   const sumW = set.reduce((a, b) => a + b.w, 0);
   const ck = clamp((spanR - spanL) / (sumW + 18 * (set.length - 1)), 0.45, 1);
   const gap = Math.min(110, (spanR - spanL - sumW * ck) / Math.max(1, set.length - 1));
-  const head = pose('hammer', 1)[14]![1];
+  const head = pose('hammer', 1)[11]![1];
   const reach = head[0] * s, strikeUp = (82 - head[1]) * s;
   const slot = (WALK_OFF - WALK_IN) / set.length;
   let x = spanL;

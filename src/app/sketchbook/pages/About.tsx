@@ -5,7 +5,7 @@ import ShadedHeading from '../ShadedHeading';
 import type { FigureScript, PageProps } from '../types';
 import styles from '../sketchbook.module.css';
 
-/** He walks to the middle, and once the reader reaches the fun fact the shirt gets its color. */
+/** He walks to the middle, and once he is there his shirt gets its color: this page is him, not a draft. */
 export const figureScript: FigureScript = (p, vw, figW) => ({ x: lerp(vw * 0.04, vw / 2 - figW / 2, ease(clamp(p / 0.5))), colored: p > 0.6 });
 
 export default function About({ progress, vw, entering, seen }: PageProps) {
@@ -15,7 +15,6 @@ export default function About({ progress, vw, entering, seen }: PageProps) {
       <ShadedHeading lines={[a.heading]} progress={headOn(progress, entering, vw)} />
       <p>{a.p1}</p>
       <p>{a.p2}</p>
-      <p className={styles.funFact}>{a.p3}</p>
     </div>
   );
 }

@@ -213,6 +213,27 @@ test('drawings arrive real after their outline', async ({ page }) => {
   opacities.forEach(o => expect(o).toBeGreaterThanOrEqual(0.99));
 });
 
+test('no alien on his shirt, and the thing in his hand is drawn whole (Nate, 2026-11-17)', async ({ page }) => {
+  await page.goto('/');
+  await scrollToPage(page, 8, 0.95);
+  expect(await page.$$eval('div[data-zone="figure"] svg path', ps => ps.filter(p => /alien/i.test(p.getAttribute('class') ?? '')).length), 'no alien strokes, even coloured').toBe(0);
+  expect(await page.$$eval('div[data-zone="figure"] svg path[pathLength]', ps => ps.length), 'twelve strokes').toBe(12);
+  // Mid-hammer on page one, the hammer (his last stroke) is fully drawn: handle and head.
+  await scrollToPage(page, 1, 0.43);
+  const tool = await page.$eval('div[data-zone="figure"] svg', svg => { const ps = svg.querySelectorAll('path[pathLength]'); const last = ps[ps.length - 1] as SVGPathElement; return { offset: parseFloat(getComputedStyle(last).strokeDashoffset), len: last.getTotalLength(), pose: svg.getAttribute('data-pose') }; });
+  expect(tool.pose).toBe('hammer');
+  expect(tool.offset, 'the hammer is drawn to the end').toBeLessThanOrEqual(0.01);
+  expect(tool.len, 'handle and head').toBeGreaterThan(30);
+});
+
+test('the About page is two paragraphs, no fun fact (Nate, 2026-11-17)', async ({ page }) => {
+  await page.goto('/');
+  await scrollToPage(page, 8, 0.5);
+  const paras = await page.$$eval('[data-page="8"] [data-zone="copy"] p', ps => ps.map(p => p.textContent ?? ''));
+  expect(paras).toHaveLength(2);
+  expect(paras.join(' ')).not.toContain('Fun fact');
+});
+
 test('the shirt gets its color only on the About page', async ({ page }) => {
   test.setTimeout(120_000);
   await page.goto('/');
